@@ -1,65 +1,88 @@
-import Image from "next/image";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { FaUsers, FaMoneyCheckAlt, FaClipboardCheck } from "react-icons/fa";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen font-sans text-gray-800 bg-white">
+
+      {/* HERO SECTION */}
+      <section className="flex flex-col items-center justify-center text-center py-16 px-4">
+        <h1 className="text-3xl font-bold mb-3 text-gray-900">
+          Smart School ERP
+        </h1>
+        <p className="text-base mb-4 text-gray-600 max-w-md">
+          Manage students, fees, attendance, and more in one simple platform.
+          Save time and simplify school administration.
+        </p>
+
+        <div className="flex gap-3">
+          <button
+            onClick={() => router.push("/login")}
+            className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-800 transition"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Login
+          </button>
+
+          <button
+             onClick={() => router.push("/contact")}
+            className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 transition"
           >
-            Documentation
-          </a>
+            Contact
+          </button>
         </div>
-      </main>
+      </section>
+
+      {/* FEATURES */}
+      <section className="py-12 px-4 max-w-5xl mx-auto">
+        <h2 className="text-xl font-semibold text-center mb-6 text-gray-900">
+          Core Features
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          <Feature icon={<FaUsers size={24} className="text-gray-900" />} title="Student Management" desc="Track student records quickly." />
+          <Feature icon={<FaMoneyCheckAlt size={24} className="text-gray-900" />} title="Fee Tracking" desc="Monitor payments and pending fees." />
+          <Feature icon={<FaClipboardCheck size={24} className="text-gray-900" />} title="Attendance" desc="Mark attendance easily." />
+        </div>
+      </section>
+
+      {/* BENEFITS */}
+      <section className="py-12 px-4 text-center bg-gray-50">
+        <h2 className="text-xl font-semibold mb-3 text-gray-900">Why Choose Our ERP?</h2>
+        <p className="max-w-lg mx-auto text-gray-600 text-sm">
+          Fast, intuitive, and easy to use. Works seamlessly with minimal setup for any school.
+        </p>
+      </section>
+
+      {/* CALL TO ACTION */}
+      <section className="py-16 px-4 text-center">
+        <h2 className="text-xl font-bold mb-2 text-gray-900">
+          Start Managing Your School Today
+        </h2>
+        <p className="mb-4 max-w-lg mx-auto text-gray-600 text-sm">
+          Focus on students, not paperwork. Smart School ERP helps you save time.
+        </p>
+        <button
+          onClick={() => router.push("/login")}
+          className="bg-gray-900 text-white px-5 py-2 rounded hover:bg-gray-800 transition"
+        >
+          Get Started
+        </button>
+      </section>
+    </div>
+  );
+}
+
+// Feature Component
+function Feature({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
+  return (
+    <div className="flex flex-col items-center p-4 bg-white border border-gray-100 rounded shadow-sm text-center">
+      <div className="mb-2">{icon}</div>
+      <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
+      <p className="text-gray-600 text-sm">{desc}</p>
     </div>
   );
 }
