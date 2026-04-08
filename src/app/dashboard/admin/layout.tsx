@@ -1,7 +1,7 @@
 "use client";
 import Sidebar from "@/components/ui/Sidebar";
 import Topbar from "@/components/ui/Topbar";
-import { useToggle } from "@/store/Toggledashboard";
+import { useToggle } from "@/store/toggledashboard/Toggledashboard";
 import { NavTypeProps } from "@/types/propstype";
 import React from "react";
 import { FaSchool } from "react-icons/fa";

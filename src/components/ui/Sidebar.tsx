@@ -1,31 +1,13 @@
 "use client";
-import { useToggle } from "@/store/Toggledashboard";
+import { useToggle } from "@/store/toggledashboard/Toggledashboard";
 import { NavTypeProps, SideBarProps } from "@/types/propstype";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import {
-  FaBarcode,
-  FaUserGraduate,
-  FaChalkboardTeacher,
-  FaBook,
-  FaClipboardList,
-  FaCog,
-} from "react-icons/fa";
 
 const Sidebar = ({ navData }: SideBarProps) => {
   const { toggle } = useToggle();
   const pathname = usePathname();
-
-  const menuItems = [
-    { icon: <FaBarcode />, label: "Dashboard" },
-    { icon: <FaUserGraduate />, label: "Students" },
-    { icon: <FaChalkboardTeacher />, label: "Teachers" },
-    { icon: <FaBook />, label: "Classes" },
-    { icon: <FaClipboardList />, label: "Attendance" },
-    { icon: <FaCog />, label: "Settings" },
-  ];
-
   return (
     <aside
       className={`${
@@ -36,31 +18,31 @@ const Sidebar = ({ navData }: SideBarProps) => {
     >
       <div className="h-full flex flex-col">
         {/* Logo / Heading */}
-        <div className="px-2 py-[7px] border-b border-gray-200">
-          <h1 className="text-lg font-semibold text-gray-900">Heading</h1>
-          <p className="text-xs text-gray-500 mt-0.5">Admin Panel</p>
+        <div className="px-2 py-[8px] border-b border-gray-200 flex justify-evenly items-center">
+         <img src="https://img.freepik.com/free-vector/business-user-shield_78370-7029.jpg?semt=ais_hybrid&w=740&q=80" alt="admin-logo" className="w-12 h-12 rounded-full" />
+         <h2>Erp</h2>
         </div>
 
         {/* Menu */}
-        <nav className="flex-1 mt-2 p-2">
-          <ul className="space-y-1">
+        <nav className="flex-1  px-1">
+          <ul className="">
             {navData.map((item, index) => {
               const isActive = pathname === item.link;
 
               return (
-                <li key={item.id}>
+                <li key={item.id} className="flex justify-center m-[2px]">
                   <Link
                     href={`${item.link}`}
-                    className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
+                    className={` w-full flex items-center gap-5 rounded px-4 py-3 text-sm font-medium transition ${
                       isActive
                         ? "bg-slate-900 text-white"
                         : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     }`}
                   >
-                    <span className="text-[17px] text-gray-500 group-hover:text-blue-600 transition-colors duration-200">
+                    <span className={`text-[17px] text-gray-500 group-hover:text-blue-600 transition-colors duration-200 ${isActive?"text-white":"text-gray-500"}`}>
                       {item.icon}
                     </span>
-                    <span className="text-[15px] font-medium">{item.name}</span>
+                    <span className="text-[15px] font-medium text-end">{item.name}</span>
                   </Link>
                 </li>
               );
