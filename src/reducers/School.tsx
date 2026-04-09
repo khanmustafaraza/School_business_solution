@@ -12,6 +12,12 @@ export const schoolReducer = (state: SchoolState, action: SchoolAction): SchoolS
           [action.payload.name]: action.payload.value, // update the correct field dynamically
         },
       };
+      case "SET_SCHOOLS":
+  return {
+    ...state,
+    schools: action.payload,
+  };
+
     default:
       return state;
   }

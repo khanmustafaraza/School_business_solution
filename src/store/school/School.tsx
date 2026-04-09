@@ -13,6 +13,7 @@ const initialState: SchoolState = {
     address: "",
     image: null, // ✅ FIX
   },
+   schools: [], // 👈 add this
   isLoading: false,
 };
 
@@ -41,6 +42,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     formData.append("code", state.schoolObj.code);
     formData.append("contact", state.schoolObj.contact);
     formData.append("email", state.schoolObj.email);
+    formData.append("address", state.schoolObj.address);
     if (state.schoolObj.image) {
         formData.append("image", state.schoolObj.image);
     }
@@ -55,8 +57,28 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log(data);
 };
 
+
+const getSchools = async () => {
+  try {
+    dispatch({ type: "SET_LOADING", payload: true });
+
+    const res = await fetch("/api/school");
+    const data = await res.json();
+
+    dispatch({
+      type: "SET_SCHOOLS",
+      payload: data.data,
+    });
+
+    // dispatch({ type: "LOADING", payload: false });
+  } catch (error) {
+    console.error(error);
+    // dispatch({ type: "LOADING", payload: false });
+  }
+};
+
   return (
-    <SchoolContext.Provider value={{ state, dispatch ,handleChange,handleSubmit}}> {/* ✅ FIX */}
+    <SchoolContext.Provider value={{ state, dispatch ,handleChange,handleSubmit,getSchools,}}> {/* ✅ FIX */}
       {children}
     </SchoolContext.Provider>
   );

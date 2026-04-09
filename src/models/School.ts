@@ -3,9 +3,9 @@ import mongoose, { Schema, Document, model, models } from "mongoose";
 
 export interface ISchool extends Document {
   name: string;
-  code?: number;
+  code?: string;
   email: string;
-  contact?: number;
+  contact?: string;
   address?: string;
   image?: Buffer; // store image binary, or use string for URL
 }
@@ -13,9 +13,9 @@ export interface ISchool extends Document {
 const SchoolSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
-    code: { type: Number },
+    code: { type: String },
     email: { type: String, required: true },
-    contact: { type: Number },
+    contact: { type: String },
     address: { type: String },
     image: { type: Buffer }, // can also be { type: String } for URL
   },

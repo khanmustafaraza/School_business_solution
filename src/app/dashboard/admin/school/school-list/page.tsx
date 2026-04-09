@@ -1,7 +1,8 @@
 "use client";
 
+import useSchool from "@/store/school/School";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FaSchool,
   FaSearch,
@@ -13,34 +14,14 @@ import {
   FaPlus,
 } from "react-icons/fa";
 
-const schoolData = [
-  {
-    id: 1,
-    schoolName: "Al-Noor Public School",
-    affiliationCode: "CBSE10234",
-    email: "alnoorpublicschool@gmail.com",
-    contact: "+91 9876543210",
-    address: "Civil Lines, Aligarh, Uttar Pradesh",
-  },
-  {
-    id: 2,
-    schoolName: "Green Valley Academy",
-    affiliationCode: "ICSE20987",
-    email: "greenvalleyacademy@gmail.com",
-    contact: "+91 9123456780",
-    address: "Dodhpur, Aligarh, Uttar Pradesh",
-  },
-  {
-    id: 3,
-    schoolName: "Modern Scholars School",
-    affiliationCode: "UP45876",
-    email: "modernscholars@gmail.com",
-    contact: "+91 9988776655",
-    address: "Jamia Road, Aligarh, Uttar Pradesh",
-  },
-];
-
 const SchoolList = () => {
+  const { state, getSchools } = useSchool();
+
+  // Fetch schools on component mount
+  useEffect(() => {
+    getSchools();
+  }, []);
+
   return (
     <div className="w-full">
       {/* Heading */}
@@ -75,24 +56,32 @@ const SchoolList = () => {
 
       {/* School Cards */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        {schoolData.map((school) => (
+        {state.schools.map((school) => (
           <div
-            key={school.id}
+            key={school._id}
             className="rounded-2xl border border-gray-200 bg-white p-5 hover:shadow-sm transition-all duration-200"
           >
             {/* Top */}
             <div className="mb-4 flex items-start justify-between">
               <div className="flex items-start gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                  <FaSchool className="text-[18px]" />
+                  {school.image ? (
+                    <img
+                      src={school.image}
+                      alt={school.name}
+                      className="h-11 w-11 rounded-xl object-cover"
+                    />
+                  ) : (
+                    <FaSchool className="text-[18px]" />
+                  )}
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">
-                    {school.schoolName}
+                    {school.name}
                   </h3>
                   <p className="text-sm text-gray-500">
-                    Affiliation Code: {school.affiliationCode}
+                    Affiliation Code: {school.code}
                   </p>
                 </div>
               </div>
