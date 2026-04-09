@@ -1,5 +1,12 @@
 "use client";
 
+import ActionBtn from "@/components/actionbtn/ActionBtn";
+import Container from "@/components/container/Container";
+import AdminHeading from "@/components/headings/AdminHeading";
+import MainContainer from "@/components/maincontainer/MainContainer";
+import useClass from "@/store/class/Class";
+import { LayoutPanelTop } from "lucide-react";
+
 import Link from "next/link";
 import React from "react";
 import {
@@ -10,69 +17,67 @@ import {
   FaUsers,
   FaListUl,
 } from "react-icons/fa";
+const heading = {
+  name: "Add Class",
+  subHeading: "Add and manage your class basic information.",
+  href: "/dashboard/admin/class/class-list",
+  btnHeading: "Class List",
+  icon: <LayoutPanelTop />,
+};
 
 const ClassRegister = () => {
+  const { state, handleChange, handleSubmit } = useClass();
   return (
-    <div className="w-full">
-      {/* Heading */}
-      <div className="mb-6 flex items-center justify-between border-b border-gray-200 pb-4">
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-900">
-            Class Register
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Add and manage class details for your school.
-          </p>
-        </div>
-
-        <Link
-          href="/dashboard/admin/school/class-list"
-          className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200"
-        >
-          <FaListUl className="text-[15px] text-emerald-600" />
-          Class List
-        </Link>
-      </div>
-
-      {/* Form Card */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Class Name */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              Class Name
-            </label>
-            <div className="flex items-center rounded-xl border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-              <FaChalkboard className="text-gray-400 text-[16px]" />
-              <input
-                type="text"
-                placeholder="Enter class name (e.g. Class 9)"
-                className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-              />
+    <div className="white bg-white p-1">
+      <MainContainer>
+        <AdminHeading heading={heading} />
+        <Container>
+          <form
+            className="grid grid-cols-1 md:grid-cols-2 gap-5"
+            onSubmit={(e) => handleSubmit(e)}
+          >
+            {/* Class Name */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                Class Name
+              </label>
+              <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
+                <FaChalkboard className="text-gray-400 text-[16px]" />
+                <input
+                  name="name"
+                  value={state.classObj.name}
+                  onChange={(e) => handleChange(e)}
+                  type="text"
+                  placeholder="Enter class name (e.g. Class 9)"
+                  className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Section */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              Section
-            </label>
-            <div className="flex items-center rounded-xl border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-              <FaLayerGroup className="text-gray-400 text-[16px]" />
-              <input
-                type="text"
-                placeholder="Enter section (e.g. A)"
-                className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-              />
+            {/* Section */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                Section
+              </label>
+              <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
+                <FaLayerGroup className="text-gray-400 text-[16px]" />
+                <input
+                  name="section"
+                  value={state.classObj.section}
+                  onChange={(e) => handleChange(e)}
+                  type="text"
+                  placeholder="Enter section (e.g. A)"
+                  className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Class Teacher */}
-          <div>
+            {/* Class Teacher */}
+            {/* <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
               Class Teacher
             </label>
-            <div className="flex items-center rounded-xl border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
+            <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
               <FaUserTie className="text-gray-400 text-[16px]" />
               <input
                 type="text"
@@ -80,29 +85,32 @@ const ClassRegister = () => {
                 className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
               />
             </div>
-          </div>
+          </div> */}
 
-          {/* Room Number */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              Room Number
-            </label>
-            <div className="flex items-center rounded-xl border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-              <FaDoorOpen className="text-gray-400 text-[16px]" />
-              <input
-                type="text"
-                placeholder="Enter room number"
-                className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-              />
+            {/* Room Number */}
+            <div className="md:col-span-2">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                Room Number
+              </label>
+              <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
+                <FaDoorOpen className="text-gray-400 text-[16px]" />
+                <input
+                  name="no"
+                  value={state.classObj.no}
+                  onChange={(e) => handleChange(e)}
+                  type="number"
+                  placeholder="Enter room number"
+                  className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Capacity */}
-          <div className="md:col-span-2">
+            {/* Capacity */}
+            {/* <div className="md:col-span-2">
             <label className="mb-2 block text-sm font-medium text-gray-700">
               Student Capacity
             </label>
-            <div className="flex items-center rounded-xl border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
+            <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
               <FaUsers className="text-gray-400 text-[16px]" />
               <input
                 type="number"
@@ -110,26 +118,15 @@ const ClassRegister = () => {
                 className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
               />
             </div>
-          </div>
+          </div> */}
 
-          {/* Actions */}
-          <div className="md:col-span-2 flex justify-end gap-3 pt-2">
-            <button
-              type="button"
-              className="rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200"
-            >
-              Cancel
-            </button>
+            {/* Actions */}
 
-            <button
-              type="submit"
-              className="rounded-xl bg-emerald-600 px-6 py-3 text-sm font-medium text-white hover:bg-emerald-700 transition-all duration-200"
-            >
-              Save Class
-            </button>
-          </div>
-        </form>
-      </div>
+            <ActionBtn />
+          </form>
+        </Container>
+      </MainContainer>
+      {/* Heading */}
     </div>
   );
 };

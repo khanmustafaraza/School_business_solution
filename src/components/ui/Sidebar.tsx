@@ -19,8 +19,12 @@ const Sidebar = ({ navData }: SideBarProps) => {
       <div className="h-full flex flex-col">
         {/* Logo / Heading */}
         <div className="px-2 py-[8px] border-b border-gray-200 flex justify-evenly items-center">
-         <img src="https://img.freepik.com/free-vector/business-user-shield_78370-7029.jpg?semt=ais_hybrid&w=740&q=80" alt="admin-logo" className="w-12 h-12 rounded-full" />
-         <h2>Erp</h2>
+          <img
+            src="https://img.freepik.com/free-vector/business-user-shield_78370-7029.jpg?semt=ais_hybrid&w=740&q=80"
+            alt="admin-logo"
+            className="w-12 h-12 rounded-full"
+          />
+          <h2>Erp</h2>
         </div>
 
         {/* Menu */}
@@ -33,16 +37,20 @@ const Sidebar = ({ navData }: SideBarProps) => {
                 <li key={item.id} className="flex justify-center m-[2px]">
                   <Link
                     href={`${item.link}`}
-                    className={` w-full flex items-center gap-5 rounded px-4 py-3 text-sm font-medium transition ${
+                    className={` w-full flex items-center gap-4 rounded px-3 py-3 text-sm font-medium transition ${
                       isActive
-                        ? "bg-slate-900 text-white"
+                        ? "bg-[#7066C8] text-white"
                         : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     }`}
                   >
-                    <span className={`text-[17px] text-gray-500 group-hover:text-blue-600 transition-colors duration-200 ${isActive?"text-white":"text-gray-500"}`}>
+                    <span
+                      className={`text-[17px] text-gray-500 group-hover:text-blue-600 transition-colors duration-200 ${isActive ? "text-white" : "text-gray-500"}`}
+                    >
                       {item.icon}
                     </span>
-                    <span className="text-[15px] font-medium text-end">{item.name}</span>
+                    <span className="text-[15px] font-medium text-end">
+                      {item.name}
+                    </span>
                   </Link>
                 </li>
               );

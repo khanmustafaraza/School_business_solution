@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import { ToggleProvider } from "@/store/toggledashboard/Toggledashboard";
 import "./globals.css";
 import { SchoolProvider } from "@/store/school/School";
+import { ClassProvider } from "@/store/class/Class";
 
 const openSans = Open_Sans({
   variable: "--font-open",
@@ -23,7 +24,9 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className={`${openSans.className} min-h-full flex flex-col`}>
         <ToggleProvider>
-          <SchoolProvider>{children}</SchoolProvider>
+          <SchoolProvider>
+            <ClassProvider>{children}</ClassProvider>
+          </SchoolProvider>
         </ToggleProvider>
       </body>
     </html>

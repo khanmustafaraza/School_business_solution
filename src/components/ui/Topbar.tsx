@@ -9,19 +9,21 @@ const Topbar: React.FC = () => {
   const { handleToggle } = useToggle();
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
-      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 md:px-6">
+    <header className="w-full border-b border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+      <div className="flex w-full items-center justify-between gap-4 px-4 py-[2px] md:px-6">
         {/* Left Section */}
         <div className="flex items-center gap-3">
           <button
             onClick={handleToggle}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+            className="inline-flex h-[30px] w-10 items-center justify-center rounded border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 hover:text-slate-900 cursor-pointer"
           >
             <FaBars size={16} />
           </button>
 
           <div className="hidden sm:block">
-            <h1 className="text-lg font-semibold text-slate-900">Dashboard</h1>
+            <h1 className="text-lg font-semibold text-gray-400">
+              Rose Valley Public School
+            </h1>
             <p className="text-xs text-slate-500">
               Welcome back, manage your school efficiently
             </p>

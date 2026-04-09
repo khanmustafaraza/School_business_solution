@@ -2,61 +2,72 @@
 import Sidebar from "@/components/ui/Sidebar";
 import Topbar from "@/components/ui/Topbar";
 import { useToggle } from "@/store/toggledashboard/Toggledashboard";
-import { NavTypeProps } from "@/types/propstype";
 import React from "react";
-import { FaSchool } from "react-icons/fa";
-import { FaChampagneGlasses } from "react-icons/fa6";
-import { IoMdSchool } from "react-icons/io";
-import { MdClass } from "react-icons/md";
+import {
+  LayoutDashboard,
+  Building2,
+  School,
+  PlusSquare,
+  ClipboardList,
+  UserPlus,
+  Users,
+  BadgeCheck,
+} from "lucide-react";
+import { NavTypeProps } from "@/types/propstype";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const { toggle } = useToggle();
 
   const navData: NavTypeProps[] = [
     {
+      id: 0,
+      name: "Dashboard",
+      link: "/dashboard/admin/admin-dashboard",
+      icon: <LayoutDashboard size={18} />,
+    },
+    {
       id: 1,
-      name: "School Register",
+      name: "Add School",
       link: "/dashboard/admin/school/school-register",
-      icon: <FaSchool />,
+      icon: <Building2 size={18} />,
     },
     {
       id: 2,
       name: "School List",
       link: "/dashboard/admin/school/school-list",
-      icon: <IoMdSchool />,
+      icon: <School size={18} />,
     },
     {
       id: 3,
-      name: "Class Register",
+      name: "Add Class",
       link: "/dashboard/admin/class/class-register",
-      icon: <MdClass />,
+      icon: <PlusSquare size={18} />,
     },
     {
       id: 4,
       name: "Class List",
       link: "/dashboard/admin/class/class-list",
-      icon: <FaChampagneGlasses />,
+      icon: <ClipboardList size={18} />,
     },
     {
       id: 5,
-      name: "Student Register",
+      name: "Add Student",
       link: "/dashboard/admin/student/student-register",
-      icon: <FaChampagneGlasses />,
+      icon: <UserPlus size={18} />,
     },
     {
       id: 6,
       name: "Student List",
       link: "/dashboard/admin/student/student-list",
-      icon: <FaChampagneGlasses />,
+      icon: <Users size={18} />,
     },
     {
       id: 7,
-      name: "Tc",
+      name: "Certificates",
       link: "/dashboard/admin/tc/tc-register",
-      icon: <FaChampagneGlasses />,
+      icon: <BadgeCheck size={18} />,
     },
   ];
-
   return (
     <div className="flex min-h-screen bg-[#fafafa]">
       <Sidebar navData={navData} />
