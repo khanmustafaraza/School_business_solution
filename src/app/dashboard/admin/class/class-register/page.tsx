@@ -28,7 +28,7 @@ const heading = {
 const ClassRegister = () => {
   const { state, handleChange, handleSubmit } = useClass();
   return (
-    <div className="white bg-white p-1">
+    <div className="white bg-white ">
       <MainContainer>
         <AdminHeading heading={heading} />
         <Container>

@@ -18,6 +18,13 @@ const UserReducer = (state: UserState, action: UserAction): UserState => {
     case "GET_ALL_USER":
       return {
         ...state,
+        userList: action.payload.users,
+        page: action.payload.page,
+        totalPages: action.payload.totalPages,
+      };
+    case "GET_ALL_USER":
+      return {
+        ...state,
         userList: action.payload,
       };
     default:
@@ -25,5 +32,4 @@ const UserReducer = (state: UserState, action: UserAction): UserState => {
   }
 };
 
-
-export default UserReducer
+export default UserReducer;

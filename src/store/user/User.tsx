@@ -12,28 +12,35 @@ const initialState: UserState = {
     name: "",
     email: "",
     password: "",
+    role: "",
   },
+ 
   userList: [],
+  page: 1,
+  totalPages: 1,
 };
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
   // ✅ handle input change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
 
     dispatch({
       type: "HANDLE_CHANGE",
-      payload: { name:name as keyof UserState["userObj"], value },
+      payload: { name: name as keyof UserState["userObj"], value },
     });
   };
 
   // ✅ submit user
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
+    console.log(state.userObj);
 
     try {
       const res = await fetch("/api/user", {
@@ -52,20 +59,23 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // ✅ get all users
-  const getAllUser = async () => {
-    try {
-      const res = await fetch("/api/user");
-      const data = await res.json();
+ const getAllUser = async (page: number = 1) => {
+  try {
+    const res = await fetch(`/api/user?page=${page}&limit=10`);
+    const data = await res.json();
 
-      dispatch({
-        type: "GET_ALL_USER",
-        payload: data.data,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+    dispatch({
+      type: "GET_ALL_USER",
+      payload: {
+        users: data.data,
+        page: data.page,
+        totalPages: data.totalPages,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
   return (
     <UserContext.Provider
       value={{ state, handleChange, handleSubmit, getAllUser }}
