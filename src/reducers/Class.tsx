@@ -15,6 +15,11 @@ export const ClassReducer = (
           [action.payload.name]: action.payload.value,
         },
       };
+      case "SET_CLASS_LIST":
+  return {
+    ...state,
+    classList: action.payload,
+  };
 
     default:
       return state;

@@ -12,6 +12,7 @@ import {
   UserPlus,
   Users,
   BadgeCheck,
+  User,
 } from "lucide-react";
 import { NavTypeProps } from "@/types/propstype";
 
@@ -51,18 +52,24 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     },
     {
       id: 5,
+      name: "Add User",
+      link: "/dashboard/admin/user/user-register",
+      icon: <User  size={18} />,
+    },
+    {
+      id: 6,
       name: "Add Student",
       link: "/dashboard/admin/student/student-register",
       icon: <UserPlus size={18} />,
     },
     {
-      id: 6,
+      id: 7,
       name: "Student List",
       link: "/dashboard/admin/student/student-list",
       icon: <Users size={18} />,
     },
     {
-      id: 7,
+      id: 8,
       name: "Certificates",
       link: "/dashboard/admin/tc/tc-register",
       icon: <BadgeCheck size={18} />,

@@ -4,6 +4,7 @@ import { ToggleProvider } from "@/store/toggledashboard/Toggledashboard";
 import "./globals.css";
 import { SchoolProvider } from "@/store/school/School";
 import { ClassProvider } from "@/store/class/Class";
+import { UserProvider } from "@/store/user/User";
 
 const openSans = Open_Sans({
   variable: "--font-open",
@@ -24,9 +25,11 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className={`${openSans.className} min-h-full flex flex-col`}>
         <ToggleProvider>
-          <SchoolProvider>
-            <ClassProvider>{children}</ClassProvider>
-          </SchoolProvider>
+          <UserProvider>
+            <SchoolProvider>
+              <ClassProvider>{children}</ClassProvider>
+            </SchoolProvider>
+          </UserProvider>
         </ToggleProvider>
       </body>
     </html>

@@ -1,6 +1,11 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import Container from "@/components/container/Container";
+import AdminHeading from "@/components/headings/AdminHeading";
+import MainContainer from "@/components/maincontainer/MainContainer";
+import useClass from "@/store/class/Class";
+import React, { useEffect, useMemo, useState } from "react";
+import { FaRegistered } from "react-icons/fa";
 import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiEye } from "react-icons/fi";
 
 type ClassItem = {
@@ -60,6 +65,7 @@ const initialData: ClassItem[] = [
 export default function ClassList() {
   const [search, setSearch] = useState("");
   const [classes] = useState<ClassItem[]>(initialData);
+ const {state,getAllClass} =  useClass()
 
   const filteredClasses = useMemo(() => {
     return classes.filter((item) =>
@@ -71,56 +77,43 @@ export default function ClassList() {
 
   const totalClasses = classes.length;
   const activeClasses = classes.filter((c) => c.status === "Active").length;
-  const totalStudents = classes.reduce((sum, c) => sum + c.students, 0);
-  const totalTeachers = new Set(classes.map((c) => c.teacher)).size;
+  
+  const heading = {
+    name: "School List",
+    subHeading: "List Of Register School.",
+    href: "/dashboard/admin/school/school-register",
+    btnHeading: "Add School",
+    icon: <FaRegistered />,
+  };
 
+  useEffect(() =>{
+    getAllClass()
+  },[])
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
-      {/* Header */}
-      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">Class List</h1>
-          <p className="text-sm text-slate-500">
-            Manage all school classes and sections
-          </p>
-        </div>
-
-        <button className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:opacity-90">
-          <FiPlus size={18} />
-          Add New Class
-        </button>
-      </div>
-
-      {/* Stats */}
+    <div className="bg-white p-1">
+      <MainContainer>
+        <AdminHeading heading={heading}/>
+        <Container>
+           {/* Stats */}
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
+        <div className="rounded bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Total Classes</p>
           <h2 className="mt-2 text-2xl font-bold text-slate-800">
             {totalClasses}
           </h2>
         </div>
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
+        <div className="rounded bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Active Classes</p>
           <h2 className="mt-2 text-2xl font-bold text-slate-800">
             {activeClasses}
           </h2>
         </div>
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Total Students</p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-800">
-            {totalStudents}
-          </h2>
-        </div>
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Teachers Assigned</p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-800">
-            {totalTeachers}
-          </h2>
-        </div>
+     
+      
       </div>
 
       {/* Search */}
-      <div className="mb-5 rounded-2xl bg-white p-4 shadow-sm">
+      <div className="mb-5 rounded bg-white p-4 shadow-sm">
         <div className="relative w-full max-w-md">
           <FiSearch
             className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -131,64 +124,61 @@ export default function ClassList() {
             placeholder="Search by class, teacher, room..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-slate-400 focus:bg-white"
+            className="w-full rounded border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-slate-400 focus:bg-white"
           />
         </div>
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
+      <div className="overflow-hidden rounded bg-white shadow-sm">
         <div className="overflow-x-auto">
           <table className="min-w-full text-left text-sm">
             <thead className="bg-slate-100 text-slate-600">
               <tr>
                 <th className="px-5 py-4 font-semibold">Class</th>
                 <th className="px-5 py-4 font-semibold">Section</th>
-                <th className="px-5 py-4 font-semibold">Teacher</th>
-                <th className="px-5 py-4 font-semibold">Students</th>
+               
+              
                 <th className="px-5 py-4 font-semibold">Room</th>
-                <th className="px-5 py-4 font-semibold">Year</th>
+                
                 <th className="px-5 py-4 font-semibold">Status</th>
                 <th className="px-5 py-4 font-semibold text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredClasses.length > 0 ? (
-                filteredClasses.map((item) => (
+                state?.classList?.map((item) => (
                   <tr
-                    key={item.id}
+                    key={item._id}
                     className="border-t border-slate-100 hover:bg-slate-50"
                   >
                     <td className="px-5 py-4 font-medium text-slate-800">
-                      {item.className}
+                      {item.name}
                     </td>
                     <td className="px-5 py-4 text-slate-600">{item.section}</td>
-                    <td className="px-5 py-4 text-slate-600">{item.teacher}</td>
-                    <td className="px-5 py-4 text-slate-600">
-                      {item.students}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600">{item.room}</td>
-                    <td className="px-5 py-4 text-slate-600">{item.year}</td>
+                   
+                   
+                    <td className="px-5 py-4 text-slate-600">{item.no}</td>
                     <td className="px-5 py-4">
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-medium ${
-                          item.status === "Active"
+                          item.isActive === true
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
                         }`}
                       >
-                        {item.status}
+                        {item.isActive?"Active":"No-Active"}
                       </span>
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center justify-center gap-2">
-                        <button className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800">
+                        <button className="rounded p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800">
                           <FiEye size={18} />
                         </button>
-                        <button className="rounded-lg p-2 text-blue-500 hover:bg-blue-50">
+                        <button className="rounded p-2 text-blue-500 hover:bg-blue-50">
                           <FiEdit2 size={18} />
                         </button>
-                        <button className="rounded-lg p-2 text-red-500 hover:bg-red-50">
+                        <button className="rounded p-2 text-red-500 hover:bg-red-50">
                           <FiTrash2 size={18} />
                         </button>
                       </div>
@@ -209,6 +199,13 @@ export default function ClassList() {
           </table>
         </div>
       </div>
+
+        </Container>
+      </MainContainer>
+      {/* Header */}
+     
+
+     
     </div>
   );
 }

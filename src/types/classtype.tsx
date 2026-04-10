@@ -3,6 +3,7 @@ export type ClassObjType = {
   name: string;
   section: string;
   no: number;
+  isActive? :boolean
 };
 
 export type ClassFormType = {
@@ -20,7 +21,8 @@ export type ClassStateType = {
 export type ClassContextType = {
   state: ClassStateType;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  handleSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => Promise<void>;
+  getAllClass: () => Promise<void>;
 };
 
 export type ClassActionType =
@@ -34,4 +36,8 @@ export type ClassActionType =
         name: keyof ClassStateType["classObj"];
         value: string | number;
       };
+    }
+  | {
+      type: "SET_CLASS_LIST";
+      payload: ClassObjType[];
     };

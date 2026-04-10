@@ -50,6 +50,7 @@ export const GET = async () => {
   ...school.toObject(),
   image: school.image ? `data:image/jpeg;base64,${school.image.toString('base64')}` : null,
 }));
+// console.log(schools)
 
     return NextResponse.json({
       success: true,
