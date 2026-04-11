@@ -16,7 +16,7 @@ import {
   FaTrash,
   FaPlus,
   FaList,
-  FaRegistered,
+  // FaRegistered,
 } from "react-icons/fa";
 const heading = {
   name: "School List",

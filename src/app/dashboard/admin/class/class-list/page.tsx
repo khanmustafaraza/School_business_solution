@@ -3,10 +3,10 @@
 import Container from "@/components/container/Container";
 import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
-import useClass from "@/store/class/Class";
-import React, { useEffect, useMemo, useState } from "react";
-import { FaRegistered } from "react-icons/fa";
-import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiEye } from "react-icons/fi";
+import useClass from "@/store/admin/class/Class";
+import { useEffect, useMemo, useState } from "react";
+import { icons } from "@/constants/icons/icons";
+
 
 type ClassItem = {
   id: number;
@@ -83,7 +83,7 @@ export default function ClassList() {
     subHeading: "List Of Register School.",
     href: "/dashboard/admin/school/school-register",
     btnHeading: "Add School",
-    icon: <FaRegistered />,
+    icon: <icons.register />,
   };
 
   useEffect(() =>{

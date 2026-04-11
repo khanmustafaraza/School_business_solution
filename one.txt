@@ -18,3 +18,85 @@ export default function StudentForm() {
     </form>
   );
 }
+
+ {/* Filters */}
+          <div className="mb-5 rounded bg-white p-4">
+            <h4>Apply Filters</h4>
+            <div className="flex flex-col md:flex-row gap-4 md:items-end">
+              {/* Role Select */}
+              <div className="w-full md:w-1/3">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Select Role
+                </label>
+                <div className="flex items-center rounded border border-gray-300 bg-white focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all px-3 py-2">
+                  <UserKey className="text-gray-400 text-[16px]" />
+                  <select
+                    name="role"
+                    className="w-full bg-transparent text-gray-800 outline-none px-2 text-sm"
+                  >
+                    <option>Select Role</option>
+                    <option value="student">Student</option>
+                    <option value="gameteacher">Game Teacher</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="classteacher">Class Teacher</option>
+                    <option value="library">Library</option>
+                    <option value="driver">Driver</option>
+                    <option value="accountant">Accountant</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Search */}
+              <div className="w-full md:w-2/3">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Search
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search by name, email..."
+                    className="w-full rounded border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-slate-400 focus:bg-white"
+                  />
+                  <span className="absolute left-3 top-2.5 text-gray-400">
+                    🔍
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+           {/* Pagination */}
+          <div className="flex justify-center mt-4">
+            <div className="flex gap-2 flex-wrap">
+              {/* Prev */}
+              <button
+                className="px-3 py-1 border rounded text-sm"
+                disabled={state.page === 1}
+                onClick={() => getAllUser(state.page - 1)}
+              >
+                Prev
+              </button>
+
+              {/* Page Numbers */}
+              {Array.from({ length: state.totalPages }, (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => getAllUser(i + 1)}
+                  className={`px-3 py-1 border rounded text-sm ${
+                    state.page === i + 1 ? "bg-gray-200" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+
+              {/* Next */}
+              <button
+                className="px-3 py-1 border rounded text-sm"
+                disabled={state.page === state.totalPages}
+                onClick={() => getAllUser(state.page + 1)}
+              >
+                Next
+              </button>
+            </div>
+          </div>

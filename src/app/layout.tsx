@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import { ToggleProvider } from "@/store/toggledashboard/Toggledashboard";
+import { UserProvider } from "@/store/admin/user/User";
+import { SchoolProvider } from "@/store/admin/school/School";
+import { ClassProvider } from "@/store/admin/class/Class";
 import "./globals.css";
-import { SchoolProvider } from "@/store/school/School";
-import { ClassProvider } from "@/store/class/Class";
-import { UserProvider } from "@/store/user/User";
 
 const openSans = Open_Sans({
   variable: "--font-open",

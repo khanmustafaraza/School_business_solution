@@ -16,8 +16,8 @@ const initialState: UserState = {
   },
  
   userList: [],
-  page: 1,
-  totalPages: 1,
+  // page: 1,
+  // totalPages: 1,
 };
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -66,11 +66,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     dispatch({
       type: "GET_ALL_USER",
-      payload: {
-        users: data.data,
-        page: data.page,
-        totalPages: data.totalPages,
-      },
+      payload:data.data
     });
   } catch (error) {
     console.error(error);
