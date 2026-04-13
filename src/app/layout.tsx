@@ -5,6 +5,7 @@ import { UserProvider } from "@/store/admin/user/User";
 import { SchoolProvider } from "@/store/admin/school/School";
 import { ClassProvider } from "@/store/admin/class/Class";
 import "./globals.css";
+import { StudentProvider } from "@/store/admin/student/Student";
 
 const openSans = Open_Sans({
   variable: "--font-open",
@@ -27,7 +28,9 @@ export default function RootLayout({
         <ToggleProvider>
           <UserProvider>
             <SchoolProvider>
-              <ClassProvider>{children}</ClassProvider>
+              <ClassProvider>
+                <StudentProvider>{children}</StudentProvider>
+              </ClassProvider>
             </SchoolProvider>
           </UserProvider>
         </ToggleProvider>

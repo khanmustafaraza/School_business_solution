@@ -4,10 +4,9 @@ import ActionBtn from "@/components/actionbtn/ActionBtn";
 import Container from "@/components/container/Container";
 import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
-import { useUser } from "@/store/user/User";
+import { useUser } from "@/store/admin/user/User";
 import { CircleUserRound, KeySquare, UserKey } from "lucide-react";
-import React from "react";
-import { FaEnvelope, FaUser } from "react-icons/fa";
+import icons from "@/constants/icons/icons";
 const heading = {
   name: "Add User",
   subHeading: "Add and manage User basic information.",
@@ -33,7 +32,7 @@ const UserRegister = () => {
                 User Name
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <FaUser className="text-gray-400 text-[16px]" />
+                <icons.FaUser className="text-gray-400 text-[16px]" />
                 <input
                   name="name"
                   value={state.userObj.name}
@@ -51,7 +50,7 @@ const UserRegister = () => {
                 Email Address
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <FaEnvelope className="text-gray-400 text-[16px]" />
+                <icons.FaEnvelope className="text-gray-400 text-[16px]" />
                 <input
                   name="email"
                   value={state.userObj.email}

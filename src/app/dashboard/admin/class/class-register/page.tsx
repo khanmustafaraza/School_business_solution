@@ -4,18 +4,12 @@ import ActionBtn from "@/components/actionbtn/ActionBtn";
 import Container from "@/components/container/Container";
 import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
-import useClass from "@/store/class/Class";
+import useClass from "@/store/admin/class/Class";
 import { LayoutPanelTop } from "lucide-react";
+import icons from "@/constants/icons/icons";
 
-import Link from "next/link";
-import React from "react";
 import {
-  FaChalkboard,
-  FaLayerGroup,
-  FaUserTie,
-  FaDoorOpen,
-  FaUsers,
-  FaListUl,
+ 
 } from "react-icons/fa";
 const heading = {
   name: "Add Class",
@@ -42,7 +36,7 @@ const ClassRegister = () => {
                 Class Name
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-                <FaChalkboard className="text-gray-400 text-[16px]" />
+                <icons.FaChalkboard className="text-gray-400 text-[16px]" />
                 <input
                   name="name"
                   value={state.classObj.name}
@@ -60,7 +54,7 @@ const ClassRegister = () => {
                 Section
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-                <FaLayerGroup className="text-gray-400 text-[16px]" />
+                <icons.FaLayerGroup className="text-gray-400 text-[16px]" />
                 <input
                   name="section"
                   value={state.classObj.section}
@@ -93,7 +87,7 @@ const ClassRegister = () => {
                 Room Number
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-                <FaDoorOpen className="text-gray-400 text-[16px]" />
+                <icons.FaDoorOpen className="text-gray-400 text-[16px]" />
                 <input
                   name="no"
                   value={state.classObj.no}

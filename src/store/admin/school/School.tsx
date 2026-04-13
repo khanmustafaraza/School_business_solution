@@ -1,6 +1,6 @@
 "use client";
-import { schoolReducer } from "@/reducers/School";
-import { SchoolContextType, SchoolState } from "@/types/schooltype";
+import { schoolReducer } from "@/reducers/admin/School";
+import { SchoolContextType, SchoolState } from "@/types/admin/schooltype";
 import { createContext, useContext, useReducer } from "react";
 
 const SchoolContext = createContext<SchoolContextType | null>(null);
@@ -51,7 +51,7 @@ const SchoolProvider = ({ children }: { children: React.ReactNode }) => {
       formData.append("image", state.schoolObj.image);
     }
 
-    const res = await fetch("/api/school", {
+    const res = await fetch("/api/admin/school", {
       method: "POST",
       body: formData, // <-- send FormData directly
       // DO NOT set Content-Type manually; browser sets it automatically for FormData
@@ -65,7 +65,7 @@ const SchoolProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       dispatch({ type: "SET_LOADING", payload: true });
 
-      const res = await fetch("/api/school");
+      const res = await fetch("/api/admin/school");
       const data = await res.json();
 
       dispatch({

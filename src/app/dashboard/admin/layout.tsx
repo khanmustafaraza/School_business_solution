@@ -14,7 +14,7 @@ import {
   BadgeCheck,
   User,
 } from "lucide-react";
-import { NavTypeProps } from "@/types/propstype";
+import { NavTypeProps } from "@/types/admin/propstype";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const { toggle } = useToggle();

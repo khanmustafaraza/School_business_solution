@@ -1,4 +1,5 @@
-import { SchoolAction, SchoolState } from "@/types/schooltype";
+import { SchoolAction, SchoolState } from "@/types/admin/schooltype";
+
 
 export const schoolReducer = (state: SchoolState, action: SchoolAction): SchoolState => {
   switch (action.type) {

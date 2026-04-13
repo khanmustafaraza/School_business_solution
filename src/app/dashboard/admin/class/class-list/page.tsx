@@ -5,7 +5,7 @@ import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
 import useClass from "@/store/admin/class/Class";
 import { useEffect, useMemo, useState } from "react";
-import { icons } from "@/constants/icons/icons";
+import icons from "@/constants/icons/icons";
 
 
 type ClassItem = {
@@ -83,7 +83,7 @@ export default function ClassList() {
     subHeading: "List Of Register School.",
     href: "/dashboard/admin/school/school-register",
     btnHeading: "Add School",
-    icon: <icons.register />,
+    icon: <icons.FaRegistered />,
   };
 
   useEffect(() =>{
@@ -115,7 +115,7 @@ export default function ClassList() {
       {/* Search */}
       <div className="mb-5 rounded bg-white p-4 shadow-sm">
         <div className="relative w-full max-w-md">
-          <FiSearch
+          <icons.FiSearch
             className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
             size={18}
           />
@@ -173,13 +173,13 @@ export default function ClassList() {
                     <td className="px-5 py-4">
                       <div className="flex items-center justify-center gap-2">
                         <button className="rounded p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800">
-                          <FiEye size={18} />
+                          <icons.FiEye size={18} />
                         </button>
                         <button className="rounded p-2 text-blue-500 hover:bg-blue-50">
-                          <FiEdit2 size={18} />
+                          <icons.FiEdit2 size={18} />
                         </button>
                         <button className="rounded p-2 text-red-500 hover:bg-red-50">
-                          <FiTrash2 size={18} />
+                          <icons.FiTrash2 size={18} />
                         </button>
                       </div>
                     </td>

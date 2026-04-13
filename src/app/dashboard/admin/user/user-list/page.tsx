@@ -2,19 +2,18 @@
 import Container from "@/components/container/Container";
 import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
-import { useUser } from "@/store/user/User";
+import { useUser } from "@/store/admin/user/User";
 import { UserKey } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { FaRegistered } from "react-icons/fa";
-import { FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
+import icons from "@/constants/icons/icons";
 
 const heading = {
   name: "User List",
   subHeading: "Add and manage User List information.",
   href: "/dashboard/admin/user/user-register",
   btnHeading: "Add User",
-  icon: <FaRegistered />,
+  icon: <icons.FaRegistered />,
 };
 
 const UserList = () => {
@@ -71,26 +70,26 @@ const UserList = () => {
                           </button> */}
                          {
                           item.role == "student" && <Link href={`/dashboard/admin/student/${item._id}`} className="rounded p-2 text-blue-500 hover:bg-blue-50">
-                            <FiEdit2 size={16} title={`Create ${item.role} Profile`} />
+                            <icons.FiEdit2 size={16} title={`Create ${item.role} Profile`} />
                           </Link>
                          }
                          {
                           item.role == "teacher"  && <Link href={`/dashboard/admin/teacher/${item._id}`} className="rounded p-2 text-blue-500 hover:bg-blue-50">
-                            <FiEdit2 size={16} title={`Create ${item.role} Profile`} />
+                            <icons.FiEdit2 size={16} title={`Create ${item.role} Profile`} />
                           </Link>
                          }
                          {
                           item.role == "classteacher"  && <Link href={`/dashboard/admin/teacher/${item._id}`} className="rounded p-2 text-blue-500 hover:bg-blue-50">
-                            <FiEdit2 size={16}title={`Create ${item.role} Profile`} />
+                            <icons.FiEdit2 size={16}title={`Create ${item.role} Profile`} />
                           </Link>
                          }
                          {
                           item.role == "driver" && <Link href={`/dashboard/admin/driver/${item._id}`} className="rounded p-2 text-blue-500 hover:bg-blue-50">
-                            <FiEdit2 size={16} title={`Create ${item.role} Profile`} />
+                            <icons.FiEdit2 size={16} title={`Create ${item.role} Profile`} />
                           </Link>
                          }
                           <button className="rounded p-2 text-red-500 hover:bg-red-50">
-                            <FiTrash2 size={16} />
+                            <icons.FiTrash2 size={16} />
                           </button>
                         </div>
                       </td>

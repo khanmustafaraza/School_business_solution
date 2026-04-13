@@ -6,7 +6,24 @@ import {
   FaUserPlus,
   FaClipboardCheck,
   FaBell,
-  FaRegistered
+  FaRegistered,
+  
+  FaIdCard,
+  FaEnvelope,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+  FaListUl,
+  FaImage,
+  FaHeading,
+  FaPlus,
+  FaList,
+   FaChalkboard,
+  FaLayerGroup,
+  FaUserTie,
+  FaDoorOpen,
+  FaUsers,
+    FaUser
+ 
 } from "react-icons/fa";
 
 import {
@@ -19,22 +36,43 @@ import {
   FiTrash2,
   FiEye,
   
-  
 } from "react-icons/fi";
 
-export const icons = {
-  school: FaSchool,
-  register:FaRegistered,
-  student: FaUserGraduate,
-  teacher: FaChalkboardTeacher,
-  fees: FaMoneyBillWave,
-  addUser: FaUserPlus,
-  attendance: FaClipboardCheck,
-  notification: FaBell,
+const icons = {
+   FaSchool,
+  FaUserGraduate,
+  FaChalkboardTeacher,
+  FaMoneyBillWave,
+  FaUserPlus,
+  FaClipboardCheck,
+  FaBell,
+  FaRegistered,
+  
+  FaIdCard,
+  FaEnvelope,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+  FaListUl,
+  FaImage,
+  FaHeading,
+  FaPlus,
+  FaList,
+  FiArrowUpRight,
+  FiMoreHorizontal,
+  FiTrendingUp,
+  FiSearch,
+  FiPlus,
+  FiEdit2,
+  FiTrash2,
+  FiEye,
+   FaChalkboard,
+  FaLayerGroup,
+  FaUserTie,
+  FaDoorOpen,
+  FaUsers,
+   FaUser
 
-  search: FiSearch,
-  add: FiPlus,
-  edit: FiEdit2,
-  delete: FiTrash2,
-  view: FiEye,
+  
 };
+
+export default icons;

@@ -1,24 +1,38 @@
-import { headingProps } from "@/types/propstype";
+import { headingProps } from "@/types/admin/propstype";
 import Link from "next/link";
 import React from "react";
 import { FaArrowUp } from "react-icons/fa";
 
 const AdminHeading = ({ heading }: headingProps) => {
   return (
-    <div className="mb-6 flex items-center flex-wrap justify-between border-b-2 pb-2 border-gray-500 ">
-      <div>
-        <h2 className="text-2xl  text-gray-900">{heading.name} </h2>{" "}
-        <p className="hidden lg:block md:block text-sm text-gray-400 mt-1">
-          {heading.subHeading}
-        </p>
+    <div className="mb-6 flex items-center justify-between flex-wrap rounded-xl border border-gray-200 bg-white px-6 py-4 shadow-sm">
+      
+      {/* LEFT SIDE */}
+      <div className="flex items-center gap-4">
+        
+        {/* Icon Badge */}
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#dd7973]/10 text-[#dd7973]">
+          {heading.icon || <FaArrowUp />}
+        </div>
+
+        {/* Text */}
+        <div>
+          <h2 className="text-xl font-semibold text-gray-800">
+            {heading.name}
+          </h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {heading.subHeading}
+          </p>
+        </div>
       </div>
 
+      {/* RIGHT SIDE */}
       <Link
         href={heading.href}
-        className=" bg-[#dd7973] inline-flex items-center gap-2 rounded   lg:px-[15px] px-6 lg:py-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-500 transition-all duration-200"
+        className="inline-flex items-center gap-2 rounded-lg border border-[#dd7973]/30 bg-[#dd7973] px-5 py-2 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:bg-[#c96b66] hover:shadow-md active:scale-95"
       >
-        <span className="text-white"> {heading.icon}</span>
-        <span className="text-white">{heading.btnHeading}</span>
+        {heading.icon || <FaArrowUp />}
+        {heading.btnHeading}
       </Link>
     </div>
   );

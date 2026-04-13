@@ -3,9 +3,10 @@
 import Container from "@/components/container/Container";
 import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
-import useSchool from "@/store/school/School";
+import useSchool from "@/store/admin/school/School";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import{ useEffect } from "react";
+import icons from "@/constants/icons/icons";
 import {
   FaSchool,
   FaSearch,
@@ -23,7 +24,7 @@ const heading = {
   subHeading: "List Of Register School.",
   href: "/dashboard/admin/school/school-register",
   btnHeading: "Add School",
-  icon: <FaRegistered />,
+  icon: <icons.FaRegistered />,
 };
 
 const SchoolList = () => {

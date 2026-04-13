@@ -1,7 +1,7 @@
 "use client";
 
-import UserReducer from "@/reducers/User";
-import { UserContextType, UserState } from "@/types/usertype";
+import UserReducer from "@/reducers/admin/User";
+import { UserContextType, UserState } from "@/types/admin/usertype";
 import { createContext, useContext, useReducer } from "react";
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -43,7 +43,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     console.log(state.userObj);
 
     try {
-      const res = await fetch("/api/user", {
+      const res = await fetch("/api/admin/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // ✅ get all users
  const getAllUser = async (page: number = 1) => {
   try {
-    const res = await fetch(`/api/user?page=${page}&limit=10`);
+    const res = await fetch(`/api/admin/user?page=${page}&limit=10`);
     const data = await res.json();
 
     dispatch({

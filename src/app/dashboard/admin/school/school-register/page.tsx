@@ -1,25 +1,13 @@
 "use client";
-
 import ActionBtn from "@/components/actionbtn/ActionBtn";
 import Container from "@/components/container/Container";
 import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
-import useSchool from "@/store/school/School";
-import { AdminHeadingType } from "@/types/propstype";
+import useSchool from "@/store/admin/school/School";
 import { School } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import icons from "@/constants/icons/icons";
 import {
-  FaSchool,
-  FaIdCard,
-  FaEnvelope,
-  FaPhoneAlt,
-  FaMapMarkerAlt,
-  FaListUl,
-  FaImage,
-  FaHeading,
-  FaPlus,
-  FaList,
+ 
 } from "react-icons/fa";
 
 const heading = {
@@ -51,7 +39,7 @@ const SchoolRegister = () => {
                 School Name
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <FaSchool className="text-gray-400 text-[16px]" />
+                <icons.FaSchool className="text-gray-400 text-[16px]" />
                 <input
                   name="name"
                   value={state.schoolObj.name}
@@ -69,7 +57,7 @@ const SchoolRegister = () => {
                 Affiliation Code
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <FaIdCard className="text-gray-400 text-[16px]" />
+                <icons.FaIdCard className="text-gray-400 text-[16px]" />
                 <input
                   name="code"
                   value={state.schoolObj.code}
@@ -87,7 +75,7 @@ const SchoolRegister = () => {
                 Email Address
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <FaEnvelope className="text-gray-400 text-[16px]" />
+                <icons.FaEnvelope className="text-gray-400 text-[16px]" />
                 <input
                   name="email"
                   value={state.schoolObj.email}
@@ -105,7 +93,7 @@ const SchoolRegister = () => {
                 Contact Number
               </label>
               <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <FaPhoneAlt className="text-gray-400 text-[15px]" />
+                <icons.FaPhoneAlt className="text-gray-400 text-[15px]" />
                 <input
                   name="contact"
                   value={state.schoolObj.contact}
@@ -123,7 +111,7 @@ const SchoolRegister = () => {
                 Address
               </label>
               <div className="flex items-start rounded border border-gray-300 bg-white px-3 py-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <FaMapMarkerAlt className="mt-1 text-gray-400 text-[16px]" />
+                <icons.FaMapMarkerAlt className="mt-1 text-gray-400 text-[16px]" />
                 <textarea
                   name="address"
                   value={state.schoolObj.address}
@@ -142,7 +130,7 @@ const SchoolRegister = () => {
               </label>
               <div className=" w-full bg-white flex items-center rounded border border-gray-300  px-3 py-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
                 <label className="flex items-center w-full cursor-pointer">
-                  <FaImage className="text-gray-400 text-[15px] mr-2" />
+                  <icons.FaImage className="text-gray-400 text-[15px] mr-2" />
                   <span className="text-gray-600 text-sm">
                     {state.schoolObj.image
                       ? state.schoolObj.image.name

@@ -1,11 +1,8 @@
 "use client";
 
-import { ClassReducer } from "@/reducers/Class";
-import {
-  ClassContextType,
-  ClassFormType,
-  ClassStateType,
-} from "@/types/classtype";
+
+import { ClassReducer } from "@/reducers/admin/Class";
+import { ClassContextType, ClassStateType } from "@/types/admin/classtype";
 import { createContext, useContext, useReducer } from "react";
 
 const ClassContext = createContext<ClassContextType | null>(null);
@@ -42,7 +39,7 @@ export const ClassProvider = ({ children }: { children: React.ReactNode }) => {
     e.preventDefault();
 
     // console.log(state.classObj);
-    const res = await fetch("/api/classes",{
+    const res = await fetch("/api/admin/classes",{
       method:"POST",
       headers:{
         "Content-Type" :"application/json"
@@ -57,7 +54,7 @@ export const ClassProvider = ({ children }: { children: React.ReactNode }) => {
   try {
     // dispatch({ type: "SET_LOADING", payload: true });
 
-    const res = await fetch("/api/classes");
+    const res = await fetch("/api/admin/classes");
     const data = await res.json();
 
     if (!res.ok) throw new Error(data.msg);
