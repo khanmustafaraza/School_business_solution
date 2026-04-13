@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   FiSearch,
   FiEye,
@@ -13,98 +13,55 @@ import {
 } from "react-icons/fi";
 
 type Student = {
-  id: number;
+  _id: string;
   admissionNo: string;
   rollNo: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   className: string;
   section: string;
-  gender: "Male" | "Female" | "Other";
-  parentName: string;
+  gender: string;
+  fatherName: string;
   mobile: string;
-  status: "Active" | "Inactive";
-  photo: string;
 };
-
-const initialStudents: Student[] = [
-  {
-    id: 1,
-    admissionNo: "ADM001",
-    rollNo: "01",
-    name: "Ahmed Raza",
-    className: "Class 9",
-    section: "A",
-    gender: "Male",
-    parentName: "Mr. Rashid",
-    mobile: "9876543210",
-    status: "Active",
-    photo: "https://i.pravatar.cc/100?img=12",
-  },
-  {
-    id: 2,
-    admissionNo: "ADM002",
-    rollNo: "02",
-    name: "Fatima Noor",
-    className: "Class 10",
-    section: "B",
-    gender: "Female",
-    parentName: "Mrs. Shabana",
-    mobile: "9876543211",
-    status: "Active",
-    photo: "https://i.pravatar.cc/100?img=32",
-  },
-  {
-    id: 3,
-    admissionNo: "ADM003",
-    rollNo: "03",
-    name: "Zayan Ali",
-    className: "Class 8",
-    section: "C",
-    gender: "Male",
-    parentName: "Mr. Nadeem",
-    mobile: "9876543212",
-    status: "Inactive",
-    photo: "https://i.pravatar.cc/100?img=15",
-  },
-  {
-    id: 4,
-    admissionNo: "ADM004",
-    rollNo: "04",
-    name: "Areeba Khan",
-    className: "Class 7",
-    section: "A",
-    gender: "Female",
-    parentName: "Mr. Salman",
-    mobile: "9876543213",
-    status: "Active",
-    photo: "https://i.pravatar.cc/100?img=47",
-  },
-  {
-    id: 5,
-    admissionNo: "ADM005",
-    rollNo: "05",
-    name: "Hamza Siddiqui",
-    className: "Class 9",
-    section: "B",
-    gender: "Male",
-    parentName: "Mr. Tariq",
-    mobile: "9876543214",
-    status: "Active",
-    photo: "https://i.pravatar.cc/100?img=18",
-  },
-];
 
 export default function StudentList() {
   const [search, setSearch] = useState("");
   const [selectedClass, setSelectedClass] = useState("All");
-  const [students] = useState<Student[]>(initialStudents);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  /* ================= FETCH DATA ================= */
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        setLoading(true);
+
+        const res = await fetch("/api/admin/student");
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message);
+
+        setStudents(data.data);
+      } catch (error) {
+        console.error("Fetch Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+  /* ================= FILTER ================= */
 
   const classOptions = ["All", ...new Set(students.map((s) => s.className))];
 
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
       const matchesSearch =
-        `${student.name} ${student.admissionNo} ${student.rollNo} ${student.parentName} ${student.mobile}`
+        `${student.firstName} ${student.lastName} ${student.admissionNo} ${student.rollNo} ${student.fatherName} ${student.mobile}`
           .toLowerCase()
           .includes(search.toLowerCase());
 
@@ -115,10 +72,11 @@ export default function StudentList() {
     });
   }, [students, search, selectedClass]);
 
+  /* ================= STATS ================= */
+
   const totalStudents = students.length;
-  const activeStudents = students.filter((s) => s.status === "Active").length;
   const totalClasses = new Set(students.map((s) => s.className)).size;
-  const totalParents = new Set(students.map((s) => s.parentName)).size;
+  const totalParents = new Set(students.map((s) => s.fatherName)).size;
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-6">
@@ -135,22 +93,14 @@ export default function StudentList() {
         <StatCard
           title="Total Students"
           value={totalStudents}
-          icon={<FiUsers size={20} />}
+          icon={<FiUsers />}
         />
+        <StatCard title="Classes" value={totalClasses} icon={<FiBookOpen />} />
+        <StatCard title="Parents" value={totalParents} icon={<FiPhone />} />
         <StatCard
-          title="Active Students"
-          value={activeStudents}
-          icon={<FiUserCheck size={20} />}
-        />
-        <StatCard
-          title="Classes"
-          value={totalClasses}
-          icon={<FiBookOpen size={20} />}
-        />
-        <StatCard
-          title="Parents"
-          value={totalParents}
-          icon={<FiPhone size={20} />}
+          title="Loaded"
+          value={loading ? 0 : totalStudents}
+          icon={<FiUserCheck />}
         />
       </div>
 
@@ -158,28 +108,23 @@ export default function StudentList() {
       <div className="mb-5 rounded-2xl bg-white p-4 shadow-sm">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="relative w-full max-w-md">
-            <FiSearch
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-              size={18}
-            />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Search by name, admission no, parent..."
+              placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-slate-400 focus:bg-white"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none"
             />
           </div>
 
           <select
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none transition focus:border-slate-400 focus:bg-white md:w-56"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm md:w-56"
           >
-            {classOptions.map((classItem) => (
-              <option key={classItem} value={classItem}>
-                {classItem}
-              </option>
+            {classOptions.map((c) => (
+              <option key={c}>{c}</option>
             ))}
           </select>
         </div>
@@ -191,34 +136,33 @@ export default function StudentList() {
           <table className="min-w-full text-left text-sm">
             <thead className="bg-slate-100 text-slate-600">
               <tr>
-                <th className="px-5 py-4 font-semibold">Student</th>
-                <th className="px-5 py-4 font-semibold">Admission No</th>
-                <th className="px-5 py-4 font-semibold">Roll No</th>
-                <th className="px-5 py-4 font-semibold">Class</th>
-                <th className="px-5 py-4 font-semibold">Gender</th>
-                <th className="px-5 py-4 font-semibold">Parent</th>
-                <th className="px-5 py-4 font-semibold">Mobile</th>
-                <th className="px-5 py-4 font-semibold">Status</th>
-                <th className="px-5 py-4 font-semibold text-center">Actions</th>
+                <th className="px-5 py-4">Student</th>
+                <th className="px-5 py-4">Admission</th>
+                <th className="px-5 py-4">Roll</th>
+                <th className="px-5 py-4">Class</th>
+                <th className="px-5 py-4">Gender</th>
+                <th className="px-5 py-4">Parent</th>
+                <th className="px-5 py-4">Mobile</th>
+                <th className="px-5 py-4 text-center">Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {filteredStudents.length > 0 ? (
                 filteredStudents.map((student) => (
-                  <tr
-                    key={student.id}
-                    className="border-t border-slate-100 hover:bg-slate-50"
-                  >
+                  <tr key={student._id} className="border-t hover:bg-slate-50">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
+                        {/* 🔥 REAL IMAGE */}
                         <img
-                          src={student.photo}
-                          alt={student.name}
+                          src={`/api/admin/student/photo/${student._id}`}
+                          alt={student.firstName}
                           className="h-10 w-10 rounded-full object-cover"
                         />
+
                         <div>
-                          <p className="font-medium text-slate-800">
-                            {student.name}
+                          <p className="font-medium">
+                            {student.firstName} {student.lastName}
                           </p>
                           <p className="text-xs text-slate-500">
                             {student.className} - {student.section}
@@ -226,45 +170,26 @@ export default function StudentList() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-slate-600">
-                      {student.admissionNo}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600">
-                      {student.rollNo}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600">
+
+                    <td className="px-5 py-4">{student.admissionNo}</td>
+                    <td className="px-5 py-4">{student.rollNo}</td>
+                    <td className="px-5 py-4">
                       {student.className} - {student.section}
                     </td>
-                    <td className="px-5 py-4 text-slate-600">
-                      {student.gender}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600">
-                      {student.parentName}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600">
-                      {student.mobile}
-                    </td>
+                    <td className="px-5 py-4">{student.gender}</td>
+                    <td className="px-5 py-4">{student.fatherName}</td>
+                    <td className="px-5 py-4">{student.mobile}</td>
+
                     <td className="px-5 py-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-medium ${
-                          student.status === "Active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {student.status}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4">
-                      <div className="flex items-center justify-center gap-2">
-                        <button className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800">
-                          <FiEye size={18} />
+                      <div className="flex justify-center gap-2">
+                        <button>
+                          <FiEye />
                         </button>
-                        <button className="rounded-lg p-2 text-blue-500 hover:bg-blue-50">
-                          <FiEdit2 size={18} />
+                        <button className="text-blue-500">
+                          <FiEdit2 />
                         </button>
-                        <button className="rounded-lg p-2 text-red-500 hover:bg-red-50">
-                          <FiTrash2 size={18} />
+                        <button className="text-red-500">
+                          <FiTrash2 />
                         </button>
                       </div>
                     </td>
@@ -272,11 +197,8 @@ export default function StudentList() {
                 ))
               ) : (
                 <tr>
-                  <td
-                    colSpan={9}
-                    className="px-5 py-10 text-center text-slate-500"
-                  >
-                    No students found.
+                  <td colSpan={8} className="text-center py-10 text-slate-500">
+                    {loading ? "Loading..." : "No students found"}
                   </td>
                 </tr>
               )}
@@ -288,24 +210,16 @@ export default function StudentList() {
   );
 }
 
-/* ---------- Reusable Stat Card ---------- */
+/* ================= STAT CARD ================= */
 
-function StatCard({
-  title,
-  value,
-  icon,
-}: {
-  title: string;
-  value: number;
-  icon: React.ReactNode;
-}) {
+function StatCard({ title, value, icon }: any) {
   return (
     <div className="rounded-2xl bg-white p-5 shadow-sm">
-      <div className="mb-3 flex items-center justify-between">
+      <div className="flex justify-between mb-2">
         <p className="text-sm text-slate-500">{title}</p>
-        <div className="rounded-xl bg-slate-100 p-2 text-slate-700">{icon}</div>
+        <div className="bg-slate-100 p-2 rounded">{icon}</div>
       </div>
-      <h2 className="text-2xl font-bold text-slate-800">{value}</h2>
+      <h2 className="text-xl font-bold">{value}</h2>
     </div>
   );
 }

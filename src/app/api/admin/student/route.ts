@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import mongoose from "mongoose";
 import { Student } from "@/models/Student";
 import { connectDb } from "@/app/lib/db";
+import resizeImage from "@/app/lib/imageresize";
 
-// 👇 Make sure you already have DB connection utility
+/* ================= IMAGE UTILITY ================= */
 
 /* ================= POST ================= */
 
@@ -12,15 +12,22 @@ export async function POST(req: Request) {
     await connectDb();
 
     const formData = await req.formData();
-
     const photoFile = formData.get("photo") as File | null;
 
-    let photoBuffer = null;
-
-    if (photoFile) {
-      const bytes = await photoFile.arrayBuffer();
-      photoBuffer = Buffer.from(bytes);
+    if (!photoFile) {
+      return NextResponse.json(
+        { success: false, message: "Photo is required" },
+        { status: 400 },
+      );
     }
+
+    // 👉 Convert file → Buffer
+    const photoBuffer = Buffer.from(await photoFile.arrayBuffer());
+
+    // 👉 Optimize image
+    const optimized = await resizeImage(photoBuffer);
+
+    /* ================= STUDENT DATA ================= */
 
     const studentData = {
       admissionNo: formData.get("admissionNo"),
@@ -29,6 +36,7 @@ export async function POST(req: Request) {
       lastName: formData.get("lastName"),
       gender: formData.get("gender"),
       dob: formData.get("dob"),
+
       bloodGroup: formData.get("bloodGroup"),
       religion: formData.get("religion"),
       category: formData.get("category"),
@@ -59,7 +67,13 @@ export async function POST(req: Request) {
       transportRequired: formData.get("transportRequired"),
 
       notes: formData.get("notes"),
-      photo: photoBuffer,
+
+      // ✅ IMAGE STORED CORRECTLY
+      photo: {
+        data: optimized.buffer,
+        imageType: optimized.type, // always image/jpeg
+        name: photoFile.name,
+      },
     };
 
     const newStudent = await Student.create(studentData);
@@ -70,7 +84,7 @@ export async function POST(req: Request) {
         message: "Student created successfully",
         data: newStudent,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: any) {
     console.error("POST STUDENT ERROR:", error);
@@ -80,22 +94,50 @@ export async function POST(req: Request) {
         success: false,
         message: error.message || "Internal Server Error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-// import { NextResponse } from "next/server";
-// import connectDB from "@/lib/db";
-// import { Student } from "@/models/Student";
-// import mongoose from "mongoose";
+/* ================= GET ALL STUDENTS ================= */
+
+export async function GET() {
+  try {
+    await connectDb();
+
+    const students = await Student.find()
+      .select("-photo") // ❌ exclude image
+      .sort({ createdAt: -1 });
+
+    return NextResponse.json(
+      {
+        success: true,
+        count: students.length,
+        data: students,
+      },
+      { status: 200 },
+    );
+  } catch (error: any) {
+    console.error("GET STUDENTS ERROR:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || "Failed to fetch students",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+/* ================= GET (SERVE IMAGE) ================= */
 
 // export async function GET(
 //   req: Request,
 //   { params }: { params: { id: string } }
 // ) {
 //   try {
-//     await connectDB();
+//     await connectDb();
 
 //     const { id } = params;
 
@@ -108,36 +150,29 @@ export async function POST(req: Request) {
 
 //     const student = await Student.findById(id).select("photo");
 
-//     if (!student || !student.photo) {
+//     if (!student || !student.photo?.data) {
 //       return NextResponse.json(
-//         { success: false, message: "Photo not found" },
+//         { success: false, message: "Image not found" },
 //         { status: 404 }
 //       );
 //     }
 
-//     const imageBuffer = student.photo;
-
-//     return new NextResponse(imageBuffer, {
+//     return new NextResponse(student.photo.data, {
 //       status: 200,
 //       headers: {
-//         "Content-Type": "image/jpeg", // or image/png if needed
-//         "Cache-Control": "public, max-age=86400",
+//         "Content-Type": student.photo.imageType, // image/jpeg
+//         "Cache-Control": "public, max-age=31536000",
 //       },
 //     });
 //   } catch (error: any) {
-//     console.error("PHOTO ERROR:", error);
+//     console.error("GET IMAGE ERROR:", error);
 
 //     return NextResponse.json(
 //       {
 //         success: false,
-//         message: error.message || "Failed to load photo",
+//         message: error.message || "Failed to load image",
 //       },
 //       { status: 500 }
 //     );
 //   }
 // }
-// <picture>
-//   <source srcset="image.avif" type="image/avif" />
-//   <source srcset="image.webp" type="image/webp" />
-//   <img src="image.jpg" alt="photo" />
-// </picture>

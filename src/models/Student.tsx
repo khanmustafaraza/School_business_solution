@@ -83,11 +83,11 @@ const StudentSchema: Schema<IStudent> = new Schema(
     notes: { type: String },
 
     // photo: { type: String }, // ✅ FIXED
-   photo: {
-  data: { type: Buffer, required: true },
-  imageType: { type: String, required: true },
-  name: { type: String }
-}
+    photo: {
+      data: { type: Buffer, required: true },
+      imageType: { type: String, required: true },
+      name: { type: String },
+    },
   },
   {
     timestamps: true,
@@ -96,7 +96,6 @@ const StudentSchema: Schema<IStudent> = new Schema(
 
 export const Student =
   mongoose.models.Student || mongoose.model<IStudent>("Student", StudentSchema);
-
 
 //   import sharp from "sharp";
 

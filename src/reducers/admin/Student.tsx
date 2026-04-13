@@ -46,7 +46,7 @@ const initialFormData: StudentFormData = {
 
 const studentReducer = (
   state: StudentState,
-  action: StudentActionType
+  action: StudentActionType,
 ): StudentState => {
   switch (action.type) {
     case "SET_LOADING":
@@ -66,6 +66,8 @@ const studentReducer = (
         ...state,
         studentObj: initialFormData,
       };
+    case "SET_STUDENTS":
+      return { ...state, studentList: action.payload };
 
     default:
       return state;

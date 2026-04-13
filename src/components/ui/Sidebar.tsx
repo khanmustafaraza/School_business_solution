@@ -1,9 +1,10 @@
 "use client";
 import { useToggle } from "@/store/toggledashboard/Toggledashboard";
-import { NavTypeProps, SideBarProps } from "@/types/propstype";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import Darkmode from "../darkmode/Darkmode";
+import { SideBarProps } from "@/types/admin/propstype";
 
 const Sidebar = ({ navData }: SideBarProps) => {
   const { toggle } = useToggle();
@@ -26,7 +27,6 @@ const Sidebar = ({ navData }: SideBarProps) => {
           />
           <h2>Erp</h2>
         </div>
-
         {/* Menu */}
         <nav className="flex-1  px-1">
           <ul className="">
@@ -57,6 +57,10 @@ const Sidebar = ({ navData }: SideBarProps) => {
             })}
           </ul>
         </nav>
+        <div>
+          <h5>Toggle Theme</h5>
+          <Darkmode />
+        </div>
       </div>
     </aside>
   );

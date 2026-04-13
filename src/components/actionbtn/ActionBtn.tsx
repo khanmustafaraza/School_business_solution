@@ -8,9 +8,14 @@ const ActionBtn = () => {
         <SquareX />
         <button type="button">Cancel</button>
       </div>
-      <div className="rounded bg-[#5dbea3] flex items-center gap-2 px-5  py-3 text-sm font-medium text-white hover:bg-emerald-500 transition-all duration-200">
-        <Save />
-        <button type="submit">Save</button>
+      <div>
+        <button
+          type="submit"
+          className="rounded bg-[#5dbea3] flex items-center gap-2 px-5  py-3 text-sm font-medium text-white hover:bg-emerald-500 transition-all duration-200"
+        >
+          <Save />
+          Save
+        </button>
       </div>
     </div>
   );

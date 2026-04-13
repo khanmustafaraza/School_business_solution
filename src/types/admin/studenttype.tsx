@@ -57,8 +57,10 @@ export type StudentState = {
 export type StudentContextType = {
   state: StudentState;
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;
+  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => Promise<void>;
 };
 
 export type StudentActionType =

@@ -7,7 +7,6 @@ import useClass from "@/store/admin/class/Class";
 import { useEffect, useMemo, useState } from "react";
 import icons from "@/constants/icons/icons";
 
-
 type ClassItem = {
   id: number;
   className: string;
@@ -65,7 +64,7 @@ const initialData: ClassItem[] = [
 export default function ClassList() {
   const [search, setSearch] = useState("");
   const [classes] = useState<ClassItem[]>(initialData);
- const {state,getAllClass} =  useClass()
+  const { state, getAllClass } = useClass();
 
   const filteredClasses = useMemo(() => {
     return classes.filter((item) =>
@@ -77,7 +76,7 @@ export default function ClassList() {
 
   const totalClasses = classes.length;
   const activeClasses = classes.filter((c) => c.status === "Active").length;
-  
+
   const heading = {
     name: "School List",
     subHeading: "List Of Register School.",
@@ -86,126 +85,160 @@ export default function ClassList() {
     icon: <icons.FaRegistered />,
   };
 
-  useEffect(() =>{
-    getAllClass()
-  },[])
+  useEffect(() => {
+    getAllClass();
+  }, []);
   return (
     <div className="bg-white p-1">
       <MainContainer>
-        <AdminHeading heading={heading}/>
+        <AdminHeading heading={heading} />
         <Container>
-           {/* Stats */}
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Total Classes</p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-800">
-            {totalClasses}
-          </h2>
-        </div>
-        <div className="rounded bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Active Classes</p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-800">
-            {activeClasses}
-          </h2>
-        </div>
-     
-      
-      </div>
+          {/* Stats */}
+          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded bg-white p-5 shadow-sm">
+              <p className="text-sm text-slate-500">Total Classes</p>
+              <h2 className="mt-2 text-2xl font-bold text-slate-800">
+                {totalClasses}
+              </h2>
+            </div>
+            <div className="rounded bg-white p-5 shadow-sm">
+              <p className="text-sm text-slate-500">Active Classes</p>
+              <h2 className="mt-2 text-2xl font-bold text-slate-800">
+                {activeClasses}
+              </h2>
+            </div>
+          </div>
 
-      {/* Search */}
-      <div className="mb-5 rounded bg-white p-4 shadow-sm">
-        <div className="relative w-full max-w-md">
-          <icons.FiSearch
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-            size={18}
-          />
-          <input
-            type="text"
-            placeholder="Search by class, teacher, room..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-slate-400 focus:bg-white"
-          />
-        </div>
-      </div>
+          {/* Search */}
+          <div className="mb-5 rounded bg-white p-4 shadow-sm">
+            <div className="relative w-full max-w-md">
+              <icons.FiSearch
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                size={18}
+              />
+              <input
+                type="text"
+                placeholder="Search by class, teacher, room..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full rounded border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-slate-400 focus:bg-white"
+              />
+            </div>
+          </div>
 
-      {/* Table */}
-      <div className="overflow-hidden rounded bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
-            <thead className="bg-slate-100 text-slate-600">
-              <tr>
-                <th className="px-5 py-4 font-semibold">Class</th>
-                <th className="px-5 py-4 font-semibold">Section</th>
-               
-              
-                <th className="px-5 py-4 font-semibold">Room</th>
-                
-                <th className="px-5 py-4 font-semibold">Status</th>
-                <th className="px-5 py-4 font-semibold text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredClasses.length > 0 ? (
-                state?.classList?.map((item) => (
-                  <tr
-                    key={item._id}
-                    className="border-t border-slate-100 hover:bg-slate-50"
-                  >
-                    <td className="px-5 py-4 font-medium text-slate-800">
-                      {item.name}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600">{item.section}</td>
-                   
-                   
-                    <td className="px-5 py-4 text-slate-600">{item.no}</td>
-                    <td className="px-5 py-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-medium ${
-                          item.isActive === true
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {item.isActive?"Active":"No-Active"}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4">
-                      <div className="flex items-center justify-center gap-2">
-                        <button className="rounded p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800">
-                          <icons.FiEye size={18} />
-                        </button>
-                        <button className="rounded p-2 text-blue-500 hover:bg-blue-50">
-                          <icons.FiEdit2 size={18} />
-                        </button>
-                        <button className="rounded p-2 text-red-500 hover:bg-red-50">
-                          <icons.FiTrash2 size={18} />
-                        </button>
-                      </div>
-                    </td>
+          {/* Table */}
+          <div className="overflow-hidden rounded bg-white shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-left text-sm">
+                <thead className="bg-slate-100 text-slate-600">
+                  <tr>
+                    <th className="px-5 py-4 font-semibold">Class</th>
+                    <th className="px-5 py-4 font-semibold">Section</th>
+
+                    <th className="px-5 py-4 font-semibold">Room</th>
+
+                    <th className="px-5 py-4 font-semibold">Status</th>
+                    <th className="px-5 py-4 font-semibold text-center">
+                      Actions
+                    </th>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={8}
-                    className="px-5 py-10 text-center text-slate-500"
-                  >
-                    No classes found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                </thead>
+                <tbody>
+                  {filteredClasses.length > 0 ? (
+                    state?.classList?.map((item) => (
+                      <tr
+                        key={item._id}
+                        className="border-t border-slate-100 hover:bg-slate-50"
+                      >
+                        <td className="px-5 py-4 font-medium text-slate-800">
+                          {item.name}
+                        </td>
+                        <td className="px-5 py-4 text-slate-600">
+                          {item.section}
+                        </td>
 
+                        <td className="px-5 py-4 text-slate-600">{item.no}</td>
+                        <td className="px-5 py-4">
+                          <span
+                            className={`rounded-full px-3 py-1 text-xs font-medium ${
+                              item.isActive === true
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {item.isActive ? "Active" : "No-Active"}
+                          </span>
+                        </td>
+                        <td className="px-5 py-4">
+                          <div className="flex items-center justify-center gap-2">
+                            {/* View */}
+                            <button
+                              className="group relative rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition"
+                              title="View Class"
+                            >
+                              <icons.FiEye size={17} />
+                            </button>
+
+                            {/* Edit */}
+                            <button
+                              className="group relative rounded-lg p-2 text-blue-500 hover:bg-blue-50 transition"
+                              title="Edit Class"
+                            >
+                              <icons.FiEdit2 size={17} />
+                            </button>
+
+                            {/* Students */}
+                            <button
+                              className="hidden md:flex rounded-lg p-2 text-indigo-500 hover:bg-indigo-50 transition"
+                              title="View Students"
+                            >
+                              <icons.FiUsers size={17} />
+                            </button>
+
+                            {/* Attendance */}
+                            <button
+                              className="hidden lg:flex rounded-lg p-2 text-green-500 hover:bg-green-50 transition"
+                              title="Mark Attendance"
+                            >
+                              <icons.FaUser size={17} />
+                            </button>
+
+                            {/* Results */}
+                            <button
+                              className="hidden xl:flex rounded-lg p-2 text-purple-500 hover:bg-purple-50 transition"
+                              title="Manage Results"
+                            >
+                              <icons.FiBarChart2 size={17} />
+                            </button>
+
+                            {/* More */}
+                            <button
+                              className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition"
+                              title="More"
+                            >
+                              <icons.FiMoreVertical size={17} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={8}
+                        className="px-5 py-10 text-center text-slate-500"
+                      >
+                        No classes found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </Container>
       </MainContainer>
       {/* Header */}
-     
-
-     
     </div>
   );
 }
