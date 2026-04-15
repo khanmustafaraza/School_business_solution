@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "@/components/container/Container";
 import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
@@ -24,6 +24,8 @@ import {
 
 import ActionBtn from "@/components/actionbtn/ActionBtn";
 import { useStudent } from "@/store/admin/student/Student";
+import useClass from "@/store/admin/class/Class";
+import { useParams } from "next/navigation";
 
 /* ================= HEADING ================= */
 
@@ -38,12 +40,16 @@ const heading = {
 /* ================= COMPONENT ================= */
 
 export default function StudentRegister() {
+  const { state, handleChange, handleFileChange, handleSubmit } = useStudent();
+  const params = useParams();
+  const id = params?.id as string;
   const {
-    state,
-    handleChange,
-    handleFileChange,
-    handleSubmit,
-  } = useStudent();
+    state: { classList },
+    getAllClass,
+  } = useClass();
+  useEffect(() => {
+    getAllClass();
+  }, []);
 
   const formData = state.studentObj;
 
@@ -54,8 +60,7 @@ export default function StudentRegister() {
 
         <Container>
           {/* ❗ ONLY CHANGE: attach context submit */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-
+          <form onSubmit={(e) => handleSubmit(e, id)} className="space-y-6">
             {/* Student Info */}
             <SectionCard
               title="Student Information"
@@ -148,21 +153,40 @@ export default function StudentRegister() {
               title="Academic Details"
               icon={<FiBookOpen size={18} />}
             >
-              <Select
+              <div className="select-box flex flex-col justify-center">
+                <label htmlFor="" className="mb-1">
+                  Class & Section
+                </label>
+                <select
+                  name="classId"
+                  className="border border-gray-200 w-full px-2 py-2 rounded"
+                  onChange={handleChange}
+                >
+                  <option>Select Class & Section</option>
+                  {classList.map((curEle) => {
+                    return (
+                      <option key={curEle._id} value={curEle._id}>
+                        Select Class{curEle.name}& Section {curEle.section}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              {/* <Select
                 name="className"
                 label="Class"
                 value={formData.className}
                 onChange={handleChange}
                 options={["Class 1", "Class 2", "Class 3", "Class 4"]}
-              />
+              /> */}
 
-              <Select
+              {/* <Select
                 name="section"
                 label="Section"
                 value={formData.section}
                 onChange={handleChange}
                 options={["A", "B", "C", "D"]}
-              />
+              /> */}
 
               <Input
                 name="academicYear"
@@ -301,9 +325,7 @@ export default function StudentRegister() {
                 {formData.photo && (
                   <p className="mt-3 text-sm text-slate-600">
                     Selected File:{" "}
-                    <span className="font-medium">
-                      {formData.photo.name}
-                    </span>
+                    <span className="font-medium">{formData.photo.name}</span>
                   </p>
                 )}
               </div>

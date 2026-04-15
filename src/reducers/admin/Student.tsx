@@ -16,7 +16,7 @@ const initialFormData: StudentFormData = {
   category: "",
   aadhaar: "",
 
-  className: "",
+  classId: "",
   section: "",
   academicYear: "",
   house: "",

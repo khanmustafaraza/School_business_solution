@@ -10,7 +10,7 @@ export type StudentFormData = {
   category: string;
   aadhaar: string;
 
-  className: string;
+  classId: string;
   section: string;
   academicYear: string;
   house: string;
@@ -52,15 +52,23 @@ export type StudentListType = {
 export type StudentState = {
   isLoading: boolean;
   studentObj: StudentFormData;
+  studentList: [];
 };
 
 export type StudentContextType = {
   state: StudentState;
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => void;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => Promise<void>;
+  handleSubmit: (
+    e: React.SyntheticEvent<HTMLFormElement>,
+    id: string,
+  ) => Promise<void>;
+  getStudents: () => Promise<void>;
+  getStudent: (id: string) => Promise<void>;
 };
 
 export type StudentActionType =
@@ -72,4 +80,5 @@ export type StudentActionType =
         value: string | File | null;
       };
     }
-  | { type: "RESET_FORM" };
+  | { type: "RESET_FORM" }
+  | { type: "SET_STUDENTS"; payload: any };

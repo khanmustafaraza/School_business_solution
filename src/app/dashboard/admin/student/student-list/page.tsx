@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   FiSearch,
@@ -23,6 +24,10 @@ type Student = {
   gender: string;
   fatherName: string;
   mobile: string;
+  classId: {
+    name: string;
+    section: string;
+  };
 };
 
 export default function StudentList() {
@@ -40,6 +45,7 @@ export default function StudentList() {
 
         const res = await fetch("/api/admin/student");
         const data = await res.json();
+        console.log(data);
 
         if (!res.ok) throw new Error(data.message);
 
@@ -57,6 +63,7 @@ export default function StudentList() {
   /* ================= FILTER ================= */
 
   const classOptions = ["All", ...new Set(students.map((s) => s.className))];
+  console.log(classOptions);
 
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
@@ -123,9 +130,9 @@ export default function StudentList() {
             onChange={(e) => setSelectedClass(e.target.value)}
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm md:w-56"
           >
-            {classOptions.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
+            {/* {classOptions.map((c) => (
+              <option>{c}</option>
+            ))} */}
           </select>
         </div>
       </div>
@@ -174,7 +181,7 @@ export default function StudentList() {
                     <td className="px-5 py-4">{student.admissionNo}</td>
                     <td className="px-5 py-4">{student.rollNo}</td>
                     <td className="px-5 py-4">
-                      {student.className} - {student.section}
+                      {student.classId.name} - {student.classId.section}
                     </td>
                     <td className="px-5 py-4">{student.gender}</td>
                     <td className="px-5 py-4">{student.fatherName}</td>
@@ -182,9 +189,11 @@ export default function StudentList() {
 
                     <td className="px-5 py-4">
                       <div className="flex justify-center gap-2">
-                        <button>
+                        <Link
+                          href={`/dashboard/admin/student/detail/${student._id}`}
+                        >
                           <FiEye />
-                        </button>
+                        </Link>
                         <button className="text-blue-500">
                           <FiEdit2 />
                         </button>

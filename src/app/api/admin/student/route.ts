@@ -1,7 +1,11 @@
+// import "@/models/Class";
 import { NextResponse } from "next/server";
 import { Student } from "@/models/Student";
 import { connectDb } from "@/app/lib/db";
 import resizeImage from "@/app/lib/imageresize";
+import mongoose from "mongoose";
+import ClassModel from "@/models/Class";
+// import ClassModel from "@/models/Class";
 
 /* ================= IMAGE UTILITY ================= */
 
@@ -42,8 +46,9 @@ export async function POST(req: Request) {
       category: formData.get("category"),
       aadhaar: formData.get("aadhaar"),
 
-      className: formData.get("className"),
-      section: formData.get("section"),
+      classId: formData.get("classId"),
+      userId: formData.get("userId"),
+      // section: formData.get("section"),
       academicYear: formData.get("academicYear"),
       house: formData.get("house"),
       admissionDate: formData.get("admissionDate"),
@@ -104,10 +109,14 @@ export async function POST(req: Request) {
 export async function GET() {
   try {
     await connectDb();
+    console.log(mongoose.modelNames());
 
     const students = await Student.find()
+
       .select("-photo") // ❌ exclude image
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .populate("classId", null, ClassModel);
+    console.log(students);
 
     return NextResponse.json(
       {

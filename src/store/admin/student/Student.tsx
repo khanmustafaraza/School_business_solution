@@ -22,7 +22,7 @@ const initialFormData: StudentFormData = {
   category: "",
   aadhaar: "",
 
-  className: "",
+  classId: "",
   section: "",
   academicYear: "",
   house: "",
@@ -89,7 +89,7 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
   //   dispatch({ type: "RESET_FORM" });
   // };
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent, id: string) => {
     e.preventDefault();
 
     try {
@@ -107,6 +107,8 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
       if (form.photo) {
         formData.append("photo", form.photo);
       }
+      // console.log(state.studentObj);
+      formData.append("userId", id);
 
       const res = await fetch("/api/admin/student", {
         method: "POST",
@@ -134,7 +136,7 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
 
   const getStudents = async () => {
     try {
-      dispatch({ type: "SET_LOADING", payload: true });
+      // dispatch({ type: "SET_LOADING", payload: true });
 
       const res = await fetch("/api/admin/student");
       const data = await res.json();
@@ -145,12 +147,36 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
 
       dispatch({
         type: "SET_STUDENTS",
-        payload: data.data,
+        payload: data?.data,
       });
     } catch (error: any) {
       console.error("FETCH ERROR:", error);
     } finally {
-      dispatch({ type: "SET_LOADING", payload: false });
+      // dispatch({ type: "SET_LOADING", payload: false });
+    }
+  };
+  const getStudent = async (id: string) => {
+    console.log("ID VALUE:", id);
+    console.log("TYPE:", typeof id);
+    console.log("LENGTH:", id?.length);
+    try {
+      // dispatch({ type: "SET_LOADING", payload: true });
+
+      const res = await fetch(`/api/admin/student/detail/${id}`);
+      const data = await res.json();
+      console.log("data", data);
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch students");
+      }
+
+      // dispatch({
+      //   type: "SET_STUDENTS",
+      //   payload: data.data,
+      // });
+    } catch (error: any) {
+      console.error("FETCH ERROR:", error);
+    } finally {
+      // dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
@@ -158,9 +184,11 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
     <StudentContext.Provider
       value={{
         state,
+        getStudent,
         handleChange,
         handleFileChange,
         handleSubmit,
+        getStudents,
       }}
     >
       {children}

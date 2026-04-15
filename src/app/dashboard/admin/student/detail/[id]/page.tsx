@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useStudent } from "@/store/admin/student/Student";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   FiUser,
   FiPhone,
@@ -35,6 +37,15 @@ const dummyStudent = {
 /* ================= PAGE ================= */
 
 export default function StudentDashboard() {
+  const { state, getStudent } = useStudent();
+  const { id } = useParams<{ id: string }>();
+  console.log("id on ", id);
+
+  useEffect(() => {
+    if (!id) return;
+    getStudent(id);
+  }, [id]);
+
   const [student] = useState(dummyStudent);
   const [activeTab, setActiveTab] = useState("Overview");
 

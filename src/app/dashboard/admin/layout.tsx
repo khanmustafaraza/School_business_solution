@@ -64,6 +64,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       icon: <Users size={18} />,
     },
     {
+      id: 9,
+      name: "Student List",
+      link: "/dashboard/admin/student/student-list",
+      icon: <Users size={18} />,
+    },
+    {
       id: 8,
       name: "Certificates",
       link: "/dashboard/admin/tc/tc-register",
