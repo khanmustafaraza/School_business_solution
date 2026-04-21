@@ -22,6 +22,7 @@ import {
   FaDoorOpen,
   FaUsers,
   FaUser,
+  FaQuestionCircle,
 } from "react-icons/fa";
 
 import {
@@ -41,6 +42,7 @@ import {
 } from "react-icons/fi";
 
 const icons = {
+  FaQuestionCircle,
   FaSchool,
   FiMoreVertical,
   FaUserGraduate,

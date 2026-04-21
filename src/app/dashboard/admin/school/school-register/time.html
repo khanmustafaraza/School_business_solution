@@ -1,0 +1,158 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>School Timetable</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 10px;
+      margin-bottom: 20px;
+      width: 200px;
+      border: none;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th {
+      background: #4f46e5;
+      color: white;
+      padding: 12px;
+    }
+
+    td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+      background: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Krishna Public School - Timetable</h1>
+
+  <select id="classSelect"></select>
+
+  <div id="timetable"></div>
+</div>
+
+<script>
+const timetableData = [
+  {
+    class: "I",
+    schedule: [
+      { day: "Mon", periods: ["English", "Maths", "Hindi", "EVS", "Drawing", "Games"] },
+      { day: "Tue", periods: ["Maths", "English", "Hindi", "EVS", "Computer", "GK"] },
+      { day: "Wed", periods: ["Hindi", "Maths", "English", "EVS", "Craft", "Music"] },
+      { day: "Thu", periods: ["English", "EVS", "Maths", "Hindi", "Computer", "Games"] },
+      { day: "Fri", periods: ["Maths", "Hindi", "English", "EVS", "Drawing", "Library"] },
+      { day: "Sat", periods: ["Activity", "GK", "Story", "Art", "Games", "Music"] }
+    ]
+  },
+  {
+    class: "VI",
+    schedule: [
+      { day: "Mon", periods: ["Maths", "English", "Science", "SST", "Hindi", "Games"] },
+      { day: "Tue", periods: ["English", "Maths", "SST", "Science", "Computer", "GK"] },
+      { day: "Wed", periods: ["Science", "Maths", "English", "Hindi", "Art", "Library"] },
+      { day: "Thu", periods: ["Maths", "Science", "SST", "English", "Hindi", "Games"] },
+      { day: "Fri", periods: ["English", "Hindi", "Maths", "Science", "Computer", "Activity"] },
+      { day: "Sat", periods: ["GK", "Yoga", "Library", "Art", "Music", "Games"] }
+    ]
+  },
+  {
+    class: "IX",
+    schedule: [
+      { day: "Mon", periods: ["Maths", "Science", "English", "SST", "Hindi", "IT"] },
+      { day: "Tue", periods: ["Science", "Maths", "SST", "English", "Hindi", "Games"] },
+      { day: "Wed", periods: ["English", "Science", "Maths", "Hindi", "SST", "Library"] },
+      { day: "Thu", periods: ["Maths", "English", "Science", "SST", "IT", "Games"] },
+      { day: "Fri", periods: ["Science", "Maths", "English", "Hindi", "SST", "Activity"] },
+      { day: "Sat", periods: ["Revision", "Test", "GK", "Yoga", "Library", "Games"] }
+    ]
+  }
+];
+
+const select = document.getElementById("classSelect");
+const timetableDiv = document.getElementById("timetable");
+
+// Fill dropdown
+timetableData.forEach(item => {
+  const option = document.createElement("option");
+  option.value = item.class;
+  option.textContent = "Class " + item.class;
+  select.appendChild(option);
+});
+
+// Render table
+function renderTable(className) {
+  const data = timetableData.find(c => c.class === className);
+
+  let html = `
+    <table>
+      <tr>
+        <th>Day</th>
+        <th>P1</th>
+        <th>P2</th>
+        <th>P3</th>
+        <th>P4</th>
+        <th>P5</th>
+        <th>P6</th>
+      </tr>
+  `;
+
+  data.schedule.forEach(day => {
+    html += `<tr>
+      <td>${day.day}</td>
+      ${day.periods.map(p => `<td>${p}</td>`).join("")}
+    </tr>`;
+  });
+
+  html += `</table>`;
+
+  timetableDiv.innerHTML = html;
+}
+
+// Initial load
+renderTable("I");
+
+// Change event
+select.addEventListener("change", (e) => {
+  renderTable(e.target.value);
+});
+</script>
+
+</body>
+</html>
+```

@@ -39,26 +39,6 @@ const initialData: ClassItem[] = [
     year: "2025-26",
     status: "Active",
   },
-  {
-    id: 3,
-    className: "Class 5",
-    section: "A",
-    teacher: "Mrs. Sana Fatima",
-    students: 35,
-    room: "203",
-    year: "2025-26",
-    status: "Active",
-  },
-  {
-    id: 4,
-    className: "Class 9",
-    section: "B",
-    teacher: "Mr. Arif Hussain",
-    students: 30,
-    room: "305",
-    year: "2025-26",
-    status: "Inactive",
-  },
 ];
 
 export default function ClassList() {
@@ -66,157 +46,130 @@ export default function ClassList() {
   const [classes] = useState<ClassItem[]>(initialData);
   const { state, getAllClass } = useClass();
 
-  const filteredClasses = useMemo(() => {
-    return classes.filter((item) =>
-      `${item.className} ${item.section} ${item.teacher} ${item.room} ${item.year}`
-        .toLowerCase()
-        .includes(search.toLowerCase()),
-    );
-  }, [classes, search]);
-
-  const totalClasses = classes.length;
-  const activeClasses = classes.filter((c) => c.status === "Active").length;
-
-  const heading = {
-    name: "School List",
-    subHeading: "List Of Register School.",
-    href: "/dashboard/admin/school/school-register",
-    btnHeading: "Add School",
-    icon: <icons.FaRegistered />,
-  };
-
   useEffect(() => {
     getAllClass();
   }, []);
+
+  const filteredClasses = useMemo(() => {
+    return state?.classList?.filter((item: any) =>
+      `${item.name} ${item.section} ${item.no}`
+        .toLowerCase()
+        .includes(search.toLowerCase()),
+    );
+  }, [state?.classList, search]);
+
+  const totalClasses = state?.classList?.length || 0;
+  const activeClasses =
+    state?.classList?.filter((c: any) => c.isActive)?.length || 0;
+
+  const heading = {
+    name: "Classes",
+    subHeading: "Manage and monitor all classes",
+    href: "/dashboard/admin/class/create",
+    btnHeading: "Add Class",
+    icon: <icons.FaRegistered />,
+  };
+
   return (
-    <div className="bg-white p-1">
+    <div className="bg-slate-50 min-h-screen">
       <MainContainer>
         <AdminHeading heading={heading} />
-        <Container>
-          {/* Stats */}
-          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded bg-white p-5 shadow-sm">
-              <p className="text-sm text-slate-500">Total Classes</p>
-              <h2 className="mt-2 text-2xl font-bold text-slate-800">
-                {totalClasses}
-              </h2>
-            </div>
-            <div className="rounded bg-white p-5 shadow-sm">
-              <p className="text-sm text-slate-500">Active Classes</p>
-              <h2 className="mt-2 text-2xl font-bold text-slate-800">
-                {activeClasses}
-              </h2>
-            </div>
-          </div>
 
-          {/* Search */}
-          <div className="mb-5 rounded bg-white p-4 shadow-sm">
-            <div className="relative w-full max-w-md">
+        <Container>
+          {/* 🔹 Top Bar (Stats + Search) */}
+          <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between px-4">
+            {/* Stats */}
+            <div className="flex gap-8">
+              <div>
+                <p className="text-sm text-slate-500">Total Classes</p>
+                <h2 className="text-2xl font-semibold text-slate-900">
+                  {totalClasses}
+                </h2>
+              </div>
+
+              <div>
+                <p className="text-sm text-slate-500">Active Classes</p>
+                <h2 className="text-2xl font-semibold text-slate-900">
+                  {activeClasses}
+                </h2>
+              </div>
+            </div>
+
+            {/* Search */}
+            <div className="relative w-full max-w-sm">
               <icons.FiSearch
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
                 size={18}
               />
               <input
                 type="text"
-                placeholder="Search by class, teacher, room..."
+                placeholder="Search classes..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-slate-400 focus:bg-white"
+                className="w-full rounded-md border border-slate-300 bg-white py-2 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-slate-200"
               />
             </div>
           </div>
 
-          {/* Table */}
-          <div className="overflow-hidden rounded bg-white shadow-sm">
+          {/* 🔹 Table */}
+          <div className="mx-4 overflow-hidden rounded-lg border border-slate-200 bg-white">
             <div className="overflow-x-auto">
-              <table className="min-w-full text-left text-sm">
-                <thead className="bg-slate-100 text-slate-600">
+              <table className="min-w-full text-sm">
+                {/* Header */}
+                <thead className="bg-slate-50 text-slate-500">
                   <tr>
-                    <th className="px-5 py-4 font-semibold">Class</th>
-                    <th className="px-5 py-4 font-semibold">Section</th>
-
-                    <th className="px-5 py-4 font-semibold">Room</th>
-
-                    <th className="px-5 py-4 font-semibold">Status</th>
-                    <th className="px-5 py-4 font-semibold text-center">
+                    <th className="px-6 py-3 font-medium">Class</th>
+                    <th className="px-6 py-3 font-medium">Section</th>
+                    <th className="px-6 py-3 font-medium">Room</th>
+                    <th className="px-6 py-3 font-medium">Status</th>
+                    <th className="px-6 py-3 text-center font-medium">
                       Actions
                     </th>
                   </tr>
                 </thead>
+
+                {/* Body */}
                 <tbody>
-                  {filteredClasses.length > 0 ? (
-                    state?.classList?.map((item) => (
+                  {filteredClasses?.length > 0 ? (
+                    filteredClasses.map((item: any) => (
                       <tr
                         key={item._id}
-                        className="border-t border-slate-100 hover:bg-slate-50"
+                        className="border-t border-slate-100 hover:bg-slate-50/60 transition"
                       >
-                        <td className="px-5 py-4 font-medium text-slate-800">
+                        <td className="px-6 py-4 font-medium text-slate-900">
                           {item.name}
                         </td>
-                        <td className="px-5 py-4 text-slate-600">
+
+                        <td className="px-6 py-4 text-slate-600">
                           {item.section}
                         </td>
 
-                        <td className="px-5 py-4 text-slate-600">{item.no}</td>
-                        <td className="px-5 py-4">
+                        <td className="px-6 py-4 text-slate-600">{item.no}</td>
+
+                        <td className="px-6 py-4">
                           <span
-                            className={`rounded-full px-3 py-1 text-xs font-medium ${
-                              item.isActive === true
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
+                            className={`px-2 py-1 text-xs font-medium rounded-md ${
+                              item.isActive
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-slate-200 text-slate-600"
                             }`}
                           >
-                            {item.isActive ? "Active" : "No-Active"}
+                            {item.isActive ? "Active" : "Inactive"}
                           </span>
                         </td>
-                        <td className="px-5 py-4">
-                          <div className="flex items-center justify-center gap-2">
-                            {/* View */}
-                            <button
-                              className="group relative rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition"
-                              title="View Class"
-                            >
-                              <icons.FiEye size={17} />
+
+                        <td className="px-6 py-4">
+                          <div className="flex justify-center gap-1">
+                            <button className="p-2 text-slate-400 hover:text-slate-700 transition">
+                              <icons.FiEye size={16} />
                             </button>
 
-                            {/* Edit */}
-                            <button
-                              className="group relative rounded-lg p-2 text-blue-500 hover:bg-blue-50 transition"
-                              title="Edit Class"
-                            >
-                              <icons.FiEdit2 size={17} />
+                            <button className="p-2 text-slate-400 hover:text-slate-700 transition">
+                              <icons.FiEdit2 size={16} />
                             </button>
 
-                            {/* Students */}
-                            <button
-                              className="hidden md:flex rounded-lg p-2 text-indigo-500 hover:bg-indigo-50 transition"
-                              title="View Students"
-                            >
-                              <icons.FiUsers size={17} />
-                            </button>
-
-                            {/* Attendance */}
-                            <button
-                              className="hidden lg:flex rounded-lg p-2 text-green-500 hover:bg-green-50 transition"
-                              title="Mark Attendance"
-                            >
-                              <icons.FaUser size={17} />
-                            </button>
-
-                            {/* Results */}
-                            <button
-                              className="hidden xl:flex rounded-lg p-2 text-purple-500 hover:bg-purple-50 transition"
-                              title="Manage Results"
-                            >
-                              <icons.FiBarChart2 size={17} />
-                            </button>
-
-                            {/* More */}
-                            <button
-                              className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition"
-                              title="More"
-                            >
-                              <icons.FiMoreVertical size={17} />
+                            <button className="p-2 text-slate-400 hover:text-slate-700 transition">
+                              <icons.FiMoreVertical size={16} />
                             </button>
                           </div>
                         </td>
@@ -225,8 +178,8 @@ export default function ClassList() {
                   ) : (
                     <tr>
                       <td
-                        colSpan={8}
-                        className="px-5 py-10 text-center text-slate-500"
+                        colSpan={5}
+                        className="px-6 py-10 text-center text-slate-500"
                       >
                         No classes found.
                       </td>
@@ -238,7 +191,6 @@ export default function ClassList() {
           </div>
         </Container>
       </MainContainer>
-      {/* Header */}
     </div>
   );
 }
