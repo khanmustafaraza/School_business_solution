@@ -16,7 +16,7 @@ const Sidebar = ({ navData }: SideBarProps) => {
         toggle
           ? "w-0"
           : "w-[45%] sm:w-[50%] md:w-[30%] lg:w-[20%] xl:w-[15%] 2xl:w-[15%]"
-      } bg-[#0F172A] backdrop-blur-xl border-r border-slate-200/60 transition-all duration-300 overflow-hidden`}
+      } bg-[#007399] backdrop-blur-xl border-r border-slate-200/60 transition-all duration-300 overflow-hidden`}
     >
       <div className="h-full flex flex-col">
         {/* Logo Section */}

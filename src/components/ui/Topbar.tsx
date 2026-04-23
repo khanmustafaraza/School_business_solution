@@ -9,7 +9,7 @@ const Topbar: React.FC = () => {
   const { handleToggle } = useToggle();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-[#0F172A] backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-white backdrop-blur-xl">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         {/* Left Section */}
         <div className="flex items-center gap-4">
