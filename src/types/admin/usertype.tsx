@@ -6,7 +6,10 @@ export type UserListType = {
 };
 
 export type UserState = {
-  isLoading: boolean;
+  isLoading: {
+    loading:boolean,
+    message:string
+  };
   userObj: {
     name: string;
     email: string;
@@ -28,6 +31,7 @@ export type UserContextType = {
 export type UserAction =
   | {
       type: "SET_LOADING";
+      payload:{loading:boolean,message:string}
     }
   | {
       type: "HANDLE_CHANGE";
@@ -39,4 +43,7 @@ export type UserAction =
   | {
       type: "GET_ALL_USER";
       payload: UserListType[];
-    };
+    } | {
+      type:"SET_SUCCESS",
+      payload:{loading:boolean,message:string}
+    }

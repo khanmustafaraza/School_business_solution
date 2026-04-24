@@ -39,7 +39,7 @@ export const POST = async (req: Request) => {
 
     return NextResponse.json({
       success: true,
-      msg: "Account Created Successfully",
+      message: "Account Created Successfully",
       userId: user._id,
     });
   } catch (error) {

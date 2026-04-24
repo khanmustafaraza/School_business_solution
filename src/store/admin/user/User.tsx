@@ -3,11 +3,15 @@
 import UserReducer from "@/reducers/admin/User";
 import { UserContextType, UserState } from "@/types/admin/usertype";
 import { createContext, useContext, useReducer } from "react";
+import { toast } from "react-toastify";
 
 const UserContext = createContext<UserContextType | null>(null);
 
 const initialState: UserState = {
-  isLoading: false,
+  isLoading: {
+    loading:false,
+    message:""
+  },
   userObj: {
     name: "",
     email: "",
@@ -25,7 +29,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   // ✅ handle input change
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
 
@@ -40,9 +44,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
-    console.log(state.userObj);
 
     try {
+      dispatch({
+        type:"SET_LOADING",
+        payload:{loading:true,message:"Please wait... While Processing"}
+      })
       const res = await fetch("/api/admin/user", {
         method: "POST",
         headers: {
@@ -52,7 +59,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       });
 
       const data = await res.json();
-      console.log(data);
+      if(data.success){
+        dispatch({
+          type:"SET_SUCCESS",
+          payload:{loading:false,message  :""}
+        })
+        toast.success(data.message)
+      }
     } catch (error) {
       console.error(error);
     }

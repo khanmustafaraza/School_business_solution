@@ -15,6 +15,19 @@ const navData: NavTypeProps[] = [
     link: "/dashboard/admin/enquiry/enquirylist",
     icon: <icons.FaQuestionCircle size={18} />,
   },
+   {
+    id: 6,
+    name: "Add User",
+    link: "/dashboard/admin/user/user-register",
+    icon: <luicideIcons.User size={18} />,
+  },
+
+  {
+    id: 7,
+    name: "User List",
+    link: "/dashboard/admin/user/user-list",
+    icon: <luicideIcons.Users size={18} />,
+  },
   {
     id: 2,
     name: "Add School",
@@ -39,19 +52,7 @@ const navData: NavTypeProps[] = [
     link: "/dashboard/admin/class/class-list",
     icon: <luicideIcons.ClipboardList size={18} />,
   },
-  {
-    id: 6,
-    name: "Add User",
-    link: "/dashboard/admin/user/user-register",
-    icon: <luicideIcons.User size={18} />,
-  },
-
-  {
-    id: 7,
-    name: "User List",
-    link: "/dashboard/admin/user/user-list",
-    icon: <luicideIcons.Users size={18} />,
-  },
+ 
   {
     id: 8,
     name: "Student List",

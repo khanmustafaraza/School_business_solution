@@ -1,6 +1,7 @@
 export type EnquiryListType = {
   _id: string;
   name: string;
+  mobile:number | "";
   addmissionClass: string;
   message: string;
 };
@@ -8,7 +9,7 @@ export type EnquiryListType = {
 export type EnquiryStateType = {
   isLoading: {
     loading: boolean;
-    message: string;
+    message?: string;
   };
   enquiryObj: {
     name: string;

@@ -6,7 +6,11 @@ const EnquiryReducer = (
 ): EnquiryStateType => {
   switch (action.type) {
     case "SET_LOADING":
-      return { ...state, isLoading: action.payload };
+      return { ...state, isLoading: {
+        ...state.isLoading,
+        loading:action.payload.loading,
+        message:action.payload.message
+      } };
 
     case "HANDLE_CHANGE":
       return {
@@ -20,13 +24,8 @@ const EnquiryReducer = (
     case "SET_SUCCESS":
       return {
         ...state,
-        isLoading: { loading: false, message: "Success" },
-        enquiryObj: {
-          name: "",
-          mobile: "",
-          addmissionClass: "",
-          message: "",
-        },
+        isLoading: { loading: false},
+      
       };
 
     case "SET_ENQUIRY_LIST":

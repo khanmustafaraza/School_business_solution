@@ -19,6 +19,8 @@ export default function StudentForm() {
   );
 }
 
+npm i @dnd-kit/core
+
  {/* Filters */}
           <div className="mb-5 rounded bg-white p-4">
             <h4>Apply Filters</h4>

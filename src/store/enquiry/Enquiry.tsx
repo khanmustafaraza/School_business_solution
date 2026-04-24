@@ -62,7 +62,7 @@ export const EnquiryProvider = ({
     try {
       dispatch({
         type: "SET_LOADING",
-        payload: { loading: true, message: "Submitting..." },
+        payload: { loading: true,message: "Please wait... While Processing"},
       });
 
       const res = await fetch("/api/enquiry", {
@@ -81,10 +81,10 @@ export const EnquiryProvider = ({
       console.log(data)
       toast.success(data.message)
 
-      dispatch({ type: "SET_SUCCESS" });
+      dispatch({ type: "SET_SUCCESS"});
 
       // ✅ refresh list after submit
-      await getEnquiryList();
+      // await getEnquiryList();
     } catch (error: any) {
       dispatch({
         type: "SET_LOADING",

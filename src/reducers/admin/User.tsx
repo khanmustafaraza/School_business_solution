@@ -5,7 +5,11 @@ const UserReducer = (state: UserState, action: UserAction): UserState => {
     case "SET_LOADING":
       return {
         ...state,
-        isLoading: true,
+        isLoading: {
+          ...state.isLoading,
+          loading:action.payload.loading,
+          message:action.payload.message
+        },
       };
     case "HANDLE_CHANGE":
       return {
@@ -26,6 +30,15 @@ const UserReducer = (state: UserState, action: UserAction): UserState => {
       return {
         ...state,
         userList: action.payload,
+      };
+    case "SET_SUCCESS":
+      return {
+        ...state,
+      isLoading:{
+        ...state.isLoading,
+        loading:action.payload.loading,
+        message:action.payload.message
+      }
       };
     default:
       return state;
