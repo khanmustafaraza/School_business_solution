@@ -12,15 +12,15 @@ export default function Loader({ isLoading, message = "Loading..." }: LoaderProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm">
-      <div className="flex flex-col items-center gap-3 rounded border border-slate-200 bg-white p-1 shadow-sm">
+      <div className="flex flex-col items-center gap-3  border border-slate-200 bg-black p-1 shadow-sm">
         
         <ClipLoader
-          color="#0f172a"
+          color="#fff"
           size={45}
           speedMultiplier={0.9}
         />
 
-        <p className="text-sm font-medium text-slate-700">
+        <p className="text-sm font-medium text-white">
           {message}
         </p>
 

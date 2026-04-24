@@ -15,6 +15,7 @@ import {
   FaFileInvoiceDollar,
 } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const router = useRouter();
@@ -22,10 +23,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white text-slate-800">
-       <Loader isLoading={loading} message="Submitting admission..." />
-        <button onClick={() => setLoading(true)}>
-      Submit
-    </button>
+      {/* {toast.success("good")} */}
       
       <Navbar />
 
