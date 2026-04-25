@@ -57,39 +57,50 @@ export const GET = async (req: Request) => {
 
     const { searchParams } = new URL(req.url);
 
-    const page = searchParams.get("page");
-    const limit = searchParams.get("limit");
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 10;
 
-    // 👉 If page is NOT provided → return all users
-    if (!page) {
-      const users = await User.find();
-      return NextResponse.json({
-        success: true,
-        data: users,
-      });
+    const role = searchParams.get("role");
+    const search = searchParams.get("search");
+
+    const skip = (page - 1) * limit;
+
+    // 🧠 BUILD QUERY DYNAMICALLY
+    const query: any = {};
+
+    // 🔍 ROLE FILTER
+    if (role) {
+      query.role = role;
     }
 
-    // 👉 If page is provided → apply pagination
-    const pageNumber = Number(page) || 2;
-    const limitNumber = Number(limit) || 2;
+    // 🔍 SEARCH FILTER (name or email)
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+      ];
+    }
 
-    const skip = (pageNumber - 1) * limitNumber;
+    // 📦 DATA QUERY
+    const users = await User.find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
-    const users = await User.find().skip(skip).limit(limitNumber);
-
-    const total = await User.countDocuments();
+    // 📊 TOTAL COUNT (with filters applied)
+    const total = await User.countDocuments(query);
 
     return NextResponse.json({
       success: true,
       data: users,
-      page: pageNumber,
-      totalPages: Math.ceil(total / limitNumber),
+      page,
       total,
+      totalPages: Math.ceil(total / limit),
     });
   } catch (error) {
     return NextResponse.json(
       { success: false, msg: "Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 };

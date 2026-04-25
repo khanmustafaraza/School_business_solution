@@ -39,6 +39,8 @@ import {
   FiBarChart2,
   FiHome,
   FiMoreVertical,
+  FiChevronRight,
+  FiChevronLeft
 } from "react-icons/fi";
 
 const icons = {
@@ -55,6 +57,8 @@ const icons = {
   FiBarChart2,
   FiCalendar,
   FiHome,
+  FiChevronRight,
+  FiChevronLeft,
 
   FaIdCard,
   FaEnvelope,

@@ -1,16 +1,15 @@
-import { UserAction, UserState } from "@/types/admin/usertype";
-
-const UserReducer = (state: UserState, action: UserAction): UserState => {
+const UserReducer = (state: any, action: any) => {
   switch (action.type) {
-    case "SET_LOADING":
+
+    case "GET_ALL_USER":
       return {
         ...state,
-        isLoading: {
-          ...state.isLoading,
-          loading:action.payload.loading,
-          message:action.payload.message
-        },
+        userList: action.payload.users, // ✅ FIXED
+        page: action.payload.page,
+        total: action.payload.total,
+        totalPages: action.payload.totalPages,
       };
+
     case "HANDLE_CHANGE":
       return {
         ...state,
@@ -19,27 +18,19 @@ const UserReducer = (state: UserState, action: UserAction): UserState => {
           [action.payload.name]: action.payload.value,
         },
       };
-    case "GET_ALL_USER":
+
+    case "SET_LOADING":
       return {
         ...state,
-        userList: action.payload,
-        // page: action.payload.page,
-        // totalPages: action.payload.totalPages,
+        isLoading: action.payload,
       };
-    case "GET_ALL_USER":
-      return {
-        ...state,
-        userList: action.payload,
-      };
+
     case "SET_SUCCESS":
       return {
         ...state,
-      isLoading:{
-        ...state.isLoading,
-        loading:action.payload.loading,
-        message:action.payload.message
-      }
+        isLoading: action.payload,
       };
+
     default:
       return state;
   }

@@ -1,47 +1,56 @@
+// import mongoose, { Document, Model } from "mongoose";
+// import mongoosePaginate from "mongoose-paginate-v2";
+
+// interface UserDocument extends Document {
+//   name: string;
+//   email: string;
+//   password: string;
+//   role: string;
+// }
+
+// interface UserModel extends Model<UserDocument> {
+//   paginate: (query?: any, options?: any) => Promise<any>;
+// }
+
+// const userSchema = new mongoose.Schema<UserDocument>(
+//   {
+//     name: String,
+//     email: String,
+//     password: String,
+//     role: String,
+//   },
+//   { timestamps: true }
+// );
+
+// userSchema.plugin(mongoosePaginate);
+
+// const User =
+//   (mongoose.models.User as UserModel) ||
+//   mongoose.model<UserDocument, UserModel>("User", userSchema);
+
+// export default User;
+
+
+
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
-
-    password: {
-      type: String,
-      required: true,
-      minlength: 6,
-    },
-
+    name: String,
+    email: String,
+    password: String,
     role: {
       type: String,
-      enum: [
-        "student",
-        "teacher",
-        "classteacher",
-        "gameteacher",
-        "library",
-        "driver",
-        "accountant",
-        "admin",
-      ],
-      default: "user",
+      default: "student",
     },
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true }
 );
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+userSchema.plugin(mongoosePaginate);
+
+const User =
+  mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

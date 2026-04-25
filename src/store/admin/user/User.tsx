@@ -9,47 +9,57 @@ const UserContext = createContext<UserContextType | null>(null);
 
 const initialState: UserState = {
   isLoading: {
-    loading:false,
-    message:""
+    loading: false,
+    message: "",
   },
+
   userObj: {
     name: "",
     email: "",
     password: "",
     role: "",
   },
- 
+
   userList: [],
-  // page: 1,
-  // totalPages: 1,
+
+  page: 1,
+  total: 0,
+  totalPages: 1,
 };
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
-  // ✅ handle input change
+  // HANDLE INPUT
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
 
     dispatch({
       type: "HANDLE_CHANGE",
-      payload: { name: name as keyof UserState["userObj"], value },
+      payload: {
+        name: name as keyof UserState["userObj"],
+        value,
+      },
     });
   };
 
-  // ✅ submit user
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
+  // CREATE USER
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       dispatch({
-        type:"SET_LOADING",
-        payload:{loading:true,message:"Please wait... While Processing"}
-      })
+        type: "SET_LOADING",
+        payload: {
+          loading: true,
+          message: "Please wait...",
+        },
+      });
+
       const res = await fetch("/api/admin/user", {
         method: "POST",
         headers: {
@@ -59,42 +69,61 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       });
 
       const data = await res.json();
-      if(data.success){
+
+      if (data.success) {
         dispatch({
-          type:"SET_SUCCESS",
-          payload:{loading:false,message  :""}
-        })
-        toast.success(data.message)
+          type: "SET_SUCCESS",
+          payload: {
+            loading: false,
+            message: "",
+          },
+        });
+
+        toast.success(data.message);
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  // ✅ get all users
- const getAllUser = async (page: number = 1) => {
-  try {
-    const res = await fetch(`/api/admin/user?page=${page}&limit=10`);
-    const data = await res.json();
+  // GET USERS (PAGINATION)
+  const getAllUser = async (page: number = 1) => {
+    try {
+      const res = await fetch(
+        `/api/admin/user?page=${page}&limit=5`
+      );
 
-    dispatch({
-      type: "GET_ALL_USER",
-      payload:data.data
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
+      const data = await res.json();
+
+      dispatch({
+        type: "GET_ALL_USER",
+        payload: {
+          users: data.data,
+          page: data.page,
+          total: data.total,
+          totalPages: data.totalPages,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <UserContext.Provider
-      value={{ state, handleChange, handleSubmit, getAllUser }}
+      value={{
+        state,
+        handleChange,
+        handleSubmit,
+        getAllUser,
+      }}
     >
       {children}
     </UserContext.Provider>
   );
 };
 
-// ✅ custom hook (VERY IMPORTANT)
+// HOOK
 export const useUser = () => {
   const context = useContext(UserContext);
 
