@@ -1,13 +1,21 @@
-const UserReducer = (state: any, action: any) => {
-  switch (action.type) {
+import { UserAction, UserState } from "@/types/admin/usertype";
 
+const UserReducer = (state: UserState, action: UserAction): UserState => {
+  switch (action.type) {
     case "GET_ALL_USER":
       return {
         ...state,
-        userList: action.payload.users, // ✅ FIXED
-        page: action.payload.page,
-        total: action.payload.total,
+   
+        userList: action.payload.users,
+        totalDocs:action.payload.totalDocs,
+        limit:action.payload.limit,
         totalPages: action.payload.totalPages,
+        page: action.payload.page,
+        counter:action.payload.counter,
+        hasPrevPage :action.payload.hasPrevPage,
+        hasNextPage :action.payload.hasNextPage,
+        prevPage:action.payload.prevPage,
+        nextPage:action.payload.nextPage
       };
 
     case "HANDLE_CHANGE":
@@ -20,11 +28,6 @@ const UserReducer = (state: any, action: any) => {
       };
 
     case "SET_LOADING":
-      return {
-        ...state,
-        isLoading: action.payload,
-      };
-
     case "SET_SUCCESS":
       return {
         ...state,

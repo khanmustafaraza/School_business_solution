@@ -52,5 +52,6 @@ userSchema.plugin(mongoosePaginate);
 
 const User =
   mongoose.models.User || mongoose.model("User", userSchema);
+  // User.paginate().then({});
 
 export default User;

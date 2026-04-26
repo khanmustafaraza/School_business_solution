@@ -7,6 +7,8 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import icons from "@/constants/icons/icons";
 import ParentContainer from "@/components/parentcontainer/ParentContainer";
+import { useParams, useSearchParams } from "next/navigation";
+import TableContainer from "@/components/tables/tablecontainer/Tablecontainer";
 
 const rolePathMap: any = {
   student: "student",
@@ -26,153 +28,224 @@ const getInitials = (name: string) =>
   name?.split(" ").map((n) => n[0]).join("").toUpperCase();
 
 const UserList = () => {
-  const { state, getAllUser } = useUser();
+  const searchParams = useSearchParams();
 
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const page = Number(searchParams.get("page")) || 1;
+  const { state, getAllUser } = useUser();
+  // const [counter,setCounter] = useState(state.counter)
+  let counter = state.counter
+  let isActivePage = state.page
+
+  // console.log("state of user list",state)
+
+
 
   useEffect(() => {
-    getAllUser(page, search);
+    getAllUser(page);
   }, [page]);
 
-  // optional: search with debounce later
-  const handleSearch = (e: any) => {
-    setSearch(e.target.value);
-    getAllUser(1, e.target.value);
-    setPage(1);
-  };
+  
+ return (
+  <ParentContainer>
+    <MainContainer>
+      <AdminHeading
+        heading={{
+          name: "Users",
+          subHeading: "Manage platform users efficiently",
+          href: "/dashboard/admin/user/user-register",
+          btnHeading: "Add User",
+          icon: <icons.FaRegistered />,
+        }}
+      />
 
-  return (
-    <ParentContainer>
-      <MainContainer>
-        <AdminHeading
-          heading={{
-            name: "Users",
-            subHeading: "Manage your platform users",
-            href: "/dashboard/admin/user/user-register",
-            btnHeading: "Add User",
-            icon: <icons.FaRegistered />,
-          }}
-        />
+      <Container>
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
 
-        <Container>
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-lg overflow-hidden">
+          {/* HEADER */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-6 py-5 bg-slate-50/50">
 
-            {/* TOP BAR */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-6 py-5">
-
-              <div className="relative w-full sm:max-w-xs">
-                <icons.FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  value={search}
-                  onChange={handleSearch}
-                  placeholder="Search users..."
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-xl bg-slate-100/70 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-md bg-white shadow-sm">
+                <icons.FiSearch className="text-slate-500" />
               </div>
 
-              <div className="text-sm text-slate-500">
-                Total Users{" "}
-                <span className="ml-1 px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 font-semibold">
-                  {state?.total || 0}
-                </span>
+              <div>
+                <h2 className="text-sm font-semibold text-slate-800">
+                  Users Directory
+                </h2>
+                <p className="text-xs text-slate-500">
+                  View and manage all registered users
+                </p>
               </div>
             </div>
 
-            {/* TABLE */}
-            <table className="w-full">
-              <thead className="text-slate-400 text-xs uppercase">
-                <tr>
-                  <th className="px-6 py-4 text-left">User</th>
-                  <th className="px-6 py-4 hidden md:table-cell">Email</th>
-                  <th className="px-6 py-4">Role</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
+            <div className="text-sm text-slate-600">
+              Total:{" "}
+              <span className="font-semibold text-slate-900">
+                {state?.totalDocs || 0}
+              </span>
+            </div>
+          </div>
 
-              <tbody>
-                {state?.userList?.map((item: any) => {
-                  const path = rolePathMap[item.role];
+          {/* TABLE */}
+          <TableContainer>
 
-                  return (
-                    <tr key={item._id} className="hover:bg-slate-50/70">
+            <thead className="text-xs uppercase tracking-wider text-slate-500 bg-slate-50/60 text-center">
+              <tr>
+                <th className="px-6 py-4">#</th>
+                <th className="px-6 py-4 text-left">User</th>
+                <th className="px-6 py-4">Email</th>
+                <th className="px-6 py-4">Role</th>
+                <th className="px-6 py-4">Action</th>
+              </tr>
+            </thead>
 
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-200">
-                            {getInitials(item.name)}
+            <tbody className="divide-y divide-slate-100">
+
+              {state?.userList?.map((item: any, index: number) => {
+                const path = rolePathMap[item.role];
+
+                return (
+                  <tr key={item._id} className="hover:bg-slate-50/60 transition">
+
+                    {/* S.NO */}
+                    <td className="px-6 py-4 text-slate-500">
+                      {(page - 1) * 5 + index + 1}
+                    </td>
+
+                    {/* USER */}
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+
+                        <div className="h-10 w-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700 font-semibold">
+                          {getInitials(item.name)}
+                        </div>
+
+                        <div>
+                          <div className="font-medium text-slate-900">
+                            {item.name}
                           </div>
-                          <div>
-                            <div className="font-semibold">{item.name}</div>
-                            <div className="text-xs text-slate-400 md:hidden">
-                              {item.email}
-                            </div>
+                          <div className="text-xs text-slate-400 md:hidden">
+                            {item.email}
                           </div>
                         </div>
-                      </td>
 
-                      <td className="px-6 py-4 hidden md:table-cell">
-                        {item.email}
-                      </td>
+                      </div>
+                    </td>
 
-                      <td className="px-6 py-4">
-                        <span className={`px-3 py-1 text-xs rounded-full ${roleColors[item.role]}`}>
-                          {item.role}
-                        </span>
-                      </td>
+                    {/* EMAIL */}
+                    <td className="px-6 py-4 hidden md:table-cell text-slate-600">
+                      {item.email}
+                    </td>
 
-                      <td className="px-6 py-4 text-right">
-                        {path && (
-                          <Link href={`/dashboard/admin/${path}/${item._id}`}>
-                            <icons.FiEdit2 />
-                          </Link>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                    {/* ROLE */}
+                    <td className="px-6 py-4">
+                      <span
+                        className={`px-3 py-1 text-xs rounded-md font-medium ${roleColors[item.role]}`}
+                      >
+                        {item.role}
+                      </span>
+                    </td>
 
-            {/* PAGINATION */}
-            <div className="flex items-center justify-between px-6 py-5">
+                    {/* ACTION */}
+                    <td className="px-6 py-4 text-right">
+                      {path && (
+                        <Link
+                          href={`/dashboard/admin/${path}/${item._id}`}
+                          className="inline-flex items-center justify-center p-2 rounded-md hover:bg-slate-100 transition"
+                        >
+                          <icons.FiEdit2 />
+                        </Link>
+                      )}
+                    </td>
 
-              <div className="text-sm text-slate-500">
-                Showing {(page - 1) * 10 + 1}–
-                {Math.min(page * 10, state?.total || 0)} of{" "}
-                {state?.total || 0}
-              </div>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </TableContainer>
 
-              <div className="flex items-center gap-2">
+          {/* PAGINATION */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-6 py-5 bg-slate-50/40">
 
-                <button
-                  onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                >
-                  Prev
-                </button>
-
-                <div className="px-3 py-1 bg-blue-600 text-white rounded">
-                  {page}
-                </div>
-
-                <button
-                  onClick={() =>
-                    setPage((p) =>
-                      Math.min(p + 1, state?.totalPages || 1)
-                    )
-                  }
-                >
-                  Next
-                </button>
-
-              </div>
+            {/* INFO */}
+            <div className="text-sm text-slate-500">
+              Showing{" "}
+              <span className="font-medium text-slate-700">
+                {(page - 1) * 5 + 1}
+              </span>{" "}
+              –{" "}
+              <span className="font-medium text-slate-700">
+                {Math.min(page * 5, state?.totalDocs || 0)}
+              </span>{" "}
+              of{" "}
+              <span className="font-medium text-slate-700">
+                {state?.totalDocs || 0}
+              </span>
             </div>
 
+            {/* CONTROLS */}
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+
+              {/* PREV */}
+              <Link
+                href={
+                  state.hasPrevPage
+                    ? `/dashboard/admin/user/user-list?page=${state.prevPage}`
+                    : "#"
+                }
+                className={`px-4 py-2 rounded-md text-sm font-medium transition ${
+                  state.hasPrevPage
+                    ? "bg-white hover:bg-slate-100 text-slate-700"
+                    : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                }`}
+              >
+                Previous
+              </Link>
+
+              {/* NUMBERS */}
+              {Array.from({ length: state.totalPages }).map((_, i) => {
+                const pageNumber = i + 1;
+
+                return (
+                  <Link
+                    key={pageNumber}
+                    href={`/dashboard/admin/user/user-list?page=${pageNumber}`}
+                    className={`w-9 h-9 flex items-center justify-center rounded-md text-sm font-medium transition ${
+                      pageNumber === isActivePage
+                        ? "bg-blue-600 text-white"
+                        : "bg-white hover:bg-slate-100 text-slate-700"
+                    }`}
+                  >
+                    {pageNumber}
+                  </Link>
+                );
+              })}
+
+              {/* NEXT */}
+              <Link
+                href={
+                  state.hasNextPage
+                    ? `/dashboard/admin/user/user-list?page=${state.nextPage}`
+                    : "#"
+                }
+                className={`px-4 py-2 rounded-md text-sm font-medium transition ${
+                  state.hasNextPage
+                    ? "bg-white hover:bg-slate-100 text-slate-700"
+                    : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                }`}
+              >
+                Next
+              </Link>
+
+            </div>
           </div>
-        </Container>
-      </MainContainer>
-    </ParentContainer>
-  );
+
+        </div>
+      </Container>
+    </MainContainer>
+  </ParentContainer>
+);
 };
 
 export default UserList;

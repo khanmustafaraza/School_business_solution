@@ -6,6 +6,7 @@ import { createContext, useContext, useReducer } from "react";
 import { toast } from "react-toastify";
 
 const UserContext = createContext<UserContextType | null>(null);
+// ================= INITIAL STATE =================
 
 const initialState: UserState = {
   isLoading: {
@@ -22,9 +23,15 @@ const initialState: UserState = {
 
   userList: [],
 
+  totalDocs:0,
+  limit:10,
+  totalPages: 0,
   page: 1,
-  total: 0,
-  totalPages: 1,
+  counter:0,
+  hasPrevPage :false,
+  hasNextPage:false,
+  prevPage:0,
+  nextPage:0
 };
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -94,16 +101,39 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       );
 
       const data = await res.json();
+      console.log(data)
 
-      dispatch({
-        type: "GET_ALL_USER",
-        payload: {
-          users: data.data,
-          page: data.page,
-          total: data.total,
-          totalPages: data.totalPages,
-        },
-      });
+     dispatch({
+  type: "GET_ALL_USER",
+  payload: {
+    //  users: UserListType[];
+    //       totalDocs: number;
+    //       limit: number;
+    //       totalPages: number;
+    //       page: number;
+    //       counter: number;
+    //       hasPrevPage: boolean;
+    //       hasNextPage: boolean;
+  //   totalDocs:0,
+  // limit:10,
+  // totalPages: 0,
+  // page: 1,
+  // counter:0,
+  // hasPrevPage :false,
+  // hasNextPage:false,
+    users: data.data,
+    totalDocs: data.totalDocs,
+    limit:data.limit,
+    totalPages:data.totalPages,
+    page: data.page,
+    counter:data.counter,
+    hasPrevPage: data.hasPrevPage,
+    hasNextPage: data.hasNextPage,
+     prevPage: data.prevPage,
+      nextPage:data.nextPage,
+   
+  },
+});
     } catch (error) {
       console.error(error);
     }

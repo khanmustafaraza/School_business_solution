@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/footer/Footer";
 import Loader from "@/components/loader/Loader";
 import Navbar from "@/components/navbar/Navbar";
 import { Loader2 } from "lucide-react";
@@ -163,6 +164,7 @@ export default function Home() {
 
         </div>
       </section>
+      <Footer/>
     </div>
   );
 }

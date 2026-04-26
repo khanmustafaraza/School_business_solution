@@ -54,48 +54,72 @@ export const POST = async (req: Request) => {
 export const GET = async (req: Request) => {
   try {
     await connectDb();
-
     const { searchParams } = new URL(req.url);
 
     const page = Number(searchParams.get("page")) || 1;
     const limit = Number(searchParams.get("limit")) || 10;
-
-    const role = searchParams.get("role");
-    const search = searchParams.get("search");
-
-    const skip = (page - 1) * limit;
-
-    // 🧠 BUILD QUERY DYNAMICALLY
-    const query: any = {};
-
-    // 🔍 ROLE FILTER
-    if (role) {
-      query.role = role;
+    // console.log(page)
+    const options = {
+      page: page,
+      limit: limit
     }
 
-    // 🔍 SEARCH FILTER (name or email)
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
-      ];
-    }
 
-    // 📦 DATA QUERY
-    const users = await User.find(query)
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 });
+    console.log(page)
+    // console.log({ page=1, limit=4 });
+    const data = await (User as any).paginate({}, options);
+    // console.log(data)
 
-    // 📊 TOTAL COUNT (with filters applied)
-    const total = await User.countDocuments(query);
+    // const { searchParams } = new URL(req.url);
+
+    // const page = Number(searchParams.get("page")) || 1;
+    // const limit = Number(searchParams.get("limit")) || 10;
+
+    // const role = searchParams.get("role");
+    // const search = searchParams.get("search");
+
+    // const skip = (page - 1) * limit;
+
+    // // 🧠 BUILD QUERY DYNAMICALLY
+    // const query: any = {};
+
+    // // 🔍 ROLE FILTER
+    // if (role) {
+    //   query.role = role;
+    // }
+
+    // // 🔍 SEARCH FILTER (name or email)
+    // if (search) {
+    //   query.$or = [
+    //     { name: { $regex: search, $options: "i" } },
+    //     { email: { $regex: search, $options: "i" } },
+    //   ];
+    // }
+
+    // // 📦 DATA QUERY
+    // const users = await User.find(query)
+    //   .skip(skip)
+    //   .limit(limit)
+    //   .sort({ createdAt: -1 });
+
+    // // 📊 TOTAL COUNT (with filters applied)
+    // const total = await User.countDocuments(query);
 
     return NextResponse.json({
       success: true,
-      data: users,
-      page,
-      total,
-      totalPages: Math.ceil(total / limit),
+      message: "Users fetched successfully",
+      data: data.docs,
+
+      totalDocs: data.totalDocs,
+      limit: data.limit,
+      totalPages: data.totalPages,
+      page: data.page,
+      counter:data.pagingCounter,
+      hasPrevPage: data.hasPrevPage,
+      hasNextPage: data.hasNextPage,
+      prevPage: data.prevPage,
+      nextPage: data.nextPage
+
     });
   } catch (error) {
     return NextResponse.json(
