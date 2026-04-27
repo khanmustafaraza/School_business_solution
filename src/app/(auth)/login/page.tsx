@@ -12,226 +12,198 @@ import {
   FiShield,
   FiUsers,
 } from "react-icons/fi";
+import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/footer/Footer";
+import useAuth from "@/store/auth/Auth";
+
+const isLoading = false;
+const error = "";
+const login = (data: any) => console.log(data);
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+ const {state,handleLoginChange,handleLoginSubmit} =  useAuth()
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    remember: false,
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      console.log("Login Data:", formData);
-
-      // TODO: Replace with your login API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      alert("Login Successful!");
-    } catch (error) {
-      console.error(error);
-      alert("Login Failed!");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+ 
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-        {/* Left Branding Section */}
-        <div className="relative hidden overflow-hidden bg-slate-900 lg:flex">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.06),transparent_30%)]" />
+    <>
+      <Navbar />
 
-          <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-14 text-white">
-            <div>
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
-                <FiBookOpen size={28} />
-              </div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-slate-200">
+        <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
 
-              <h1 className="max-w-md text-4xl font-bold leading-tight">
-                Welcome to School ERP Management System
-              </h1>
-              <p className="mt-4 max-w-lg text-sm leading-7 text-slate-300">
-                Manage students, classes, attendance, transfer certificates,
-                staff records, and academic operations in one secure dashboard.
-              </p>
-            </div>
+          {/* LEFT */}
+         <div className="relative hidden lg:flex bg-slate-900 overflow-hidden">
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              <FeatureCard
-                icon={<FiUsers size={20} />}
-                title="Students"
-                desc="Manage admissions, records and student data"
-              />
-              <FeatureCard
-                icon={<FiBookOpen size={20} />}
-                title="Academics"
-                desc="Track classes, sections and school operations"
-              />
-              <FeatureCard
-                icon={<FiShield size={20} />}
-                title="Secure"
-                desc="Protected access for school administration"
-              />
-            </div>
-          </div>
-        </div>
+  {/* Background Glow */}
+  <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.08),transparent_40%)]" />
 
-        {/* Right Login Section */}
-        <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-10">
-          <div className="w-full max-w-md">
-            {/* Mobile Branding */}
-            <div className="mb-8 text-center lg:hidden">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-900 text-white">
-                <FiBookOpen size={26} />
-              </div>
-              <h1 className="text-2xl font-bold text-slate-800">School ERP</h1>
-              <p className="mt-2 text-sm text-slate-500">
-                Sign in to continue to your dashboard
-              </p>
-            </div>
+  {/* Image */}
+<img
+  src="login.jpg"
+  alt="Dashboard Preview"
+  className="absolute top-1/2 left-1/2 w-[70%] -translate-x-1/2 -translate-y-1/2 opacity-80 pointer-events-none select-none drop-shadow-2xl"
+/>
 
-            <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-slate-800">Sign In</h2>
-                <p className="mt-1 text-sm text-slate-500">
-                  Enter your credentials to access your account
-                </p>
-              </div>
+  {/* Optional Fade Overlay (makes text more readable) */}
+  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Email */}
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                      <FiMail size={18} />
-                    </span>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter your email"
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-slate-300 focus:ring-2 focus:ring-slate-200 focus:bg-white"
-                      required
-                    />
-                  </div>
+  {/* Content */}
+  <div className="relative z-10 flex flex-col justify-between p-14 text-white">
+    <div>
+      <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
+        <FiBookOpen size={28} />
+      </div>
+
+      <h1 className="text-4xl font-bold leading-tight">
+        Smart School ERP System
+      </h1>
+      <p className="mt-4 text-slate-300 leading-7 max-w-lg">
+        Manage students, academics, attendance, and staff with a
+        powerful, secure, and beautifully designed dashboard.
+      </p>
+    </div>
+
+    <div className="grid gap-4 sm:grid-cols-3">
+      <FeatureCard icon={<FiUsers />} title="Students" desc="Full control of student records" />
+      <FeatureCard icon={<FiBookOpen />} title="Academics" desc="Manage classes & operations" />
+      <FeatureCard icon={<FiShield />} title="Secure" desc="Role-based protected system" />
+    </div>
+  </div>
+</div>
+
+          {/* RIGHT */}
+          <div className="flex items-center justify-center px-4 py-10">
+            <div className="w-full max-w-md">
+
+              <div className="rounded-3xl bg-white/80 backdrop-blur-xl border border-white/40 shadow-xl p-8">
+                
+                <div className="mb-6 text-center">
+                  <h2 className="text-2xl font-bold text-slate-800">
+                    Welcome Back 👋
+                  </h2>
+                  <p className="text-sm text-slate-500 mt-1">
+                    Sign in to your account
+                  </p>
                 </div>
 
-                {/* Password */}
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                      <FiLock size={18} />
-                    </span>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      placeholder="Enter your password"
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-12 text-sm outline-none transition focus:border-slate-300 focus:ring-2 focus:ring-slate-200 focus:bg-white"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-700"
+                <form onSubmit={handleLoginSubmit} className="space-y-5">
+
+                  {/* ROLE */}
+                  <div>
+                    <label className="text-sm font-medium text-slate-700">
+                      Select Role
+                    </label>
+                    <select
+                      name="role"
+                      value={state.loginObj.role}
+                      onChange={handleLoginChange}
+                      className="mt-1 w-full rounded border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
                     >
-                      {showPassword ? (
-                        <FiEyeOff size={18} />
-                      ) : (
-                        <FiEye size={18} />
-                      )}
-                    </button>
+                      <option value="admin">Admin</option>
+                      <option value="teacher">Teacher</option>
+                      <option value="student">Student</option>
+                    </select>
                   </div>
-                </div>
 
-                {/* Remember + Forgot */}
-                <div className="flex items-center justify-between gap-3">
-                  <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      checked={formData.remember}
-                      onChange={handleChange}
-                      className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-300"
-                    />
-                    Remember me
-                  </label>
+                  {/* EMAIL */}
+                  <div>
+                    <label className="text-sm font-medium text-slate-700">
+                      Email Address
+                    </label>
+                    <div className="relative mt-1">
+                      <FiMail className="absolute left-4 top-3.5 text-slate-400" />
+                      <input
+                        type="email"
+                        name="userName"
+                        value={state.loginObj.userName}
+                        onChange={handleLoginChange}
+                        disabled={isLoading}
+                        placeholder="Enter your email"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
+                      />
+                    </div>
+                  </div>
 
-                  <Link
-                    href="/forgot-password"
-                    className="text-sm font-medium text-slate-700 transition hover:text-slate-900"
+                  {/* PASSWORD */}
+                  <div>
+                    <label className="text-sm font-medium text-slate-700">
+                      Password
+                    </label>
+                    <div className="relative mt-1">
+                      <FiLock className="absolute left-4 top-3.5 text-slate-400" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        disabled={isLoading}
+                        placeholder="Enter your password"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-12 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-3.5 text-slate-500 hover:text-slate-700"
+                      >
+                        {showPassword ? <FiEyeOff /> : <FiEye />}
+                      </button>
+                    </div>
+
+                    {error && (
+                      <p className="mt-2 text-sm text-red-500">{error}</p>
+                    )}
+                  </div>
+
+                  {/* OPTIONS */}
+                  <div className="flex items-center justify-between text-sm">
+                    <label className="flex items-center gap-2 text-slate-600">
+                      <input type="checkbox" name="remember" />
+                      Remember me
+                    </label>
+
+                    <Link href="/forgot-password" className="hover:underline">
+                      Forgot Password?
+                    </Link>
+                  </div>
+
+                  {/* BUTTON */}
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full rounded-xl bg-slate-900 py-3 text-sm font-medium text-white transition hover:bg-slate-800 flex items-center justify-center gap-2"
                   >
-                    Forgot Password?
-                  </Link>
-                </div>
-
-                {/* Button */}
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  <FiLogIn size={18} />
-                  {isLoading ? "Signing In..." : "Sign In"}
-                </button>
-              </form>
-
-              {/* Footer */}
-              <div className="mt-6 border-t border-slate-100 pt-5 text-center">
-                <p className="text-xs leading-6 text-slate-500">
-                  Secure school administration portal for managing students,
-                  academics, and operations.
-                </p>
+                    {isLoading ? (
+                      <span className="flex items-center gap-2">
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                        Signing In...
+                      </span>
+                    ) : (
+                      <>
+                        <FiLogIn />
+                        Sign In
+                      </>
+                    )}
+                  </button>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <Footer />
+    </>
   );
 }
 
-/* ---------- Reusable Feature Card ---------- */
-
-function FeatureCard({
-  icon,
-  title,
-  desc,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-}) {
+function FeatureCard({ icon, title, desc }: any) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-      <div className="mb-3 inline-flex rounded-xl bg-white/10 p-2">{icon}</div>
-      <h3 className="text-sm font-semibold text-white">{title}</h3>
-      <p className="mt-1 text-xs leading-6 text-slate-300">{desc}</p>
+    <div className="rounded-2xl bg-white/5 border border-white/10 p-4 backdrop-blur-sm">
+      <div className="mb-2 text-white">{icon}</div>
+      <h3 className="text-sm font-semibold">{title}</h3>
+      <p className="text-xs text-slate-300">{desc}</p>
     </div>
   );
 }

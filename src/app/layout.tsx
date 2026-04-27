@@ -8,6 +8,7 @@ import "./globals.css";
 import { StudentProvider } from "@/store/admin/student/Student";
 import { EnquiryProvider } from "@/store/enquiry/Enquiry";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "@/store/auth/Auth";
 
 const openSans = Open_Sans({
   variable: "--font-open",
@@ -27,18 +28,20 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className={`${openSans.className} min-h-full flex flex-col`}>
-        <ToastContainer/>
-        <EnquiryProvider>
-        <ToggleProvider>
-          <UserProvider>
-            <SchoolProvider>
-              <ClassProvider>
-                <StudentProvider>{children}</StudentProvider>
-              </ClassProvider>
-            </SchoolProvider>
-          </UserProvider>
-        </ToggleProvider>
-        </EnquiryProvider>
+        <ToastContainer />
+        <AuthProvider>
+          <EnquiryProvider>
+            <ToggleProvider>
+              <UserProvider>
+                <SchoolProvider>
+                  <ClassProvider>
+                    <StudentProvider>{children}</StudentProvider>
+                  </ClassProvider>
+                </SchoolProvider>
+              </UserProvider>
+            </ToggleProvider>
+          </EnquiryProvider>
+        </AuthProvider>
       </body>
     </html>
   );
