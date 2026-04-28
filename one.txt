@@ -173,3 +173,90 @@ npm i @dnd-kit/core
           </table>
         </div>
       </div> */}
+
+      import jwt from 'jsonwebtoken'
+import { NextResponse } from 'next/server'
+import { headers } from 'next/headers'
+
+export async function GET() {
+  try {
+    const headersInstance = headers()
+    const authHeader = headersInstance.get('authorization')
+
+    const token = authHeader.split(' ')[1]
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    if (!decoded) {
+      return NextResponse.json(
+        { message: 'Expired' },
+        {
+          status: 400,
+        },
+      )
+    } else if (decoded.exp < Math.floor(Date.now() / 1000)) {
+      return NextResponse.json(
+        { message: 'Expired' },
+        {
+          status: 400,
+        },
+      )
+    } else {
+      // If the token is valid, return some protected data.
+      return NextResponse.json(
+        { data: 'Protected data' },
+        {
+          status: 200,
+        },
+      )
+    }
+  } catch (error) {
+    console.error('Token verification failed', error)
+    return NextResponse.json(
+      { message: 'Unauthorized' },
+      {
+        status: 400,
+      },
+    )
+  }
+}
+
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+
+export async function middleware(req: any) {
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  // ❌ If no login → block access
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  return NextResponse.next();
+}
+
+// Apply middleware only to protected routes
+export const config = {
+  matcher: ["/dashboard/:path*", "/admin/:path*"],
+};
+
+
+import { getServerSession } from "next-auth";
+
+export default async function AdminPage() {
+  const session = await getServerSession();
+
+  // ❌ Not logged in
+  if (!session) {
+    return <p>Not logged in</p>;
+  }
+
+  // ❌ Not admin
+  if (session.user.role !== "admin") {
+    return <p>Access denied</p>;
+  }
+
+  return <h1>Welcome Admin {session.user.name}</h1>;
+}

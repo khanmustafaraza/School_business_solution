@@ -136,8 +136,8 @@ export default function Login() {
                       <input
                         type={showPassword ? "text" : "password"}
                         name="password"
-                        value={formData.password}
-                        onChange={handleChange}
+                        value={state.loginObj.password}
+                        onChange={handleLoginChange}
                         disabled={isLoading}
                         placeholder="Enter your password"
                         className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-12 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"

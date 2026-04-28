@@ -110,7 +110,7 @@ const UserList = () => {
 
                     {/* S.NO */}
                     <td className="px-6 py-4 text-slate-500">
-                      {(page - 1) * 5 + index + 1}
+                      {(page - 1) * (state.limit) + index + 1}
                     </td>
 
                     {/* USER */}
@@ -172,11 +172,11 @@ const UserList = () => {
             <div className="text-sm text-slate-500">
               Showing{" "}
               <span className="font-medium text-slate-700">
-                {(page - 1) * 5 + 1}
+                {(page - 1) * (state.limit) + 1}
               </span>{" "}
               –{" "}
               <span className="font-medium text-slate-700">
-                {Math.min(page * 5, state?.totalDocs || 0)}
+                {Math.min(page * (state.limit), state?.totalDocs || 0)}
               </span>{" "}
               of{" "}
               <span className="font-medium text-slate-700">

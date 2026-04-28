@@ -2,11 +2,12 @@
 import AuthReducer from "@/reducers/auth/Auth";
 import { LoginContext, LoginState } from "@/types/auth/authtype";
 import React, { createContext, useContext, useReducer } from "react";
+import { signIn } from "next-auth/react";
 
 const initialState: LoginState = {
   isLoading: {
     loading: false,
-    message: ""
+   message: ""
   },
   loginObj: {
     role: "",
@@ -25,7 +26,7 @@ export const AuthContext = createContext<LoginContext | null>(null);
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     dispatch({
       type: "HANDLE_LOGIN_CHANGE",
       payload: {
@@ -37,6 +38,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleLoginSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // console.log("state.obj" , state.loginObj)
 
     dispatch({
       type: "SET_LOADING",
@@ -48,6 +50,20 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       // API call later
+  //      const loginHandler = async () => {
+  //   const res = await signIn("credentials", {
+  //     email,
+  //     password,
+  //     redirect: false,
+  //   });
+
+  //   if (res?.ok) {
+  //     alert("Login successful");
+  //   } else {
+  //     alert("Login failed");
+  //   }
+  // };
+
       dispatch({
         type: "SET_SUCCESS",
         payload: {
