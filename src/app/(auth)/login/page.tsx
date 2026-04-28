@@ -16,9 +16,7 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import useAuth from "@/store/auth/Auth";
 
-const isLoading = false;
-const error = "";
-const login = (data: any) => console.log(data);
+
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +28,7 @@ export default function Login() {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-slate-200">
+      <div className="min-h-screen bg-linear-to-br from-slate-100 via-white to-slate-200">
         <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
 
           {/* LEFT */}
@@ -47,7 +45,7 @@ export default function Login() {
 />
 
   {/* Optional Fade Overlay (makes text more readable) */}
-  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+  <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/60 to-transparent" />
 
   {/* Content */}
   <div className="relative z-10 flex flex-col justify-between p-14 text-white">
@@ -116,10 +114,10 @@ export default function Login() {
                       <FiMail className="absolute left-4 top-3.5 text-slate-400" />
                       <input
                         type="email"
-                        name="userName"
-                        value={state.loginObj.userName}
+                        name="email"
+                        value={state.loginObj.email}
                         onChange={handleLoginChange}
-                        disabled={isLoading}
+                       
                         placeholder="Enter your email"
                         className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
                       />
@@ -138,7 +136,7 @@ export default function Login() {
                         name="password"
                         value={state.loginObj.password}
                         onChange={handleLoginChange}
-                        disabled={isLoading}
+                      
                         placeholder="Enter your password"
                         className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-12 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
                       />
@@ -151,9 +149,7 @@ export default function Login() {
                       </button>
                     </div>
 
-                    {error && (
-                      <p className="mt-2 text-sm text-red-500">{error}</p>
-                    )}
+                   
                   </div>
 
                   {/* OPTIONS */}
@@ -171,20 +167,10 @@ export default function Login() {
                   {/* BUTTON */}
                   <button
                     type="submit"
-                    disabled={isLoading}
+                   
                     className="w-full rounded-xl bg-slate-900 py-3 text-sm font-medium text-white transition hover:bg-slate-800 flex items-center justify-center gap-2"
                   >
-                    {isLoading ? (
-                      <span className="flex items-center gap-2">
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
-                        Signing In...
-                      </span>
-                    ) : (
-                      <>
-                        <FiLogIn />
-                        Sign In
-                      </>
-                    )}
+                   SignIn
                   </button>
                 </form>
               </div>

@@ -12,32 +12,35 @@ const handler = NextAuth({
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
+        role: { label: "Role", type: "text" }, // optional
       },
 
       async authorize(credentials) {
-        // 1. connect DB
         await connectDb();
 
-        // 2. find user in DB
         const user = await User.findOne({
           email: credentials?.email,
         });
 
-        if (!user) return null;
+        if (!user) throw new Error("Invalid Email or Password");
 
-        // 3. check password
         const isValid = await bcrypt.compare(
           credentials!.password,
           user.password
         );
 
-        if (!isValid) return null;
+        if (!isValid) throw new Error("Invalid Email or Password");
 
-        // 4. return user (IMPORTANT)
+        // Optional role check (UI guard)
+        if (credentials?.role && user.role !== credentials.role) {
+          throw new Error("Role is not correct");
+        }
+
         return {
-          id: user._id.toString(),
+          id: user._id.toString(), // ✅ FIXED
           name: user.name,
           email: user.email,
+          role: user.role,
         };
       },
     }),
@@ -52,13 +55,24 @@ const handler = NextAuth({
       if (user) {
         token.id = user.id;
         token.name = user.name;
+        token.email = user.email;
+        token.role = (user as any).role; // ✅ no "any"
       }
       return token;
     },
 
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.name = token.name;
+      console.log("good morning");
+      console.log(token, "token inside session");
+
+      if (session.user) {
+        (session.user as any).id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        (session.user as any).role = token.role; // ✅ IMPORTANT
+      }
+
+      console.log("session inside", session);
       return session;
     },
   },

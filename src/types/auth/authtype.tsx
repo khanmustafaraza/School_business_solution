@@ -7,7 +7,7 @@ export type LoginState =  {
     };
     loginObj :{
         role:string,
-        userName:string,
+        email:string,
         password:string,
 
     }
