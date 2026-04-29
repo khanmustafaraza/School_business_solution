@@ -62,8 +62,8 @@ const handler = NextAuth({
     },
 
     async session({ session, token }) {
-      console.log("good morning");
-      console.log(token, "token inside session");
+      // console.log("good morning");
+      // console.log(token, "token inside session");
 
       if (session.user) {
         (session.user as any).id = token.id;
@@ -72,7 +72,7 @@ const handler = NextAuth({
         (session.user as any).role = token.role; // ✅ IMPORTANT
       }
 
-      console.log("session inside", session);
+      // console.log("session inside", session);
       return session;
     },
   },

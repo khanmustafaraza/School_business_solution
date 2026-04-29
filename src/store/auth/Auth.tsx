@@ -39,77 +39,62 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
- const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
-    e.preventDefault();
+ const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    dispatch({
-      type: "SET_LOADING",
-      payload: {
-        loading: true,
-        message: "Logging in..."
-      }
+  dispatch({
+    type: "SET_LOADING",
+    payload: {
+      loading: true,
+      message: "Logging in..."
+    }
+  });
+
+  try {
+    const res = await signIn("credentials", {
+      email: state.loginObj.email,
+      password: state.loginObj.password,
+      role: state.loginObj.role,
+      redirect: false,
     });
 
-    try {
-      const res = await signIn("credentials", {
-        email: state.loginObj.email,
-        password: state.loginObj.password,
-        role: state.loginObj.role,
-        redirect: false,
-      });
+    // ✅ Correct check
+    if (!res?.ok) {
+      toast.error(res?.error || "Invalid credentials");
 
-      // ❌ Fix condition
-      if (res?.status === 401 || res?.status === 400 || !res?.ok) {
-        toast.error(res?.error || "Login failed");
-
-        dispatch({
-          type: "SET_LOADING",
-          payload: {
-            loading: false,
-            message: res?.error || "Login failed"
-          }
-        });
-
-        return; // 🔥 IMPORTANT stop execution
-      }
-
-      // ✅ Only runs if login success
-      if (res?.ok) {
-        const session = await fetch("/api/auth/session", {
-          cache: "no-store"
-        }).then(res => res.json());
-
-        console.log("SESSION:", session);
-
-        // ✅ Role-based redirect
-        if (session?.user?.role === "admin") {
-          router.push("/admin/dashboard");
-        } else if (session?.user?.role === "student") {
-          router.push("/student/dashboard");
-        } else {
-          router.push("/dashboard");
-        }
-
-        dispatch({
-          type: "SET_SUCCESS",
-          payload: {
-            loading: false,
-            message: "Login successful"
-          }
-        });
-      }
-
-    } catch (error) {
       dispatch({
         type: "SET_LOADING",
         payload: {
           loading: false,
-          message: "Something went wrong"
+          message: res?.error || "Login failed"
         }
       });
-    }
-  };
 
+      return;
+    }
+
+    // ✅ SUCCESS → DO NOT fetch session here
+    dispatch({
+      type: "SET_SUCCESS",
+      payload: {
+        loading: false,
+        message: "Login successful"
+      }
+    });
+
+    // 👉 Just redirect to a common route
+    router.push("/redirect");
+
+  } catch (error) {
+    dispatch({
+      type: "SET_LOADING",
+      payload: {
+        loading: false,
+        message: "Something went wrong"
+      }
+    });
+  }
+};
   return (
     <AuthContext.Provider
       value={{

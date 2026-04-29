@@ -188,7 +188,7 @@ const AdminDashboard = () => {
             </button>
           </div>
 
-          <div className="h-[300px]">
+          <div  style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={revenueData}>
                 <XAxis dataKey="month" />
@@ -244,7 +244,7 @@ const AdminDashboard = () => {
             </p>
           </div>
 
-          <div className="h-[280px]">
+          <div style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={attendanceData}>
                 <CartesianGrid strokeDasharray="3 3" />
