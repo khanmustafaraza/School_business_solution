@@ -66,7 +66,8 @@ const UserRegister = () => {
                 //  value={state.userObj.address}
                 onChange={(e) => handleChange(e)}
               >
-                <option>Select Role</option>
+                <option disabled={true}>Select Role</option>
+                <option value="admin">Admin</option>
                 <option value="student">Student</option>
                 <option value="gameteacher">Game Teacher</option>
                 <option value="teacher">Teacher</option>
