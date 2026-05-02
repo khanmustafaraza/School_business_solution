@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
- async function proxy(req:any) {
+async function proxy(req: any) {
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
@@ -16,7 +16,11 @@ import { NextResponse } from "next/server";
 
   // 🚫 Prevent logged-in user from visiting login
   if (token && pathname === "/login") {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    if (token?.role == "admin") {
+      return NextResponse.redirect(
+        new URL("/dashboard/admin/admin-dashboard", req.url),
+      );
+    } else return NextResponse.redirect(new URL("/"));
   }
 
   // 🔥 Redirect base dashboard → role dashboard
@@ -25,9 +29,7 @@ import { NextResponse } from "next/server";
       return NextResponse.redirect(new URL("/unauthorized", req.url));
     }
 
-    return NextResponse.redirect(
-      new URL(`/dashboard/${token.role}`, req.url)
-    );
+    return NextResponse.redirect(new URL(`/dashboard/${token.role}`, req.url));
   }
 
   // 🔒 Role protection (generic)
@@ -40,9 +42,7 @@ import { NextResponse } from "next/server";
 
     // user trying to access another role's dashboard
     if (!pathname.startsWith(`/dashboard/${role}`)) {
-      return NextResponse.redirect(
-        new URL(`/dashboard/${role}`, req.url)
-      );
+      return NextResponse.redirect(new URL(`/dashboard/${role}`, req.url));
     }
   }
 
@@ -53,5 +53,4 @@ export const config = {
   matcher: ["/dashboard/:path*", "/login"],
 };
 
-
-export default proxy
+export default proxy;

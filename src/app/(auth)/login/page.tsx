@@ -16,13 +16,9 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import useAuth from "@/store/auth/Auth";
 
-
-
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
- const {state,handleLoginChange,handleLoginSubmit} =  useAuth()
-
- 
+  const { state, handleLoginChange, handleLoginSubmit } = useAuth();
 
   return (
     <>
@@ -30,53 +26,61 @@ export default function Login() {
 
       <div className="min-h-screen bg-linear-to-br from-slate-100 via-white to-slate-200">
         <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-
           {/* LEFT */}
-         <div className="relative hidden lg:flex bg-slate-900 overflow-hidden">
+          <div className="relative hidden lg:flex bg-slate-900 overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.08),transparent_40%)]" />
 
-  {/* Background Glow */}
-  <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.08),transparent_40%)]" />
+            {/* Image */}
+            <img
+              src="login.jpg"
+              alt="Dashboard Preview"
+              className="absolute top-1/2 left-1/2 w-[70%] -translate-x-1/2 -translate-y-1/2 opacity-80 pointer-events-none select-none drop-shadow-2xl"
+            />
 
-  {/* Image */}
-<img
-  src="login.jpg"
-  alt="Dashboard Preview"
-  className="absolute top-1/2 left-1/2 w-[70%] -translate-x-1/2 -translate-y-1/2 opacity-80 pointer-events-none select-none drop-shadow-2xl"
-/>
+            {/* Optional Fade Overlay (makes text more readable) */}
+            <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/60 to-transparent" />
 
-  {/* Optional Fade Overlay (makes text more readable) */}
-  <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/60 to-transparent" />
+            {/* Content */}
+            <div className="relative z-10 flex flex-col justify-between p-14 text-white">
+              <div>
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
+                  <FiBookOpen size={28} />
+                </div>
 
-  {/* Content */}
-  <div className="relative z-10 flex flex-col justify-between p-14 text-white">
-    <div>
-      <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
-        <FiBookOpen size={28} />
-      </div>
+                <h1 className="text-4xl font-bold leading-tight">
+                  Smart School ERP System
+                </h1>
+                <p className="mt-4 text-slate-300 leading-7 max-w-lg">
+                  Manage students, academics, attendance, and staff with a
+                  powerful, secure, and beautifully designed dashboard.
+                </p>
+              </div>
 
-      <h1 className="text-4xl font-bold leading-tight">
-        Smart School ERP System
-      </h1>
-      <p className="mt-4 text-slate-300 leading-7 max-w-lg">
-        Manage students, academics, attendance, and staff with a
-        powerful, secure, and beautifully designed dashboard.
-      </p>
-    </div>
-
-    <div className="grid gap-4 sm:grid-cols-3">
-      <FeatureCard icon={<FiUsers />} title="Students" desc="Full control of student records" />
-      <FeatureCard icon={<FiBookOpen />} title="Academics" desc="Manage classes & operations" />
-      <FeatureCard icon={<FiShield />} title="Secure" desc="Role-based protected system" />
-    </div>
-  </div>
-</div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <FeatureCard
+                  icon={<FiUsers />}
+                  title="Students"
+                  desc="Full control of student records"
+                />
+                <FeatureCard
+                  icon={<FiBookOpen />}
+                  title="Academics"
+                  desc="Manage classes & operations"
+                />
+                <FeatureCard
+                  icon={<FiShield />}
+                  title="Secure"
+                  desc="Role-based protected system"
+                />
+              </div>
+            </div>
+          </div>
 
           {/* RIGHT */}
           <div className="flex items-center justify-center px-4 py-10">
             <div className="w-full max-w-md">
-
-              <div className="rounded-3xl bg-white/80 backdrop-blur-xl border border-white/40 shadow-xl p-8">
-                
+              <div className="rounded bg-white/80 backdrop-blur-xl border border-white/40 shadow-xl p-8">
                 <div className="mb-6 text-center">
                   <h2 className="text-2xl font-bold text-slate-800">
                     Welcome Back 👋
@@ -87,7 +91,6 @@ export default function Login() {
                 </div>
 
                 <form onSubmit={handleLoginSubmit} className="space-y-5">
-
                   {/* ROLE */}
                   <div>
                     <label className="text-sm font-medium text-slate-700">
@@ -99,6 +102,7 @@ export default function Login() {
                       onChange={handleLoginChange}
                       className="mt-1 w-full rounded border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
                     >
+                      <option>Select Role For Login</option>
                       <option value="admin">Admin</option>
                       <option value="teacher">Teacher</option>
                       <option value="student">Student</option>
@@ -117,9 +121,8 @@ export default function Login() {
                         name="email"
                         value={state.loginObj.email}
                         onChange={handleLoginChange}
-                       
                         placeholder="Enter your email"
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
+                        className="w-full rounded border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
                       />
                     </div>
                   </div>
@@ -136,9 +139,8 @@ export default function Login() {
                         name="password"
                         value={state.loginObj.password}
                         onChange={handleLoginChange}
-                      
                         placeholder="Enter your password"
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-12 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
+                        className="w-full rounded border border-slate-200 bg-slate-50 py-3 pl-11 pr-12 text-sm focus:ring-2 focus:ring-slate-900/20 focus:bg-white outline-none"
                       />
                       <button
                         type="button"
@@ -148,29 +150,23 @@ export default function Login() {
                         {showPassword ? <FiEyeOff /> : <FiEye />}
                       </button>
                     </div>
-
-                   
                   </div>
 
                   {/* OPTIONS */}
                   <div className="flex items-center justify-between text-sm">
-                    <label className="flex items-center gap-2 text-slate-600">
-                      <input type="checkbox" name="remember" />
-                      Remember me
-                    </label>
+                    <label className="flex items-center gap-2 text-slate-600"></label>
 
-                    <Link href="/forgot-password" className="hover:underline">
-                      Forgot Password?
+                    <Link href="#" className="text-blue-500">
+                      Forgot Password?/Contact To Admin
                     </Link>
                   </div>
 
                   {/* BUTTON */}
                   <button
                     type="submit"
-                   
-                    className="w-full rounded-xl bg-slate-900 py-3 text-sm font-medium text-white transition hover:bg-slate-800 flex items-center justify-center gap-2"
+                    className="w-full rounded bg-slate-900 py-3 text-sm font-medium text-white transition hover:bg-slate-800 flex items-center justify-center gap-2"
                   >
-                   SignIn
+                    SignIn
                   </button>
                 </form>
               </div>

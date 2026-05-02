@@ -17,11 +17,11 @@ export default function RedirectPage() {
     }
 
     if ((session.user as any)?.role === "admin") {
-      router.replace("/dashboard/admin/admin-dashboard");
+      router.replace("/");
     } else if ((session.user as any)?.role === "student") {
       router.replace("/student/dashboard");
     } else {
-      router.replace("/dashboard");
+      router.replace("/");
     }
   }, [session, status]);
   if(status === "loading") return null
