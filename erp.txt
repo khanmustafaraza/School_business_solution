@@ -1,24 +1,31 @@
 "use client";
 
 import Footer from "@/components/footer/Footer";
+import Loader from "@/components/loader/Loader";
 import Navbar from "@/components/navbar/Navbar";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   FaUsers,
+  FaMoneyCheckAlt,
   FaClipboardCheck,
   FaChalkboardTeacher,
   FaSchool,
-  FaBook,
-  FaAward,
+  FaFileInvoiceDollar,
 } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-slate-800">
+      {/* {toast.success("good")} */}
+      
       <Navbar />
 
       {/* HERO */}
@@ -26,142 +33,147 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(15,23,42,0.06),transparent_25%),radial-gradient(circle_at_bottom_left,rgba(15,23,42,0.05),transparent_30%)]" />
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-28">
-          
+
           {/* LEFT */}
           <div>
             <span className="inline-flex items-center border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
-              CBSE Affiliated School
+              Modern ERP for Schools
             </span>
 
             <h2 className="mt-5 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl">
-              Welcome to Rose Valley Public School
+              Simplify School Management with One Smart Platform
             </h2>
 
             <p className="mt-5 max-w-xl text-base leading-8 text-slate-600">
-              Nurturing young minds with quality education, discipline, and innovation. 
-              We focus on academic excellence and holistic development.
+              Manage students, fees, attendance, classes, teachers, and academic records from one powerful dashboard.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
+
               <Link
-                href="/admission"
-                className="inline-flex items-center gap-2 rounded bg-[#8B0000] px-6 py-3 text-sm font-medium text-white hover:opacity-90"
+                href="/login"
+                className="inline-flex items-center gap-2  rounded bg-[#007399] px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
               >
-                Apply Now <FiArrowRight size={18} />
+                Get Started <FiArrowRight size={18} />
               </Link>
 
               <Link
                 href="/contact"
-                className="border border-slate-300 px-6 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="border border-slate-300 px-6 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
               >
-                Contact School
+                Contact Us
               </Link>
+
             </div>
 
             {/* STATS */}
             <div className="mt-10 grid grid-cols-3 gap-4">
-              <StatCard value="30+" label="Years of Excellence" />
-              <StatCard value="100%" label="Result Record" />
-              <StatCard value="CBSE" label="Affiliated Board" />
+              <StatCard value="100+" label="Students Managed" />
+              <StatCard value="24/7" label="Access Anytime" />
+              <StatCard value="All-in-One" label="School Operations" />
             </div>
           </div>
 
           {/* RIGHT */}
           <div className="relative">
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-slate-900">
-                  School Overview
-                </h3>
-                <p className="text-sm text-slate-500">
-                  Academic highlights & performance
-                </p>
+
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900">
+                    ERP Dashboard
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    School performance overview
+                  </p>
+                </div>
+
+                <div className="border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                  Live
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <DashboardMiniCard title="Students" value="1,248" />
                 <DashboardMiniCard title="Teachers" value="58" />
-                <DashboardMiniCard title="Board Results" value="98%" />
-                <DashboardMiniCard title="Events" value="25+" />
+                <DashboardMiniCard title="Attendance" value="93%" />
+                <DashboardMiniCard title="Fees Collected" value="₹4.8L" />
               </div>
+
             </div>
           </div>
+
         </div>
       </section>
 
       {/* FEATURES */}
       <section className="bg-slate-50 py-20">
         <div className="mx-auto max-w-7xl px-4">
+
           <div className="mx-auto mb-12 max-w-2xl text-center">
             <h2 className="text-3xl font-bold text-slate-900">
-              Our School Highlights
+              Powerful Features for Daily School Operations
             </h2>
             <p className="mt-3 text-slate-600">
-              Providing a balanced environment for learning and growth.
+              Everything you need to manage school administration efficiently.
             </p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            <Feature icon={<FaUsers size={24} />} title="Admissions" desc="Easy and transparent admission process." />
-            <Feature icon={<FaBook size={24} />} title="Academics" desc="Structured CBSE curriculum." />
-            <Feature icon={<FaClipboardCheck size={24} />} title="Attendance" desc="Track daily attendance." />
-            <Feature icon={<FaChalkboardTeacher size={24} />} title="Faculty" desc="Experienced teachers." />
-            <Feature icon={<FaSchool size={24} />} title="Facilities" desc="Labs, library & sports." />
-            <Feature icon={<FaAward size={24} />} title="Achievements" desc="Consistent academic excellence." />
-          </div>
-        </div>
-      </section>
 
-      {/* VISION */}
-      <section className="py-20 text-center">
-        <div className="mx-auto max-w-3xl px-4">
-          <h2 className="text-3xl font-bold text-slate-900">Our Vision</h2>
-          <p className="mt-4 text-slate-600">
-            To create responsible global citizens through quality education, strong values, 
-            and a passion for lifelong learning.
-          </p>
+            <Feature icon={<FaUsers size={24} />} title="Student Management" desc="Manage student records easily." />
+            <Feature icon={<FaMoneyCheckAlt size={24} />} title="Fee Tracking" desc="Track payments and dues." />
+            <Feature icon={<FaClipboardCheck size={24} />} title="Attendance" desc="Daily attendance system." />
+            <Feature icon={<FaChalkboardTeacher size={24} />} title="Teachers" desc="Staff management system." />
+            <Feature icon={<FaSchool size={24} />} title="Classes" desc="Class & section management." />
+            <Feature icon={<FaFileInvoiceDollar size={24} />} title="Reports" desc="Generate school reports." />
+
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-[#8B0000] py-20 text-white text-center">
+      <section className="bg-slate-900 py-20 text-white text-center">
         <div className="mx-auto max-w-4xl px-4">
+
           <h2 className="text-3xl font-bold">
-            Join Rose Valley Public School Today
+            Start Managing Your School Smarter
           </h2>
 
-          <p className="mt-4 text-sm text-white/80">
-            Give your child the best education and future.
+          <p className="mt-4 text-sm text-slate-300">
+            Save time and manage everything in one system.
           </p>
 
           <div className="mt-8 flex justify-center gap-4">
+
             <button
-              onClick={() => router.push("/admission")}
-              className="bg-white px-6 py-3 text-sm font-medium text-[#8B0000] hover:opacity-90"
+              onClick={() => router.push("/login")}
+              className="border border-white bg-white px-6 py-3 text-sm font-medium text-slate-900 transition hover:opacity-90"
             >
-              Apply Now
+              Login Now
             </button>
 
             <Link
               href="/contact"
-              className="border border-white/20 px-6 py-3 text-sm font-medium text-white hover:bg-white/10"
+              className="border border-white/20 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
             >
-              Contact Us
+              Contact Sales
             </Link>
+
           </div>
+
         </div>
       </section>
-
-      <Footer />
+      <Footer/>
     </div>
   );
 }
 
-/* COMPONENTS */
+/* COMPONENTS (unchanged but cleaner feel) */
 
 function Feature({ icon, title, desc }: any) {
   return (
-    <div className="border border-slate-200 bg-white p-6 hover:-translate-y-1 hover:shadow-md transition">
+    <div className="border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-md">
       <div className="mb-3 text-slate-800">{icon}</div>
       <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
       <p className="mt-2 text-sm text-slate-600">{desc}</p>
@@ -171,7 +183,7 @@ function Feature({ icon, title, desc }: any) {
 
 function StatCard({ value, label }: any) {
   return (
-    <div className="border border-slate-200 bg-white p-4 text-center">
+    <div className="border border-slate-200 bg-white p-4">
       <h3 className="text-xl font-bold">{value}</h3>
       <p className="text-xs text-slate-500">{label}</p>
     </div>

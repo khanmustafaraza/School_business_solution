@@ -5,18 +5,19 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="border-t border-slate-200 bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         
         <div className="grid gap-10 md:grid-cols-4">
           
-          {/* BRAND */}
+          {/* SCHOOL INFO */}
           <div>
-            <h2 className="text-lg font-semibold text-slate-900">
-              Smart School ERP
+            <h2 className="text-lg font-bold bg-clip-text text-transparent bg-brand-gradient">
+              Rose Valley Public School
             </h2>
-            <p className="mt-2 text-sm text-slate-600 leading-6">
-              A modern school management system to handle admissions, fees,
-              attendance, and academic records efficiently.
+
+            <p className="mt-3 text-sm text-slate-600 leading-6">
+              Providing quality education with a focus on academic excellence, 
+              discipline, and overall personality development.
             </p>
           </div>
 
@@ -25,61 +26,65 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-slate-900">
               Quick Links
             </h3>
-            <ul className="mt-3 space-y-2 text-sm text-slate-600">
+
+            <ul className="mt-4 space-y-2 text-sm text-slate-600">
               <li>
-                <Link href="/" className="hover:text-slate-900">
+                <Link href="/" className="hover:text-slate-900 transition">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/admission" className="hover:text-slate-900">
-                  Admission
+                <Link href="/about" className="hover:text-slate-900 transition">
+                  About
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-slate-900">
-                  Contact
+                <Link href="/academics" className="hover:text-slate-900 transition">
+                  Academics
                 </Link>
               </li>
               <li>
-                <Link href="/login" className="hover:text-slate-900">
-                  Login
+                <Link href="/admission" className="hover:text-slate-900 transition">
+                  Admissions
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* FEATURES */}
+          {/* ACADEMICS */}
           <div>
             <h3 className="text-sm font-semibold text-slate-900">
-              Features
+              Academics
             </h3>
-            <ul className="mt-3 space-y-2 text-sm text-slate-600">
-              <li>Student Management</li>
-              <li>Fee Tracking</li>
-              <li>Attendance</li>
-              <li>Reports</li>
+
+            <ul className="mt-4 space-y-2 text-sm text-slate-600">
+              <li>Primary School</li>
+              <li>Middle School</li>
+              <li>Senior Secondary</li>
+              <li>CBSE Curriculum</li>
             </ul>
           </div>
 
           {/* CONTACT */}
           <div>
             <h3 className="text-sm font-semibold text-slate-900">
-              Contact
+              Contact Us
             </h3>
-            <ul className="mt-3 space-y-2 text-sm text-slate-600">
-              <li>Email: support@schoolerp.com</li>
+
+            <ul className="mt-4 space-y-2 text-sm text-slate-600">
+              <li>Email: info@rosevalleyschool.com</li>
               <li>Phone: +91 98765 43210</li>
-              <li>India</li>
+              <li>Delhi, India</li>
             </ul>
           </div>
 
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="mt-10 border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
-          © {new Date().getFullYear()} Smart School ERP. All rights reserved.
+        <div className="mt-12 border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
+          © {new Date().getFullYear()} Rose Valley Public School. All rights reserved.
         </div>
+
       </div>
     </footer>
   );
