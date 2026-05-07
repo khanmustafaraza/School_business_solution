@@ -1,80 +1,35 @@
 @import "tailwindcss";
+
 :root {
-  /* 🌈 BRAND BACKGROUND */
-   --bg-primary: linear-gradient(
-    135deg,
-    #ec4899,
-    #f97316,
-    #facc15
-  );
-  --bg-soft: #f8fafc;
-
-  /* 🧱 SURFACES (CARDS / BOXES) */
-  --surface: #ffffff;
-  --surface-muted: #f1f5f9;
-  --surface-glass: rgba(255, 255, 255, 0.6);
-
-  /* 🎨 TEXT COLORS */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-
-  /* 🧊 BORDERS */
-  --border-light: #e2e8f0;
-  --border-medium: #cbd5e1;
-
-  /* 🌟 SHADOWS (IMPORTANT FOR SaaS LOOK) */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
-
-  /* 🔘 BORDER RADIUS */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-}
-@keyframes moveGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  --primary-color: #003366;
+  --button-color: #cc0052;
+  --text-primary: #003366;
+  --text-secondary: #6b7280;
+  --hover-color: #be185d;
 }
 
-.bg-brand-gradient {
-  background: var(--bg-primary);
-  background-size: 200% 200%;
-  animation: moveGradient 12s ease infinite;
+/* TEXT */
+
+.primary-text {
+  color: var(--text-primary);
 }
 
-body {
-  font-family: var(--font-open);
+.secondary-text {
+  color: var(--text-secondary);
 }
 
+/* BACKGROUNDS */
 
-.bg-surface {
-  background: var(--surface);
+.primary-bg {
+  background-color: var(--primary-color);
 }
 
-.bg-soft {
-  background: var(--bg-soft);
+.button-bg {
+  background-color: var(--button-color);
 }
 
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
+/* HOVER */
 
-.card-hover {
-  transition: all 0.2s ease;
-}
-
-.card-hover:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.text-muted {
-  color: var(--text-muted);
+.hover-text:hover {
+  color: var(--hover-color);
 }

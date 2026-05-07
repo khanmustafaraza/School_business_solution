@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import { FaBars } from "react-icons/fa";
 import { FiBell, FiSearch, FiUser, FiLogOut, FiGrid } from "react-icons/fi";
+import Dropdown from "../dropdown/Dropdown";
 
 export default function Topbar() {
   const { handleToggle } = useToggle();
@@ -83,73 +84,7 @@ export default function Topbar() {
           </button>
 
           {/* PROFILE */}
-          <div className="relative" ref={ref}>
-
-            <button
-              onClick={() => setOpen(!open)}
-              className="flex items-center gap-3 rounded-full bg-slate-100 px-2 py-1.5 hover:bg-slate-200 transition"
-            >
-
-              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 text-white flex items-center justify-center font-semibold">
-                {user?.name?.charAt(0)}
-              </div>
-
-              <div className="hidden md:block text-left">
-                <p className="text-sm font-medium text-slate-800">
-                  {user?.name}
-                </p>
-                <p className="text-xs text-slate-500">
-                  {isAdmin ? "Admin" : "Student"}
-                </p>
-              </div>
-
-            </button>
-
-            {/* DROPDOWN */}
-            {open && (
-              <div className="absolute right-0 mt-3 w-64 rounded-2xl bg-white/90 backdrop-blur-xl shadow-[0_25px_70px_rgba(0,0,0,0.15)] overflow-hidden">
-
-                {/* USER HEADER */}
-                <div className="px-4 py-3 bg-slate-50">
-                  <p className="text-sm font-semibold text-slate-900">
-                    {user?.name}
-                  </p>
-                  <p className="text-xs text-slate-500 truncate">
-                    {user?.email}
-                  </p>
-                </div>
-
-                {/* MENU */}
-                <div className="p-2 space-y-1">
-
-                  <Link
-                    href={
-                      isAdmin
-                        ? "/dashboard/admin/admin-dashboard"
-                        : "/dashboard/student/student-dashboard"
-                    }
-                    onClick={() => setOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-slate-700 hover:bg-slate-100 transition"
-                  >
-                    <FiGrid />
-                    Dashboard
-                  </Link>
-
-                  <button
-                    onClick={() => signOut({ callbackUrl: "/login" })}
-                    className="flex items-center gap-2 w-full px-3 py-2 rounded-xl text-sm text-red-500 hover:bg-red-50 transition"
-                  >
-                    <FiLogOut />
-                    Logout
-                  </button>
-
-                </div>
-
-              </div>
-            )}
-
-          </div>
-
+        <Dropdown isNavbar = {false} />
         </div>
 
       </div>

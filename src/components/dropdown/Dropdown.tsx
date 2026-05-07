@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FiUser, FiLogOut, FiGrid } from "react-icons/fi";
 
-export default function Dropdown() {
+export default function Dropdown({isNavbar}:{isNavbar:boolean}) {
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
 
@@ -17,7 +17,7 @@ export default function Dropdown() {
 
       {/* TRIGGER */}
       <button onClick={() => setOpen(!open)}>
-        <div className="h-10 w-10 rounded-full bg-linear-to-br from-indigo-500 to-blue-600 text-white flex items-center justify-center font-semibold shadow-sm hover:scale-105 transition capitalize">
+        <div className="h-10 w-10 rounded-full primary-bg text-white flex items-center justify-center font-semibold shadow-sm hover:scale-105 transition capitalize">
           {user?.name?.charAt(0)}
         </div>
       </button>
@@ -45,7 +45,8 @@ export default function Dropdown() {
           {/* MENU */}
           <div className="space-y-1">
 
-            <Link
+          {
+            isNavbar &&   <Link
               href={
                 isAdmin
                   ? "/dashboard/admin/admin-dashboard"
@@ -54,9 +55,10 @@ export default function Dropdown() {
               onClick={() => setOpen(false)}
               className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-slate-700 hover:bg-slate-100 transition"
             >
-              <FiGrid className="text-slate-500" />
+              <FiGrid className="text-slate-500" /> 
               {isAdmin ? "Admin Dashboard" : "Student Dashboard"}
             </Link>
+          }
 
           </div>
 
