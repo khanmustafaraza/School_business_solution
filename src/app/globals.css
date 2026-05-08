@@ -2,10 +2,21 @@
 
 :root {
   --primary-color: #003366;
-  --button-color: #cc0052;
+  --secondary-color: #cc0052;
+
   --text-primary: #003366;
-  --text-secondary: #6b7280;
-  --hover-color: #be185d;
+  --text-secondary: gray;
+  --hover-color: #1d64ac;
+
+/* Modern SaaS Brand Gradient */
+--brand-gradient: radial-gradient(
+  circle at top left,
+  rgba(99, 102, 241, 0.95) 0%,     /* Indigo primary */
+  rgba(139, 92, 246, 0.85) 28%,    /* Purple blend */
+  rgba(59, 130, 246, 0.55) 58%,    /* SaaS blue */
+  rgba(15, 23, 42, 0.15) 85%,      /* Deep slate fade */
+  rgba(2, 6, 23, 0.02) 100%
+);
 }
 
 /* TEXT */
@@ -23,13 +34,18 @@
 .primary-bg {
   background-color: var(--primary-color);
 }
+.secondary-bg{
+  background-color: var(--secondary-color);
 
-.button-bg {
-  background-color: var(--button-color);
 }
+
 
 /* HOVER */
 
 .hover-text:hover {
   color: var(--hover-color);
+}
+.brand-bg{
+  background: var(--brand-gradient);
+  /* opacity: .8; */
 }

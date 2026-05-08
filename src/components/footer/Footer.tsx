@@ -11,7 +11,7 @@ export default function Footer() {
           
           {/* SCHOOL INFO */}
           <div>
-            <h2 className="text-lg font-bold bg-clip-text text-transparent bg-brand-gradient">
+            <h2 className="text-lg font-bold primary-text">
               Rose Valley Public School
             </h2>
 

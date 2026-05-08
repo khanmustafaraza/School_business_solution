@@ -23,7 +23,7 @@ export default function Navbar() {
           {/* LOGO */}
           <Link href="/" className="leading-tight">
 
-            <h1 className="text-lg font-bold primary-text">
+            <h1 className="text-lg font-bold ">
               Rose Valley Public School
             </h1>
 
@@ -38,35 +38,35 @@ export default function Navbar() {
 
             <Link
               href="/"
-              className="text-sm primary-text hover-text transition"
+              className="text-sm  hover-text transition"
             >
               Home
             </Link>
 
             <Link
               href="/about"
-              className="text-sm primary-text hover-text transition"
+              className="text-sm  hover-text transition"
             >
               About
             </Link>
 
             <Link
               href="/academics"
-              className="text-sm primary-text hover-text transition"
+              className="text-sm  hover-text transition"
             >
               Academics
             </Link>
 
             <Link
               href="/admission"
-              className="text-sm font-medium primary-text hover-text transition"
+              className="text-sm font-medium  hover-text transition"
             >
               Admissions
             </Link>
 
             <Link
               href="/contact"
-              className="text-sm primary-text hover-text transition"
+              className="text-sm  hover-text transition"
             >
               Contact
             </Link>
@@ -88,7 +88,7 @@ export default function Navbar() {
           {/* MOBILE MENU BUTTON */}
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden text-2xl primary-text"
+            className="md:hidden text-2xl "
           >
             ☰
           </button>
@@ -101,35 +101,35 @@ export default function Navbar() {
 
             <Link
               href="/"
-              className="px-3 py-2 text-sm primary-text hover:bg-slate-100 rounded"
+              className="px-3 py-2 text-sm  hover:bg-slate-100 rounded"
             >
               Home
             </Link>
 
             <Link
               href="/about"
-              className="px-3 py-2 text-sm primary-text hover:bg-slate-100 rounded"
+              className="px-3 py-2 text-sm  hover:bg-slate-100 rounded"
             >
               About
             </Link>
 
             <Link
               href="/academics"
-              className="px-3 py-2 text-sm primary-text hover:bg-slate-100 rounded"
+              className="px-3 py-2 text-sm  hover:bg-slate-100 rounded"
             >
               Academics
             </Link>
 
             <Link
               href="/admission"
-              className="px-3 py-2 text-sm font-medium primary-text hover:bg-slate-100 rounded"
+              className="px-3 py-2 text-sm font-medium  hover:bg-slate-100 rounded"
             >
               Admissions
             </Link>
 
             <Link
               href="/contact"
-              className="px-3 py-2 text-sm primary-text hover:bg-slate-100 rounded"
+              className="px-3 py-2 text-sm  hover:bg-slate-100 rounded"
             >
               Contact
             </Link>

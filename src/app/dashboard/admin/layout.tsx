@@ -10,7 +10,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const { toggle } = useToggle();
 
   return (
-    <div className="flex min-h-screen bg-[#fafafa]">
+    <div className="flex min-h-screen bg-[#fafafa] p-1 shadow-xl">
       <Sidebar navData={navData} />
 
       <div

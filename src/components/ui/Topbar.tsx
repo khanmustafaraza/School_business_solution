@@ -6,17 +6,17 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 
 import { FaBars } from "react-icons/fa";
-import { FiBell, FiSearch, FiUser, FiLogOut, FiGrid } from "react-icons/fi";
+import { FiBell, FiSearch, } from "react-icons/fi";
+import { RiMenuFold3Fill, RiMenuUnfold3Fill } from "react-icons/ri";
 import Dropdown from "../dropdown/Dropdown";
 
 export default function Topbar() {
-  const { handleToggle } = useToggle();
+  const { handleToggle,toggle } = useToggle();
   const { data: session } = useSession();
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
+ 
 
   const user = session?.user as any;
-  const isAdmin = user?.role === "admin";
+  // const isAdmin = user?.role === "admin";
 
   // close on outside click
   // useEffect(() => {
@@ -41,8 +41,9 @@ export default function Topbar() {
           <button
             onClick={handleToggle}
             className="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 transition"
-          >
-            <FaBars className="text-slate-700" size={15} />
+           title="Toggle Sidebar">
+            {toggle ?<RiMenuUnfold3Fill/>: <RiMenuFold3Fill/>}
+            {/* <FaBars className="text-slate-700" size={15} /> */}
           </button>
 
           <div className="hidden sm:block leading-tight">

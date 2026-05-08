@@ -14,103 +14,163 @@ export default function AdmissionPage() {
       <Navbar />
 
       {/* Loader */}
-      {state.isLoading.loading && <Loader isLoading ={state.isLoading.loading} message={state.isLoading.message} />}
+      {state.isLoading.loading && (
+        <Loader
+          isLoading={state.isLoading.loading}
+          message={state.isLoading.message}
+        />
+      )}
 
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-6xl bg-white border border-slate-200 shadow-sm grid lg:grid-cols-2">
+      <div className="relative overflow-hidden bg-gray-50 py-20 px-4 primary-text">
 
-          {/* LEFT IMAGE */}
-          <div className="hidden lg:block relative">
-            <img
-              src="https://images.unsplash.com/photo-1588072432836-e10032774350"
-              alt="School"
-              className="h-full w-full object-cover"
-            />
+        {/* Background Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full secondary-bg opacity-10 blur-3xl" />
 
-            <div className="absolute inset-0 bg-black/30 flex items-end p-6">
-              <div className="text-white">
-                <h3 className="text-xl font-semibold">
-                  Join Our School Community
-                </h3>
-                <p className="text-sm mt-1 opacity-90">
-                  Quality education with modern learning methods.
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="relative z-10 max-w-6xl mx-auto">
 
-          {/* RIGHT FORM */}
-          <div className="p-8 lg:p-10">
-            <h2 className="text-2xl font-bold text-slate-900">
-              Admission Enquiry
-            </h2>
+          {/* Heading */}
+          <div className="text-center mb-14">
 
-            <p className="text-sm text-slate-600 mt-1">
-              Fill the form and we’ll get back to you.
+            <span className="inline-flex rounded bg-white px-4 py-1.5 text-sm font-medium secondary-text">
+              Admissions Open
+            </span>
+
+            <h1 className="mt-6 text-5xl font-bold tracking-tight primary-text">
+              Begin Your Child’s
+              <span className="block primary-text">
+                Learning Journey
+              </span>
+            </h1>
+
+            <p className="mt-6 max-w-2xl mx-auto text-lg leading-8 secondary-text">
+              Join a nurturing environment where academic excellence,
+              creativity, and character development shape future-ready students.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          </div>
 
-              {/* NAME */}
-              <InputField
-                icon={<FaUser />}
-                name="name"
-                placeholder="Student Name"
-                value={state.enquiryObj.name}
-                onChange={handleChange}
+          {/* Main Card */}
+          <div className="overflow-hidden rounded-[2rem] bg-white shadow-xl grid lg:grid-cols-2">
+
+            {/* LEFT IMAGE */}
+            <div className="relative hidden lg:block">
+
+              <img
+                src="https://images.unsplash.com/photo-1588072432836-e10032774350"
+                alt="School"
+                className="h-full w-full object-cover"
               />
 
-              {/* MOBILE */}
-              <InputField
-                icon={<FaPhone />}
-                name="mobile"
-                placeholder="Mobile Number"
-                value={state.enquiryObj.mobile}
-                onChange={handleChange}
-              />
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-black/40" />
 
-              {/* CLASS */}
-              <div className="relative">
-                <FaSchool className="absolute left-3 top-3 text-slate-400 text-sm" />
+              {/* Content */}
+              <div className="absolute bottom-0 p-10 text-white">
 
-                <select
-                  name="addmissionClass"
-                  value={state.enquiryObj.addmissionClass}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-slate-300 pl-10 pr-3 py-2 text-sm focus:outline-none focus:border-slate-500"
-                >
-                  <option value="">Select Class</option>
-                  <option>Nursery</option>
-                  <option>LKG</option>
-                  <option>UKG</option>
-                  <option>Class 1</option>
-                  <option>Class 2</option>
-                  <option>Class 3</option>
-                </select>
+                <span className="inline-block rounded bg-white/10 px-4 py-1 text-sm backdrop-blur">
+                  Rose Valley Public School
+                </span>
+
+                <h3 className="mt-5 text-3xl font-bold">
+                  Empowering Young Minds
+                </h3>
+
+                <p className="mt-5 text-white/80 leading-7">
+                  A place where students are inspired to explore, learn,
+                  innovate, and grow with confidence.
+                </p>
+
               </div>
 
-              {/* MESSAGE */}
-              <textarea
-                name="message"
-                value={state.enquiryObj.message}
-                onChange={handleChange}
-                placeholder="Additional Message"
-                rows={3}
-                className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-slate-500"
-              />
+            </div>
 
-              {/* SUBMIT */}
-              <button
-                disabled={state.isLoading.loading}
-                className="w-full bg-slate-900 text-white py-2.5 text-sm font-medium disabled:opacity-50"
-              >
-                {state.isLoading.loading ? "Submitting..." : "Submit Enquiry"}
-              </button>
+            {/* RIGHT FORM */}
+            <div className="p-8 sm:p-12 lg:p-14">
 
-            </form>
+              <div>
+
+                <span className="text-sm font-semibold uppercase tracking-[0.2em] primary-text">
+                  Admission Enquiry
+                </span>
+
+                <h2 className="mt-3 text-4xl font-bold primary-text">
+                  Let’s Connect
+                </h2>
+
+                <p className="mt-4 secondary-text leading-7">
+                  Fill out the enquiry form and our admissions team will reach
+                  out to guide you.
+                </p>
+
+              </div>
+
+              <form onSubmit={handleSubmit} className="mt-10 space-y-6">
+
+                <InputField
+                  icon={<FaUser />}
+                  name="name"
+                  placeholder="Student Name"
+                  value={state.enquiryObj.name}
+                  onChange={handleChange}
+                />
+
+                <InputField
+                  icon={<FaPhone />}
+                  name="mobile"
+                  placeholder="Mobile Number"
+                  value={state.enquiryObj.mobile}
+                  onChange={handleChange}
+                />
+
+                {/* CLASS */}
+                <div className="relative">
+
+                  <FaSchool className="absolute left-4 top-4 secondary-text text-sm" />
+
+                  <select
+                    name="addmissionClass"
+                    value={state.enquiryObj.addmissionClass}
+                    onChange={handleChange}
+                    required
+                    className="w-full rounded-2xl bg-gray-50 pl-12 pr-4 py-4 text-sm secondary-text outline-none"
+                  >
+                    <option value="">Select Class</option>
+                    <option>Nursery</option>
+                    <option>LKG</option>
+                    <option>UKG</option>
+                    <option>Class 1</option>
+                    <option>Class 2</option>
+                    <option>Class 3</option>
+                  </select>
+
+                </div>
+
+                {/* MESSAGE */}
+                <textarea
+                  name="message"
+                  value={state.enquiryObj.message}
+                  onChange={handleChange}
+                  placeholder="Additional Message"
+                  rows={4}
+                  className="w-full rounded-2xl bg-gray-50 px-4 py-4 text-sm secondary-text outline-none resize-none"
+                />
+
+                {/* SUBMIT */}
+                <button
+                  disabled={state.isLoading.loading}
+                  className="w-full rounded-2xl secondary-bg text-white py-4 text-sm font-semibold hover:opacity-90 transition"
+                >
+                  {state.isLoading.loading ? "Submitting..." : "Submit Enquiry"}
+                </button>
+
+              </form>
+
+            </div>
+
           </div>
+
         </div>
+
       </div>
 
       <Footer />
@@ -118,7 +178,7 @@ export default function AdmissionPage() {
   );
 }
 
-/* ================= INPUT COMPONENT ================= */
+/* INPUT */
 
 function InputField({
   icon,
@@ -126,23 +186,23 @@ function InputField({
   placeholder,
   onChange,
   value,
-  type = "text",
 }: any) {
   return (
     <div className="relative">
-      <span className="absolute left-3 top-2.5 text-slate-400 text-sm">
+
+      <span className="absolute left-4 top-4 secondary-text text-sm">
         {icon}
       </span>
 
       <input
-        type={type}
         name={name}
         value={value}
         placeholder={placeholder}
         onChange={onChange}
         required
-        className="w-full border border-slate-300 pl-10 pr-3 py-2 text-sm focus:outline-none focus:border-slate-500"
+        className="w-full rounded-2xl bg-gray-50 pl-12 pr-4 py-4 text-sm secondary-text outline-none"
       />
+
     </div>
   );
 }

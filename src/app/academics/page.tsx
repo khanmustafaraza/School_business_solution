@@ -5,95 +5,174 @@ import Footer from "@/components/footer/Footer";
 
 export default function Academics() {
   return (
-    <div className="bg-white text-slate-800">
+    <div className="bg-white primary-text overflow-hidden">
+
       <Navbar />
 
       {/* HERO */}
-      <section className="bg-[#8B0000] text-white py-20 text-center">
-        <h1 className="text-4xl font-bold">Academics</h1>
-        <p className="mt-4 text-sm text-white/80">
-          Excellence in education through structured learning
-        </p>
+      <section className="primary-bg py-28 sm:py-36 text-white">
+
+        <div className="max-w-4xl mx-auto px-6 text-center">
+
+          <span className="inline-flex rounded bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur">
+            Academics
+          </span>
+
+          <h1 className="mt-8 text-5xl sm:text-6xl font-bold leading-tight">
+            Excellence Through
+            <span className="block">
+              Structured Learning
+            </span>
+          </h1>
+
+          <p className="mt-8 text-lg leading-8 text-white/80 max-w-2xl mx-auto">
+            Our academic framework nurtures intellectual growth, creativity,
+            discipline, and critical thinking for a successful future.
+          </p>
+
+        </div>
+
       </section>
 
       {/* CURRICULUM */}
-      <section className="py-20 max-w-5xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-slate-900">
-          Curriculum
-        </h2>
-        <p className="mt-4 text-slate-600 leading-7">
-          Our school follows the CBSE curriculum designed to ensure 
-          a strong academic foundation along with co-curricular development.
-        </p>
+      <section className="py-24">
+
+        <div className="max-w-5xl mx-auto px-6 text-center">
+
+          <span className="text-sm font-semibold uppercase tracking-[0.2em] primary-text">
+            Curriculum
+          </span>
+
+          <h2 className="mt-4 text-4xl font-bold primary-text">
+            A Balanced Educational Journey
+          </h2>
+
+          <p className="mt-8 text-lg leading-8 secondary-text max-w-3xl mx-auto">
+            Our institution follows the CBSE curriculum designed for academic
+            strength and holistic growth.
+          </p>
+
+        </div>
+
       </section>
 
       {/* LEVELS */}
-      <section className="bg-slate-50 py-20">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 px-4">
+      <section className="bg-gray-50 py-24">
 
-          <Level 
+        <div className="max-w-6xl mx-auto px-6 grid gap-8 md:grid-cols-3">
+
+          <Level
+            icon="📘"
             title="Primary School"
-            desc="Focus on basic learning, creativity, and activity-based education."
+            desc="Activity-based learning and strong fundamentals."
           />
 
-          <Level 
+          <Level
+            icon="🧠"
             title="Middle School"
-            desc="Concept-based learning with emphasis on critical thinking."
+            desc="Conceptual understanding and analytical thinking."
           />
 
-          <Level 
+          <Level
+            icon="🎓"
             title="Senior Secondary"
-            desc="Specialized streams with focus on board exam preparation."
+            desc="Career-focused streams and guidance."
           />
 
         </div>
+
       </section>
 
       {/* SUBJECTS */}
-      <section className="py-20 max-w-6xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-slate-900 text-center">
-          Subjects Offered
-        </h2>
+      <section className="py-24">
 
-        <div className="mt-10 grid md:grid-cols-3 gap-6 text-center">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+
+          <span className="text-sm font-semibold uppercase tracking-[0.2em] primary-text">
+            Subjects Offered
+          </span>
+
+          <h2 className="mt-4 text-4xl font-bold primary-text">
+            Diverse & Future-Ready Learning
+          </h2>
+
+        </div>
+
+        <div className="mt-14 max-w-6xl mx-auto px-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+
           <Subject name="Mathematics" />
           <Subject name="Science" />
           <Subject name="English" />
           <Subject name="Social Studies" />
           <Subject name="Computer Science" />
           <Subject name="Physical Education" />
+
         </div>
+
       </section>
 
-      {/* EXAMS */}
-      <section className="bg-slate-50 py-20 text-center px-4">
-        <h2 className="text-2xl font-bold text-slate-900">
-          Examination System
-        </h2>
-        <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
-          Regular assessments, unit tests, and final examinations ensure 
-          continuous evaluation and improvement of students.
-        </p>
+      {/* EXAMINATION */}
+      <section className="bg-gray-50 py-24">
+
+        <div className="max-w-4xl mx-auto px-6 text-center">
+
+          <span className="text-sm font-semibold uppercase tracking-[0.2em] primary-text">
+            Assessment System
+          </span>
+
+          <h2 className="mt-4 text-4xl font-bold primary-text">
+            Continuous Evaluation & Growth
+          </h2>
+
+          <div className="mt-10 rounded-2xl bg-white p-10 sm:p-14">
+
+            <p className="text-lg leading-8 secondary-text">
+              Regular assessments, unit tests, and examinations ensure steady
+              academic progress and student development.
+            </p>
+
+          </div>
+
+        </div>
+
       </section>
 
       <Footer />
+
     </div>
   );
 }
 
-function Level({ title, desc }: any) {
+/* LEVEL CARD */
+function Level({ icon, title, desc }: any) {
   return (
-    <div className="bg-white border p-6 text-center">
-      <h3 className="text-lg font-semibold">{title}</h3>
-      <p className="mt-2 text-sm text-slate-600">{desc}</p>
+    <div className="rounded-3xl bg-white p-10 text-center">
+
+      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl secondary-bg text-white text-3xl">
+        {icon}
+      </div>
+
+      <h3 className="mt-6 text-2xl font-semibold primary-text">
+        {title}
+      </h3>
+
+      <p className="mt-4 secondary-text leading-7">
+        {desc}
+      </p>
+
     </div>
   );
 }
 
+/* SUBJECT CARD */
 function Subject({ name }: any) {
   return (
-    <div className="border p-4 bg-white">
-      <p className="text-sm font-medium">{name}</p>
+    <div className="rounded-2xl bg-white p-6 text-center">
+
+      <p className="text-base font-semibold primary-text">
+        {name}
+      </p>
+
     </div>
   );
 }
