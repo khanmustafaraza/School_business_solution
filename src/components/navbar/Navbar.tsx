@@ -58,10 +58,10 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="/admission"
+              href="/enquiry"
               className="text-sm font-medium  hover-text transition"
             >
-              Admissions
+              Enquiry
             </Link>
 
             <Link

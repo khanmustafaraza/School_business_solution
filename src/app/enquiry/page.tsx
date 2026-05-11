@@ -50,7 +50,7 @@ export default function AdmissionPage() {
           </div>
 
           {/* Main Card */}
-          <div className="overflow-hidden rounded-[2rem] bg-white shadow-xl grid lg:grid-cols-2">
+          <div className="overflow-hidden rounded-4xl bg-white shadow-xl grid lg:grid-cols-2">
 
             {/* LEFT IMAGE */}
             <div className="relative hidden lg:block">
@@ -112,6 +112,7 @@ export default function AdmissionPage() {
                   placeholder="Student Name"
                   value={state.enquiryObj.name}
                   onChange={handleChange}
+                  type="text"
                 />
 
                 <InputField
@@ -120,19 +121,20 @@ export default function AdmissionPage() {
                   placeholder="Mobile Number"
                   value={state.enquiryObj.mobile}
                   onChange={handleChange}
+                  type="number"
                 />
 
                 {/* CLASS */}
-                <div className="relative">
+                <div  className="w-full flex items-center gap-1 border bg-slate-50 p-1 border-gray-100 outline-none">
 
-                  <FaSchool className="absolute left-4 top-4 secondary-text text-sm" />
+                  <FaSchool className=" secondary-text text-sm" />
 
                   <select
                     name="addmissionClass"
                     value={state.enquiryObj.addmissionClass}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-2xl bg-gray-50 pl-12 pr-4 py-4 text-sm secondary-text outline-none"
+                    className="w-full py-2 text-sm secondary-text outline-none"
                   >
                     <option value="">Select Class</option>
                     <option>Nursery</option>
@@ -152,13 +154,13 @@ export default function AdmissionPage() {
                   onChange={handleChange}
                   placeholder="Additional Message"
                   rows={4}
-                  className="w-full rounded-2xl bg-gray-50 px-4 py-4 text-sm secondary-text outline-none resize-none"
+                  className="w-full flex items-center gap-5 border bg-slate-50 p-1 border-gray-100 outline-none"
                 />
 
                 {/* SUBMIT */}
                 <button
                   disabled={state.isLoading.loading}
-                  className="w-full rounded-2xl secondary-bg text-white py-4 text-sm font-semibold hover:opacity-90 transition"
+                  className="w-full rounded secondary-bg text-white py-3 text-sm font-semibold hover:opacity-90 transition"
                 >
                   {state.isLoading.loading ? "Submitting..." : "Submit Enquiry"}
                 </button>
@@ -186,21 +188,23 @@ function InputField({
   placeholder,
   onChange,
   value,
+  type
 }: any) {
   return (
-    <div className="relative">
+    <div className="flex items-center gap-5 border bg-slate-50 p-1 border-gray-100">
 
-      <span className="absolute left-4 top-4 secondary-text text-sm">
+      <div className="secondary-text text-sm">
         {icon}
-      </span>
+      </div>
 
       <input
         name={name}
         value={value}
+        type={type}
         placeholder={placeholder}
         onChange={onChange}
         required
-        className="w-full rounded-2xl bg-gray-50 pl-12 pr-4 py-4 text-sm secondary-text outline-none"
+        className="w-full rounded bg-transparent  py-2 text-sm secondary-text outline-none"
       />
 
     </div>

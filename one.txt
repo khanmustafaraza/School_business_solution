@@ -263,3 +263,13 @@ export default async function AdminPage() {
 
 
 import { getServerSession } from "next-auth";
+
+
+mongod.lock
+WiredTiger.lock
+mongod.exe --repair --dbpath "C:\data\db"
+"C:\Program Files\MongoDB\Tools\100\bin\mongorestore.exe" "D:\mongo-backups"
+"C:\Program Files\MongoDB\Tools\100\bin\mongodump.exe" --out "G:\MongoBackups"
+
+mongodump --out "D:\mongo-backups"
+

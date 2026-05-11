@@ -11,7 +11,8 @@ export default function Loader({ isLoading, message = "Loading..." }: LoaderProp
   if (!isLoading) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm">
+    // <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="flex flex-col items-center gap-3  border border-slate-200 bg-black p-1 shadow-sm">
         
         <ClipLoader

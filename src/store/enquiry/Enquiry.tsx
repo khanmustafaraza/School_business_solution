@@ -1,11 +1,13 @@
 "use client";
 
+import { validateData } from "@/app/lib/validate";
 import EnquiryReducer from "@/reducers/enquiry/Enquiry";
 import {
   EnquiryContextType,
   EnquiryListType,
   EnquiryStateType,
 } from "@/types/enquiry/enquirytype";
+import { EnquirySchema } from "@/validators/enquiryvalidator";
 import React, { createContext, useContext, useReducer } from "react";
 import { toast } from "react-toastify";
 
@@ -58,6 +60,16 @@ export const EnquiryProvider = ({
     e: React.SyntheticEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+    // const result= validateData(EnquirySchema,state.enquiryObj)
+    // // console.log("err",err)
+    // if(!result.success){
+    //   toast.error(result?.errors?.name)
+    //   toast.error(result?.errors?.mobile)
+    //   toast.error(result?.errors?.admisssionClass)
+    //   toast.error(result?.errors?.message)
+    //   return
+
+    // }
 
     try {
       dispatch({
@@ -74,18 +86,34 @@ export const EnquiryProvider = ({
       });
 
       const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || "Something went wrong");
-      }
       console.log(data)
-      toast.success(data.message)
+      if(data.success){
+
+        toast.success(data.message)
+      }
+      if(!data.success){
+        // toast.error(data.message)
+          toast.error(data.errors.name)
+        toast.error(data.errors.mobile)
+        toast.error(data.errors.admissionClass)
+        toast.error(data.errors.message)
+
+      }
+
+     
+      // console.log(data)
+       if(!data.success){
+      
+      }
+      // if(data)
 
       dispatch({ type: "SET_SUCCESS"});
+     
 
       // ✅ refresh list after submit
       // await getEnquiryList();
     } catch (error: any) {
+      // toast.error(error.message)
       dispatch({
         type: "SET_LOADING",
         payload: {

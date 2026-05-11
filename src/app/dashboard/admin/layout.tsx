@@ -17,7 +17,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         className={`${
           toggle
             ? "w-full"
-            : "w-[55%] sm:w-[50%] md:w-[70%] lg:w-[80%] xl:w-[85%] 2xl:w-[85%]"
+            : "w-[55%] sm:w-[50%] md:w-[75%] lg:w-[88%] xl:w-[88%] 2xl:w-[88%]"
         } transition-all duration-300 flex flex-col`}
       >
         <Topbar />
