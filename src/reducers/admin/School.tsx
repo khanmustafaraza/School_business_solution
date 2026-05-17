@@ -1,4 +1,4 @@
-import { SchoolAction, SchoolState } from "@/types/admin/schooltype";
+import { SchoolAction, SchoolState } from "@/types/admintypes/schooltype";
 
 
 export const schoolReducer = (state: SchoolState, action: SchoolAction): SchoolState => {

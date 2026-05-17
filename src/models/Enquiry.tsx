@@ -7,20 +7,28 @@ const EnquirySchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-   mobile: {
-  type: String,
-  required: true,
-  match: /^[0-9]{10}$/, // basic validation
-},
+    mobile: {
+      type: String,
+      required: true,
+      match: /^[0-9]{10}$/, // basic validation
+    },
     addmissionClass: {
       type: String,
       required: true,
+    },
+    comment: {
+      type: String
     },
     message: {
       type: String,
       required: true,
       trim: true,
     },
+    status: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "completed"]
+    }
   },
   {
     timestamps: true, // adds createdAt & updatedAt

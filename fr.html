@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Sons Card</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    font-family:Arial, sans-serif;
+    padding:20px;
+}
+
+.card{
+    width:800px;
+    max-width:100%;
+    padding:40px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    box-shadow:0 8px 25px rgba(0,0,0,0.4);
+    color:white;
+    text-align:center;
+    animation:fadeIn 1.5s ease;
+}
+
+.profile-img{
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid #facc15;
+    margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.5);
+}
+
+h1{
+    font-size:42px;
+    color:#facc15;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.meaning{
+    font-size:22px;
+    color:#cbd5e1;
+    margin-bottom:25px;
+}
+
+.highlight{
+    color:#38bdf8;
+    font-weight:bold;
+}
+
+p{
+    font-size:18px;
+    line-height:1.9;
+    color:#f8fafc;
+    margin-bottom:40px;
+}
+
+.divider{
+    width:100%;
+    height:2px;
+    background:rgba(255,255,255,0.2);
+    margin:40px 0;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <!-- First Son -->
+    <img src="jaan.jpeg" alt="Mohtashim" class="profile-img">
+
+    <h1>Mohtashim</h1>
+
+    <div class="meaning">
+        Meaning:
+        <span class="highlight">
+            Honorable, Respected & Magnificent
+        </span>
+    </div>
+
+    <p>
+        Mohtashim, your name reflects greatness and dignity.<br><br>
+
+        You are a beautiful blessing filled with innocence and joy.<br><br>
+
+        May your life always shine with happiness, wisdom, and success.<br><br>
+
+        Your smile brings peace, and your presence fills hearts with love.<br><br>
+
+        Keep growing into a kind, strong, and wonderful person.
+    </p>
+
+    <div class="divider"></div>
+
+    <!-- Second Son -->
+    <img src="kaushain.jpeg" alt="Kaushain" class="profile-img">
+
+    <h1>Kaushain</h1>
+
+    <div class="meaning">
+        Meaning:
+        <span class="highlight">
+            Intelligent, Bright & Full of Grace
+        </span>
+    </div>
+
+    <p>
+        Kaushain, you are a precious gift and a source of endless happiness.<br><br>
+
+        Your innocent heart and beautiful smile make every moment special.<br><br>
+
+        May Allah bless you with knowledge, kindness, and a successful future.<br><br>
+
+        You are growing into a wonderful child filled with love and positivity.<br><br>
+
+        Keep shining brightly and making everyone proud with your goodness.
+    </p>
+
+</div>
+
+</body>
+</html>

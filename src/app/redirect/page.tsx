@@ -18,9 +18,20 @@ export default function RedirectPage() {
 
     if ((session.user as any)?.role === "admin") {
       router.replace("/");
-    } else if ((session.user as any)?.role === "student") {
-      router.replace("/student/dashboard");
-    } else {
+    } 
+    else if ((session.user as any)?.role === "student") {
+      router.replace("/");
+    } 
+    else if ((session.user as any)?.role === "teacher") {
+      router.replace("/");
+    } 
+    else if ((session.user as any)?.role === "class-teacher") {
+      router.replace("/");
+    } 
+    else if ((session.user as any)?.role === "library") {
+      router.replace("/");
+    } 
+    else {
       router.replace("/");
     }
   }, [session, status]);

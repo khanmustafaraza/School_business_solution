@@ -69,9 +69,9 @@ const UserRegister = () => {
                 <option disabled={true}>Select Role</option>
                 <option value="admin">Admin</option>
                 <option value="student">Student</option>
-                <option value="gameteacher">Game Teacher</option>
+                <option value="game-teacher">Game Teacher</option>
                 <option value="teacher">Teacher</option>
-                <option value="classteacher">Class Teacher</option>
+                <option value="class-teacher">Class Teacher</option>
                 <option value="library">Library</option>
                 <option value="driver">Driver</option>
                 <option value="accountant">Accountant</option>

@@ -10,6 +10,7 @@ import { EnquiryProvider } from "@/store/enquiry/Enquiry";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/store/auth/Auth";
 import Providers from "./providers";
+import { ModalProvider } from "@/store/togglemodal/ToggleModal";
 
 const openSans = Open_Sans({
   variable: "--font-open",
@@ -30,6 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${openSans.className}`}>
         <Providers>
+          <ModalProvider>
 
           <ToastContainer />
           <AuthProvider>
@@ -45,6 +47,7 @@ export default function RootLayout({
               </ToggleProvider>
             </EnquiryProvider>
           </AuthProvider>
+          </ModalProvider>
         </Providers>
       </body>
     </html>

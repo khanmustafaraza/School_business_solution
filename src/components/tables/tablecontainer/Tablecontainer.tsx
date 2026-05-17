@@ -3,8 +3,8 @@ import React from "react";
 const TableContainer = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="">
-      <div className="overflow-hidden rounded bg-white shadow-sm ring-1 ring-slate-200/70">
-        <div className="overflow-x-auto">
+      <div className="overflow-hidden rounded bg-white shadow-sm ring-1 ring-slate-200/70 text-center">
+        <div className="overflow-x-auto text-center">
           <table className="min-w-full text-sm  text-center">
             {children}
           </table>

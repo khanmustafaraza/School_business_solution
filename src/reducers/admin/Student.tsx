@@ -2,7 +2,7 @@ import {
   StudentActionType,
   StudentState,
   StudentFormData,
-} from "@/types/admin/studenttype";
+} from "@/types/admintypes/studenttype";
 
 const initialFormData: StudentFormData = {
   admissionNo: "",

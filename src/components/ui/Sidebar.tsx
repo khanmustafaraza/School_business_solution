@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import Darkmode from "../darkmode/Darkmode";
-import { SideBarProps } from "@/types/admin/propstype";
+import { SideBarProps } from "@/types/propstype";
 
 const Sidebar = ({ navData }: SideBarProps) => {
   const { toggle } = useToggle();
@@ -22,7 +22,7 @@ const Sidebar = ({ navData }: SideBarProps) => {
         {/* Logo Section */}
         <div className="px-2 py-3 border-b border-slate-200/60 flex items-center gap-2">
           <img
-            src="https://img.freepik.com/free-vector/business-user-shield_78370-7029.jpg?semt=ais_hybrid&w=740&q=80"
+            src="/side.jpg"
             alt="admin-logo"
             className="w-10 h-10 rounded object-cover "
           />

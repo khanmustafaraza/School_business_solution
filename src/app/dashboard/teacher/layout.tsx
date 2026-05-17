@@ -6,7 +6,7 @@ import React from "react";
 
 import navData from "@/data/adminmenu/AdminMenu";
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+const TeacherLayout = ({ children }: { children: React.ReactNode }) => {
   const { toggle } = useToggle();
 
   return (
@@ -30,4 +30,4 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default AdminLayout;
+export default TeacherLayout;

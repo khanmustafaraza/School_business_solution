@@ -5,7 +5,7 @@ import {
   StudentContextType,
   StudentFormData,
   StudentState,
-} from "@/types/admin/studenttype";
+} from "@/types/admintypes/studenttype";
 import { createContext, useContext, useReducer, ReactNode } from "react";
 
 const StudentContext = createContext<StudentContextType | null>(null);

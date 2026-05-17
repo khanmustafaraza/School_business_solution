@@ -1,5 +1,5 @@
 "use client";
-import { headingProps } from "@/types/admin/propstype";
+import { headingProps } from "@/types/propstype";
 import Link from "next/link";
 import React from "react";
 import { FaArrowUp } from "react-icons/fa";
