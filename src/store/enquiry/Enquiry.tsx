@@ -1,13 +1,16 @@
 "use client";
 
+import { validateData } from "@/app/lib/validate";
 import EnquiryReducer from "@/reducers/enquiry/Enquiry";
 import {
   EnquiryContextType,
   EnquiryListType,
   EnquiryStateType,
 } from "@/types/enquiry/enquirytype";
-import React, { createContext, useContext, useReducer } from "react";
+import { EnquirySchema } from "@/validators/enquiryvalidator";
+import React, { createContext, useContext, useReducer, useState } from "react";
 import { toast } from "react-toastify";
+import useModal from "../togglemodal/ToggleModal";
 
 /* ================= CONTEXT ================= */
 
@@ -36,7 +39,9 @@ export const EnquiryProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+ const {closeModal} =  useModal()
   const [state, dispatch] = useReducer(EnquiryReducer, initialState);
+  const [comment, setComment] = useState("");
 
   /* ===== HANDLE CHANGE ===== */
   const handleChange = (
@@ -58,11 +63,21 @@ export const EnquiryProvider = ({
     e: React.SyntheticEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+    // const result= validateData(EnquirySchema,state.enquiryObj)
+    // // console.log("err",err)
+    // if(!result.success){
+    //   toast.error(result?.errors?.name)
+    //   toast.error(result?.errors?.mobile)
+    //   toast.error(result?.errors?.admisssionClass)
+    //   toast.error(result?.errors?.message)
+    //   return
+
+    // }
 
     try {
       dispatch({
         type: "SET_LOADING",
-        payload: { loading: true,message: "Please wait... While Processing"},
+        payload: { loading: true, message: "Please wait... While Processing" },
       });
 
       const res = await fetch("/api/enquiry", {
@@ -74,18 +89,34 @@ export const EnquiryProvider = ({
       });
 
       const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || "Something went wrong");
-      }
       console.log(data)
-      toast.success(data.message)
+      if (data.success) {
 
-      dispatch({ type: "SET_SUCCESS"});
+        toast.success(data.message)
+      }
+      if (!data.success) {
+        // toast.error(data.message)
+        toast.error(data.errors.name)
+        toast.error(data.errors.mobile)
+        toast.error(data.errors.admissionClass)
+        toast.error(data.errors.message)
+
+      }
+
+
+      // console.log(data)
+      if (!data.success) {
+
+      }
+      // if(data)
+
+      dispatch({ type: "SET_SUCCESS" });
+
 
       // ✅ refresh list after submit
       // await getEnquiryList();
     } catch (error: any) {
+      // toast.error(error.message)
       dispatch({
         type: "SET_LOADING",
         payload: {
@@ -131,10 +162,63 @@ export const EnquiryProvider = ({
       });
     }
   };
+  const handleUpdate = async (e: any, id: any) => {
+    e.preventDefault();
 
+    if (!id) return;
+
+    if (!comment.trim()) {
+      alert("Comment is required");
+      return;
+    }
+
+    try {
+
+      const payload = {
+        comment,
+        enquiryId: id,
+      };
+
+      console.log("payload >>>>>>>>>", payload);
+
+      // ✅ API CALL
+
+      const response = await fetch("/api/enquiry/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      toast.success("enquiry Upodated Successfully")
+
+      // ✅ RESET
+
+      setComment("");
+      closeModal()
+
+      // ✅ CLOSE MODAL
+
+      // setOpen(false);
+
+      // ✅ OPTIONAL REFRESH
+
+      getEnquiryList();
+
+    } catch (error: any) {
+      console.log("error >>>>", error.message);
+    }
+  };
   return (
     <EnquiryContext.Provider
-      value={{ state, handleChange, handleSubmit, getEnquiryList }}
+      value={{ state, handleChange, handleSubmit, getEnquiryList, handleUpdate, comment, setComment }}
     >
       {children}
     </EnquiryContext.Provider>

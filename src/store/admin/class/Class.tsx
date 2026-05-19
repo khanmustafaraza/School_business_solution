@@ -2,7 +2,7 @@
 
 
 import { ClassReducer } from "@/reducers/admin/Class";
-import { ClassContextType, ClassStateType } from "@/types/admin/classtype";
+import { ClassContextType, ClassStateType } from "@/types/admintypes/classtype";
 import { createContext, useContext, useReducer } from "react";
 
 const ClassContext = createContext<ClassContextType | null>(null);

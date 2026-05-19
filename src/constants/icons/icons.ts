@@ -22,9 +22,11 @@ import {
   FaDoorOpen,
   FaUsers,
   FaUser,
+  
   FaQuestionCircle,
 } from "react-icons/fa";
 
+import { PiUserListBold } from "react-icons/pi";
 import {
   FiArrowUpRight,
   FiMoreHorizontal,
@@ -42,6 +44,9 @@ import {
   FiChevronRight,
   FiChevronLeft
 } from "react-icons/fi";
+import { BiSolidSchool } from "react-icons/bi";
+import { SiGoogleclassroom } from "react-icons/si";
+import { PiStudent } from "react-icons/pi";
 
 const icons = {
   FaQuestionCircle,
@@ -51,6 +56,7 @@ const icons = {
   FaChalkboardTeacher,
   FaMoneyBillWave,
   FaUserPlus,
+  BiSolidSchool,
   FaClipboardCheck,
   FaBell,
   FaRegistered,
@@ -64,6 +70,7 @@ const icons = {
   FaEnvelope,
   FaPhoneAlt,
   FaMapMarkerAlt,
+  PiUserListBold,
   FaListUl,
   FaImage,
   FiUsers,
@@ -73,6 +80,7 @@ const icons = {
   FiArrowUpRight,
   FiMoreHorizontal,
   FiTrendingUp,
+  SiGoogleclassroom,
   FiSearch,
   FiPlus,
   FiEdit2,
@@ -84,6 +92,7 @@ const icons = {
   FaDoorOpen,
   FaUsers,
   FaUser,
+  PiStudent
 };
 
 export default icons;

@@ -49,3 +49,6 @@
   background: var(--brand-gradient);
   /* opacity: .8; */
 }
+td,th,tbody,tr{
+  text-align:center !important;
+}

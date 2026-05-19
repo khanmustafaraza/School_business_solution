@@ -58,10 +58,10 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="/admission"
+              href="/enquiry"
               className="text-sm font-medium  hover-text transition"
             >
-              Admissions
+              Enquiry
             </Link>
 
             <Link
@@ -77,7 +77,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="rounded button-bg text-white px-5 py-2 text-sm hover:opacity-90 transition"
+                className="rounded primary-bg text-white px-5 py-2 text-sm hover:opacity-90 transition"
               >
                 Login
               </Link>

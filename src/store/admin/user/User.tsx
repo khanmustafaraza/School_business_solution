@@ -1,7 +1,7 @@
 "use client";
 
 import UserReducer from "@/reducers/admin/User";
-import { UserContextType, UserState } from "@/types/admin/usertype";
+import { UserContextType, UserState } from "@/types/admintypes/usertype";
 import { createContext, useContext, useReducer } from "react";
 import { toast } from "react-toastify";
 

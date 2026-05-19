@@ -5,17 +5,44 @@ import Link from "next/link";
 import { useState } from "react";
 import { FiUser, FiLogOut, FiGrid } from "react-icons/fi";
 
-export default function Dropdown({isNavbar}:{isNavbar:boolean}) {
+export default function Dropdown({
+  isNavbar,
+}: {
+  isNavbar: boolean;
+}) {
   const [open, setOpen] = useState(false);
-  const { data: session } = useSession();
+
+  const { data: session, status } = useSession();
+
+  // ⏳ Loading
+  if (status === "loading") {
+    return null;
+  }
+
+  // 🔐 Not Logged In
+  if (!session) {
+    return (
+      <Link
+        href="/login"
+        className="px-4 py-2 rounded secondary-bg text-white text-sm"
+      >
+        Login
+      </Link>
+    );
+  }
 
   const user = session?.user as any;
+
   const isAdmin = user?.role === "admin";
+  const isClassTeacher = user?.role === "class-teacher";
+  const isTeacher = user?.role === "teacher";
+  const isLibrary = user?.role === "library";
+  const isStudent = user?.role === "student";
 
   return (
     <div className="relative inline-block text-left">
-
       {/* TRIGGER */}
+
       <button onClick={() => setOpen(!open)}>
         <div className="h-10 w-10 rounded-full secondary-bg text-white flex items-center justify-center font-semibold shadow-sm hover:scale-105 transition capitalize">
           {user?.name?.charAt(0)}
@@ -23,10 +50,11 @@ export default function Dropdown({isNavbar}:{isNavbar:boolean}) {
       </button>
 
       {/* DROPDOWN */}
-      {open && (
-        <div className="absolute -right-3.5 mt-3 w-64 rounded bg-white/90 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-2">
 
+      {open && (
+        <div className="absolute -right-3.5 mt-3 w-64 rounded bg-white/90 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-2 z-50">
           {/* USER SECTION */}
+
           <div className="flex items-center gap-3 p-2 rounded primary-bg mb-2">
             <div className="h-9 w-9 rounded-full secondary-bg text-white flex items-center justify-center">
               <FiUser />
@@ -36,6 +64,7 @@ export default function Dropdown({isNavbar}:{isNavbar:boolean}) {
               <p className="text-sm font-semibold text-white capitalize truncate">
                 {user?.name}
               </p>
+
               <p className="text-xs text-white truncate">
                 {user?.email}
               </p>
@@ -43,26 +72,45 @@ export default function Dropdown({isNavbar}:{isNavbar:boolean}) {
           </div>
 
           {/* MENU */}
+
           <div className="space-y-1">
+            {isNavbar && (
+              <Link
+                href={
+                  isAdmin
+                    ? "/dashboard/admin/admin-dashboard"
+                    : isClassTeacher
+                    ? "/dashboard/class-teacher/class-teacher-dashboard"
+                    : isStudent
+                    ? "/dashboard/student/student-dashboard"
+                    : isTeacher
+                    ? "/dashboard/teacher/teacher-dashboard"
+                    : isLibrary
+                    ? "/dashboard/library/library-dashboard"
+                    : "#"
+                }
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm secondary-text hover-text transition hover:bg-gray-100"
+              >
+                <FiGrid />
 
-          {
-            isNavbar &&   <Link
-              href={
-                isAdmin
-                  ? "/dashboard/admin/admin-dashboard"
-                  : "/dashboard/student/student-dashboard"
-              }
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm secondary-text hover-text transition"
-            >
-              <FiGrid className="" /> 
-              {isAdmin ? "Admin Dashboard" : "Student Dashboard"}
-            </Link>
-          }
-
+                {isAdmin
+                  ? "Admin Dashboard"
+                  : isClassTeacher
+                  ? "Class Teacher Dashboard"
+                  : isStudent
+                  ? "Student Dashboard"
+                  : isTeacher
+                  ? "Teacher Dashboard"
+                  : isLibrary
+                  ? "Library Dashboard"
+                  : "Dashboard"}
+              </Link>
+            )}
           </div>
 
           {/* LOGOUT */}
+
           <div className="mt-2">
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
@@ -72,7 +120,6 @@ export default function Dropdown({isNavbar}:{isNavbar:boolean}) {
               Logout
             </button>
           </div>
-
         </div>
       )}
     </div>

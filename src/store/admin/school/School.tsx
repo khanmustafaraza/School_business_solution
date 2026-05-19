@@ -1,6 +1,6 @@
 "use client";
 import { schoolReducer } from "@/reducers/admin/School";
-import { SchoolContextType, SchoolState } from "@/types/admin/schooltype";
+import { SchoolContextType, SchoolState } from "@/types/admintypes/schooltype";
 import { createContext, useContext, useReducer } from "react";
 
 const SchoolContext = createContext<SchoolContextType | null>(null);

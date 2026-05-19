@@ -166,7 +166,7 @@ export default function StudentRegister() {
                   {classList.map((curEle) => {
                     return (
                       <option key={curEle._id} value={curEle._id}>
-                        Select Class{curEle.name}& Section {curEle.section}
+                        {curEle.name} - {curEle.section}
                       </option>
                     );
                   })}

@@ -1,4 +1,4 @@
-import { ClassActionType, ClassStateType } from "@/types/admin/classtype";
+import { ClassActionType, ClassStateType } from "@/types/admintypes/classtype";
 
 export const ClassReducer = (
   state: ClassStateType,

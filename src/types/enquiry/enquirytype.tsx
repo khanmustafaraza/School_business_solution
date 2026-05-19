@@ -18,6 +18,7 @@ export type EnquiryStateType = {
     message: string;
   };
   enquiryList: EnquiryListType[];
+  comment :string;
 };
 
 export type EnquiryContextType = {
@@ -30,6 +31,7 @@ export type EnquiryContextType = {
   handleSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => Promise<void>;
 
   getEnquiryList: () => Promise<void>;
+  handleUpdate :(e:any,id:any) => Promise<void>
 };
 
 export type EnquiryAction =
