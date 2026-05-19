@@ -13,8 +13,6 @@ import { FaEnvelope, FaUser } from "react-icons/fa";
 import { FcDataEncryption } from "react-icons/fc";
 import Loader from "@/components/loader/Loader";
 
-
-
 const heading = {
   name: "Add User",
   subHeading: "Add and manage User basic information.",
@@ -31,35 +29,63 @@ const UserRegister = () => {
         <AdminHeading heading={heading} />
         <Container>
           <Form onSubmit={(e) => handleSubmit(e)}>
-          {state.isLoading.loading && <Loader isLoading={state.isLoading.loading} message={state.isLoading.message} />}
-
+            {state.isLoading.loading && (
+              <Loader
+                isLoading={state.isLoading.loading}
+                message={state.isLoading.message}
+              />
+            )}
 
             <div className="flex gap-2 flex-wrap my-2">
-              <Input onChange={(e) => handleChange(e)} label=" User Name" name="name" value={state.userObj.name} icon={<FaUser />} type="text" placeholder="Enter User Name" />
-
+              <Input
+                onChange={(e) => handleChange(e)}
+                label=" User Name"
+                name="name"
+                value={state.userObj.name}
+                icon={<FaUser />}
+                type="text"
+                placeholder="Enter User Name"
+              />
 
               {/* Email Address */}
-              <Input onChange={(e) => handleChange(e)} label=" Email" name="email" value={state.userObj.email} icon={<FaEnvelope />} type="email" placeholder="Enter Email" />
+              <Input
+                onChange={(e) => handleChange(e)}
+                label=" Email"
+                name="email"
+                value={state.userObj.email}
+                icon={<FaEnvelope />}
+                type="email"
+                placeholder="Enter Email"
+              />
             </div>
 
             {/* password */}
             <div className="w-full">
-              <Input onChange={(e) => handleChange(e)} label="Enter Password" name="password" value={state.userObj.password} icon={<FcDataEncryption />} type="text" placeholder="Enter Password" />
-
+              <Input
+                onChange={(e) => handleChange(e)}
+                label="Enter Password"
+                name="password"
+                value={state.userObj.password}
+                icon={<FcDataEncryption />}
+                type="text"
+                placeholder="Enter Password"
+              />
             </div>
 
             {/* role */}
 
             <div className="flex my-4 items-center gap-4">
-
-              <div> <UserKey className=" text-gray-400 text-[16px]" /></div>
-              <div><label className="block text-sm font-medium text-gray-700">
-
-                Select Role
-              </label></div>
+              <div>
+                {" "}
+                <UserKey className=" text-gray-400 text-[16px]" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Select Role
+                </label>
+              </div>
             </div>
             <div className="flex items-start rounded border border-gray-200  bg-white  focus-within:border-gray-300 transition-all py-3 mb-4">
-
               <select
                 name="role"
                 className="w-full  bg-transparent  text-gray-800 outline-none placeholder:text-gray-400 px-3"
@@ -69,9 +95,9 @@ const UserRegister = () => {
                 <option disabled={true}>Select Role</option>
                 <option value="admin">Admin</option>
                 <option value="student">Student</option>
-                <option value="game-teacher">Game Teacher</option>
+                <option value="game_teacher">Game Teacher</option>
                 <option value="teacher">Teacher</option>
-                <option value="class-teacher">Class Teacher</option>
+                <option value="class_teacher">Class Teacher</option>
                 <option value="library">Library</option>
                 <option value="driver">Driver</option>
                 <option value="accountant">Accountant</option>

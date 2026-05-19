@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ERP SaaS VPS Full Master Guide</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        line-height: 1.7;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 30px;
+      }
+      h1,
+      h2,
+      h3 {
+        color: #0b4f8a;
+      }
+      .section {
+        background: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+      pre {
+        background: #111;
+        color: #00ff99;
+        padding: 15px;
+        border-radius: 8px;
+        overflow: auto;
+      }
+      .box {
+        background: #e8f0ff;
+        border-left: 5px solid #2b6cb0;
+        padding: 12px;
+        margin: 10px 0;
+      }
+      .note {
+        background: #fff3cd;
+        border-left: 5px solid #ffc107;
+        padding: 12px;
+        margin: 10px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ccc;
+      }
+      th,
+      td {
+        padding: 10px;
+      }
+      .footer {
+        text-align: center;
+        color: #666;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🚀 ERP SaaS VPS FULL MASTER GUIDE (HOSTINGER + NODE + BACKUP)</h1>
+
+      <div class="section">
+        <h2>1. What is VPS?</h2>
+        <p>
+          A VPS is your own private Linux computer on the internet where you
+          host your ERP SaaS backend, database, and APIs.
+        </p>
+
+        <div class="box">
+          Flow: User → Domain → Nginx → Node.js → Database → Backup System
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>2. How to Buy Hostinger VPS</h2>
+
+        <ol>
+          <li>Go to Hostinger VPS page</li>
+          <li>Choose VPS plan (4GB RAM recommended)</li>
+          <li>Select Ubuntu 22.04 OS</li>
+          <li>Complete payment</li>
+          <li>Wait for server activation</li>
+        </ol>
+
+        <div class="note">Always choose Ubuntu for Node.js SaaS hosting.</div>
+      </div>
+
+      <div class="section">
+        <h2>3. How to Login to VPS</h2>
+
+        <p>Open terminal or PowerShell:</p>
+
+        <pre>
+ssh root@YOUR_VPS_IP
+</pre
+        >
+
+        <p>Example:</p>
+
+        <pre>
+ssh root@123.45.67.89
+</pre
+        >
+
+        <p>Enter password provided by Hostinger.</p>
+
+        <div class="box">
+          First login gives full server control (root access).
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>4. First Server Setup</h2>
+
+        <pre>
+sudo apt update && sudo apt upgrade -y
+</pre
+        >
+
+        <p>This updates server packages and security patches.</p>
+      </div>
+
+      <div class="section">
+        <h2>5. Install Node.js</h2>
+
+        <pre>
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+node -v
+npm -v
+</pre
+        >
+
+        <p>Node.js runs your ERP backend APIs.</p>
+      </div>
+
+      <div class="section">
+        <h2>6. Install PM2 (Important)</h2>
+
+        <pre>
+npm install pm2 -g
+</pre
+        >
+
+        <p>Start backend:</p>
+
+        <pre>
+pm2 start server.js --name ERP
+pm2 save
+pm2 startup
+</pre
+        >
+
+        <div class="note">
+          PM2 keeps server running even after reboot or crash.
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>7. Install Nginx</h2>
+
+        <pre>
+sudo apt install nginx -y
+</pre
+        >
+
+        <p>Nginx forwards domain traffic to Node.js backend.</p>
+
+        <h3>Config:</h3>
+
+        <pre>
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+    }
+}
+</pre
+        >
+      </div>
+
+      <div class="section">
+        <h2>8. Domain Setup (Hostinger DNS)</h2>
+
+        <ol>
+          <li>Open Hostinger dashboard</li>
+          <li>Go to Domain → DNS settings</li>
+          <li>Add A record:</li>
+        </ol>
+
+        <pre>
+Type: A
+Name: @
+Value: YOUR_VPS_IP
+</pre
+        >
+
+        <div class="box">This connects your domain to VPS server.</div>
+      </div>
+
+      <div class="section">
+        <h2>9. SSL (HTTPS Security)</h2>
+
+        <pre>
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d yourdomain.com
+</pre
+        >
+
+        <p>Enables secure HTTPS connection.</p>
+
+        <div class="note">ERP without HTTPS is unsafe for financial data.</div>
+      </div>
+
+      <div class="section">
+        <h2>10. MongoDB Backup System (CORE PART)</h2>
+
+        <h3>Manual backup:</h3>
+        <pre>
+mongodump --out /var/backups/erp
+</pre
+        >
+
+        <h3>Compress backup:</h3>
+        <pre>
+tar -czvf backup.tar.gz /var/backups/erp
+</pre
+        >
+      </div>
+
+      <div class="section">
+        <h2>11. Node.js Auto Backup Script</h2>
+
+        <pre>
+const { exec } = require("child_process");
+
+const date = new Date().toISOString().split("T")[0];
+const path = `/var/backups/erp/backup-${date}`;
+
+exec(`mongodump --out ${path}`, (err) => {
+    if (!err) {
+        console.log("Backup created");
+
+        exec(`tar -czf ${path}.tar.gz ${path}`);
+    }
+});
+</pre
+        >
+
+        <div class="box">This script creates automatic daily backups.</div>
+      </div>
+
+      <div class="section">
+        <h2>12. Cron Job (Auto Run Backup)</h2>
+
+        <pre>
+crontab -e
+</pre
+        >
+
+        <p>Add:</p>
+
+        <pre>
+0 2 * * * /usr/bin/node /var/www/erp/backup.js
+</pre
+        >
+
+        <div class="box">Runs backup every day at 2 AM automatically.</div>
+      </div>
+
+      <div class="section">
+        <h2>13. PM2 + Backup + Nginx Architecture</h2>
+
+        <pre>
+User
+ ↓
+Domain
+ ↓
+Nginx
+ ↓
+Node.js (PM2)
+ ↓
+MongoDB
+ ↓
+Backup System (Cron Job)
+</pre
+        >
+      </div>
+
+      <div class="section">
+        <h2>14. Final SaaS Rules (VERY IMPORTANT)</h2>
+
+        <ul>
+          <li>Always use HTTPS</li>
+          <li>Always use PM2</li>
+          <li>Always take backups</li>
+          <li>Never expose database publicly</li>
+          <li>Always use companyId for isolation</li>
+          <li>Test restore backups regularly</li>
+        </ul>
+
+        <div class="note">
+          If backup fails, your entire SaaS can collapse. Backup is more
+          important than code.
+        </div>
+      </div>
+
+      <div class="footer">ERP SaaS Full VPS Master Guide</div>
+    </div>
+  </body>
+</html>

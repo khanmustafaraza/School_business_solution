@@ -8,7 +8,7 @@ export const ModalProvider = ({children}:any) =>{
      const [open, setOpen] = useState(false);
      const [updateId, setUpdateId] = useState("");
      const openModal  = (id:any) =>{
-        console.log("open",id)
+        // console.log("open",id)
         setOpen(true)
         setUpdateId(id)
      }

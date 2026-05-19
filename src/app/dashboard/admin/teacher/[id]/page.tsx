@@ -5,15 +5,9 @@ import {
   FiUser,
   FiBookOpen,
   FiPhone,
-  FiMail,
-  FiMapPin,
   FiUpload,
   FiSave,
   FiRefreshCcw,
-  FiCalendar,
-  FiFileText,
-  FiAward,
-  FiHome,
 } from "react-icons/fi";
 
 type TeacherFormData = {
@@ -27,18 +21,11 @@ type TeacherFormData = {
   qualification: string;
   experience: string;
   joiningDate: string;
-  department: string;
 
   mobile: string;
   email: string;
   address: string;
-  city: string;
-  state: string;
-  pincode: string;
 
-  emergencyContact: string;
-
-  notes: string;
   photo: File | null;
 };
 
@@ -53,27 +40,23 @@ const initialFormData: TeacherFormData = {
   qualification: "",
   experience: "",
   joiningDate: "",
-  department: "",
 
   mobile: "",
   email: "",
   address: "",
-  city: "",
-  state: "",
-  pincode: "",
 
-  emergencyContact: "",
-
-  notes: "",
   photo: null,
 };
 
-export default function TeacherProfile() {
-  const [formData, setFormData] =
-    useState<TeacherFormData>(initialFormData);
+export default function TeacherRegister() {
+  const [formData, setFormData] = useState<TeacherFormData>(initialFormData);
+
+  const [preview, setPreview] = useState<string | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -83,171 +66,353 @@ export default function TeacherProfile() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
+
+    if (file) {
+      if (!["image/png", "image/jpeg"].includes(file.type)) {
+        alert("Only PNG and JPG files are allowed.");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size must be under 5MB.");
+        return;
+      }
+
+      setPreview(URL.createObjectURL(file));
+    }
+
     setFormData((prev) => ({
       ...prev,
       photo: file,
     }));
   };
 
-  const handleReset = () => setFormData(initialFormData);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Teacher Data:", formData);
-    alert("Teacher Registered Successfully!");
+
+    console.log(formData);
+
+    alert("Teacher Registered Successfully");
+  };
+
+  const handleReset = () => {
+    setFormData(initialFormData);
+    setPreview(null);
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-800">
-          Teacher Register
-        </h1>
-        <p className="text-sm text-slate-500">
-          Add complete teacher details
-        </p>
-      </div>
+    <div className="min-h-screen bg-slate-50 p-6 md:p-8">
+      <div className="mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="mb-10">
+          <span className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            School ERP
+          </span>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+          <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900">
+            Teacher Registration
+          </h1>
 
-        {/* Personal Info */}
-        <SectionCard title="Personal Information" icon={<FiUser size={18} />}>
-          <Input name="employeeId" label="Employee ID" value={formData.employeeId} onChange={handleChange} />
-          <Input name="firstName" label="First Name" value={formData.firstName} onChange={handleChange} />
-          <Input name="lastName" label="Last Name" value={formData.lastName} onChange={handleChange} />
-          <Select name="gender" label="Gender" value={formData.gender} onChange={handleChange} options={["Male", "Female", "Other"]} />
-          <Input name="dob" label="Date of Birth" type="date" value={formData.dob} onChange={handleChange} />
-        </SectionCard>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
+            Add teacher details with a clean and modern interface.
+          </p>
+        </div>
 
-        {/* Professional */}
-        <SectionCard title="Professional Details" icon={<FiBookOpen size={18} />}>
-          <Input name="subject" label="Subject" value={formData.subject} onChange={handleChange} />
-          <Input name="department" label="Department" value={formData.department} onChange={handleChange} />
-          <Input name="qualification" label="Qualification" value={formData.qualification} onChange={handleChange} />
-          <Input name="experience" label="Experience (Years)" value={formData.experience} onChange={handleChange} />
-          <Input name="joiningDate" label="Joining Date" type="date" value={formData.joiningDate} onChange={handleChange} />
-        </SectionCard>
+        <form onSubmit={handleSubmit}>
+          <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
+            {/* Left */}
+            <div className="space-y-6">
+              {/* Personal */}
+              <Section title="Personal Information" icon={<FiUser size={18} />}>
+                <Input
+                  label="Employee ID"
+                  name="employeeId"
+                  value={formData.employeeId}
+                  onChange={handleChange}
+                  placeholder="EMP-001"
+                />
 
-        {/* Contact */}
-        <SectionCard title="Contact Details" icon={<FiPhone size={18} />}>
-          <Input name="mobile" label="Mobile Number" value={formData.mobile} onChange={handleChange} />
-          <Input name="email" label="Email" type="email" value={formData.email} onChange={handleChange} />
-          <Input name="address" label="Address" value={formData.address} onChange={handleChange} className="md:col-span-2" />
-          <Input name="city" label="City" value={formData.city} onChange={handleChange} />
-          <Input name="state" label="State" value={formData.state} onChange={handleChange} />
-          <Input name="pincode" label="Pincode" value={formData.pincode} onChange={handleChange} />
-        </SectionCard>
+                <Input
+                  label="First Name"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  placeholder="John"
+                />
 
-        {/* Emergency */}
-        <SectionCard title="Emergency Details" icon={<FiPhone size={18} />}>
-          <Input name="emergencyContact" label="Emergency Contact" value={formData.emergencyContact} onChange={handleChange} />
-        </SectionCard>
+                <Input
+                  label="Last Name"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  placeholder="Doe"
+                />
 
-        {/* Upload + Notes */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <Select
+                  label="Gender"
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  options={["Male", "Female", "Other"]}
+                />
 
-          {/* Upload */}
-          <div className="rounded-2xl bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center gap-2">
-              <FiUpload size={18} />
-              <h2 className="text-lg font-semibold text-slate-800">
-                Upload Photo
-              </h2>
+                <Input
+                  label="Date of Birth"
+                  name="dob"
+                  type="date"
+                  value={formData.dob}
+                  onChange={handleChange}
+                />
+              </Section>
+
+              {/* Professional */}
+              <Section
+                title="Professional Details"
+                icon={<FiBookOpen size={18} />}
+              >
+                <Input
+                  label="Subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  placeholder="Mathematics"
+                />
+
+                <Input
+                  label="Qualification"
+                  name="qualification"
+                  value={formData.qualification}
+                  onChange={handleChange}
+                  placeholder="M.Sc, B.Ed"
+                />
+
+                <Input
+                  label="Experience"
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleChange}
+                  placeholder="5 Years"
+                />
+
+                <Input
+                  label="Joining Date"
+                  name="joiningDate"
+                  type="date"
+                  value={formData.joiningDate}
+                  onChange={handleChange}
+                />
+              </Section>
+
+              {/* Contact */}
+              <Section title="Contact Information" icon={<FiPhone size={18} />}>
+                <Input
+                  label="Mobile Number"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleChange}
+                  placeholder="+91 9876543210"
+                />
+
+                <Input
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="teacher@email.com"
+                />
+
+                <div className="md:col-span-2">
+                  <label className="mb-2 block text-sm font-medium text-slate-700">
+                    Address
+                  </label>
+
+                  <textarea
+                    name="address"
+                    rows={5}
+                    value={formData.address}
+                    onChange={handleChange}
+                    placeholder="Enter address..."
+                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
+                  />
+                </div>
+              </Section>
             </div>
 
-            <label className="flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center hover:border-slate-400">
-              <FiUpload size={28} className="mb-2 text-slate-500" />
-              Click to upload
-              <input type="file" className="hidden" onChange={handleFileChange} />
-            </label>
+            {/* Right */}
+            <div className="space-y-6 xl:sticky xl:top-6 xl:h-fit">
+              {/* Upload */}
+              <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="rounded-lg border border-slate-200 p-2">
+                    <FiUpload size={18} />
+                  </div>
 
-            {formData.photo && (
-              <p className="mt-2 text-sm">{formData.photo.name}</p>
-            )}
+                  <h2 className="text-lg font-semibold text-slate-900">
+                    Teacher Photo
+                  </h2>
+                </div>
+
+                <label className="group flex min-h-[260px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 transition hover:border-slate-900">
+                  <div className="mb-4 rounded-lg border border-slate-200 bg-white p-4 transition group-hover:scale-105">
+                    <FiUpload size={28} className="text-slate-700" />
+                  </div>
+
+                  <h3 className="font-medium text-slate-900">
+                    Upload Teacher Photo
+                  </h3>
+
+                  <p className="mt-1 text-sm text-slate-500">
+                    PNG or JPG up to 5MB
+                  </p>
+
+                  <input
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
+
+                {preview && (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="mt-4 h-48 w-full rounded-lg object-cover"
+                  />
+                )}
+
+                {formData.photo && (
+                  <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                    {formData.photo.name}
+                  </div>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 className="mb-5 text-lg font-semibold text-slate-900">
+                  Actions
+                </h2>
+
+                <div className="space-y-3">
+                  <button
+                    type="submit"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-5 py-3.5 text-sm font-medium text-white transition hover:bg-black active:scale-[0.98]"
+                  >
+                    <FiSave size={18} />
+                    Register Teacher
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 active:scale-[0.98]"
+                  >
+                    <FiRefreshCcw size={18} />
+                    Reset Form
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-
-          {/* Notes */}
-          <div className="rounded-2xl bg-white p-5 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-slate-800">
-              Notes
-            </h2>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows={7}
-              className="w-full rounded-xl border border-slate-200 p-3"
-              placeholder="Write notes..."
-            />
-          </div>
-        </div>
-
-        {/* Buttons */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-          <button
-            type="button"
-            onClick={handleReset}
-            className="flex items-center justify-center gap-2 rounded-xl border px-5 py-3"
-          >
-            <FiRefreshCcw /> Reset
-          </button>
-
-          <button
-            type="submit"
-            className="flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-white"
-          >
-            <FiSave /> Register Teacher
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
 
-/* Reusable Components */
+/* SECTION */
 
-function SectionCard({ title, icon, children }: any) {
+function Section({
+  title,
+  icon,
+  children,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-sm">
-      <div className="mb-5 flex items-center gap-3">
-        <div className="bg-slate-100 p-2 rounded-lg">{icon}</div>
-        <h2 className="text-lg font-semibold">{title}</h2>
+    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-6 flex items-center gap-3">
+        <div className="rounded-lg border border-slate-200 p-2.5">{icon}</div>
+
+        <div>
+          <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+
+          <p className="text-sm text-slate-500">Fill all required details</p>
+        </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {children}
-      </div>
+
+      <div className="grid gap-5 md:grid-cols-2">{children}</div>
     </div>
   );
 }
 
-function Input({ label, name, value, onChange, type = "text", className = "" }: any) {
+/* INPUT */
+
+type InputProps = {
+  label: string;
+  name: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  type?: string;
+  placeholder?: string;
+};
+
+function Input({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  placeholder = "",
+}: InputProps) {
   return (
-    <div className={className}>
-      <label className="text-sm font-medium">{label}</label>
+    <div>
+      <label className="mb-2 block text-sm font-medium text-slate-700">
+        {label}
+      </label>
+
       <input
         type={type}
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full mt-1 p-2 border rounded-xl"
+        placeholder={placeholder}
+        className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
       />
     </div>
   );
 }
 
-function Select({ label, name, value, onChange, options }: any) {
+/* SELECT */
+
+type SelectProps = {
+  label: string;
+  name: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+  options: string[];
+};
+
+function Select({ label, name, value, onChange, options }: SelectProps) {
   return (
     <div>
-      <label className="text-sm font-medium">{label}</label>
+      <label className="mb-2 block text-sm font-medium text-slate-700">
+        {label}
+      </label>
+
       <select
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full mt-1 p-2 border rounded-xl"
+        className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
       >
         <option value="">Select {label}</option>
-        {options.map((o: string) => (
-          <option key={o}>{o}</option>
+
+        {options.map((option) => (
+          <option key={option}>{option}</option>
         ))}
       </select>
     </div>
