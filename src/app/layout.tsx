@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Google_Sans_Code } from "next/font/google";
 import { ToggleProvider } from "@/store/toggledashboard/Toggledashboard";
 import { UserProvider } from "@/store/admin/user/User";
 import { SchoolProvider } from "@/store/admin/school/School";
@@ -14,6 +14,10 @@ import { ModalProvider } from "@/store/togglemodal/ToggleModal";
 
 const openSans = Open_Sans({
   variable: "--font-open",
+  subsets: ["latin"],
+});
+const googleSansCode = Google_Sans_Code({
+  variable: "--font-goolge",
   subsets: ["latin"],
 });
 
@@ -32,21 +36,20 @@ export default function RootLayout({
       <body className={`${openSans.className}`}>
         <Providers>
           <ModalProvider>
-
-          <ToastContainer />
-          <AuthProvider>
-            <EnquiryProvider>
-              <ToggleProvider>
-                <UserProvider>
-                  <SchoolProvider>
-                    <ClassProvider>
-                      <StudentProvider>{children}</StudentProvider>
-                    </ClassProvider>
-                  </SchoolProvider>
-                </UserProvider>
-              </ToggleProvider>
-            </EnquiryProvider>
-          </AuthProvider>
+            <ToastContainer />
+            <AuthProvider>
+              <EnquiryProvider>
+                <ToggleProvider>
+                  <UserProvider>
+                    <SchoolProvider>
+                      <ClassProvider>
+                        <StudentProvider>{children}</StudentProvider>
+                      </ClassProvider>
+                    </SchoolProvider>
+                  </UserProvider>
+                </ToggleProvider>
+              </EnquiryProvider>
+            </AuthProvider>
           </ModalProvider>
         </Providers>
       </body>

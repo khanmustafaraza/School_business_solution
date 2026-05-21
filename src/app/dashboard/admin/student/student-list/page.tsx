@@ -45,7 +45,7 @@ export default function StudentList() {
 
         const res = await fetch("/api/admin/student");
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
 
         if (!res.ok) throw new Error(data.message);
 
@@ -63,7 +63,7 @@ export default function StudentList() {
   /* ================= FILTER ================= */
 
   const classOptions = ["All", ...new Set(students.map((s) => s.className))];
-  console.log(classOptions);
+  // console.log(classOptions);
 
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
@@ -181,7 +181,7 @@ export default function StudentList() {
                     <td className="px-5 py-4">{student.admissionNo}</td>
                     <td className="px-5 py-4">{student.rollNo}</td>
                     <td className="px-5 py-4">
-                      {student.classId.name} - {student.classId.section}
+                      {student.classId?.name} - {student.classId?.section}
                     </td>
                     <td className="px-5 py-4">{student.gender}</td>
                     <td className="px-5 py-4">{student.fatherName}</td>
@@ -194,9 +194,12 @@ export default function StudentList() {
                         >
                           <FiEye />
                         </Link>
-                        <button className="text-blue-500">
-                          <FiEdit2 />
-                        </button>
+                        <Link
+                          href={`/dashboard/admin/tc/tc-register/${student._id}`}
+                          className="text-blue-500"
+                        >
+                          <FiEdit2 title="create Tc" />
+                        </Link>
                         <button className="text-red-500">
                           <FiTrash2 />
                         </button>

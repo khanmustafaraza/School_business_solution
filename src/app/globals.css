@@ -1,3 +1,4 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght,MONO@0,300..800,1;1,300..800,1&display=swap"); */
 @import "tailwindcss";
 
 :root {
@@ -8,15 +9,15 @@
   --text-secondary: gray;
   --hover-color: #1d64ac;
 
-/* Modern SaaS Brand Gradient */
---brand-gradient: radial-gradient(
-  circle at top left,
-  rgba(99, 102, 241, 0.95) 0%,     /* Indigo primary */
-  rgba(139, 92, 246, 0.85) 28%,    /* Purple blend */
-  rgba(59, 130, 246, 0.55) 58%,    /* SaaS blue */
-  rgba(15, 23, 42, 0.15) 85%,      /* Deep slate fade */
-  rgba(2, 6, 23, 0.02) 100%
-);
+  /* Modern SaaS Brand Gradient */
+  --brand-gradient: radial-gradient(
+    circle at top left,
+    rgba(99, 102, 241, 0.95) 0%,
+    /* Indigo primary */ rgba(139, 92, 246, 0.85) 28%,
+    /* Purple blend */ rgba(59, 130, 246, 0.55) 58%,
+    /* SaaS blue */ rgba(15, 23, 42, 0.15) 85%,
+    /* Deep slate fade */ rgba(2, 6, 23, 0.02) 100%
+  );
 }
 
 /* TEXT */
@@ -34,21 +35,22 @@
 .primary-bg {
   background-color: var(--primary-color);
 }
-.secondary-bg{
+.secondary-bg {
   background-color: var(--secondary-color);
-
 }
-
 
 /* HOVER */
 
 .hover-text:hover {
   color: var(--hover-color);
 }
-.brand-bg{
+.brand-bg {
   background: var(--brand-gradient);
   /* opacity: .8; */
 }
-td,th,tbody,tr{
-  text-align:center !important;
+td,
+th,
+tbody,
+tr {
+  text-align: center !important;
 }
