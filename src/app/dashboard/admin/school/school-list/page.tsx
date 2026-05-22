@@ -16,6 +16,7 @@ import {
   FaTrash,
   FaSearch,
 } from "react-icons/fa";
+import SchoolHeader from "@/components/schoolheader/Schoolheader";
 
 const heading = {
   name: "School Directory",
@@ -137,6 +138,7 @@ const SchoolList = () => {
             ))}
           </div>
         </Container>
+        <SchoolHeader/>
       </MainContainer>
     </div>
   );

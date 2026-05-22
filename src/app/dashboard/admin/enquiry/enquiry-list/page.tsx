@@ -11,7 +11,6 @@ import { useEffect } from "react";
 
 import { Pencil, Trash2 } from "lucide-react";
 import Loader from "@/components/loader/Loader";
-import Example from "@/components/modal/Modal";
 import useModal from "@/store/togglemodal/ToggleModal";
 import Modal from "@/components/modal/Modal";
 

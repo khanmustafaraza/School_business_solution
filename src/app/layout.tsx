@@ -17,10 +17,10 @@ const openSans = Open_Sans({
   variable: "--font-open",
   subsets: ["latin"],
 });
-const googleSansCode = Google_Sans_Code({
-  variable: "--font-goolge",
-  subsets: ["latin"],
-});
+// const googleSansCode = Google_Sans_Code({
+//   variable: "--font-goolge",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "School ERP",
