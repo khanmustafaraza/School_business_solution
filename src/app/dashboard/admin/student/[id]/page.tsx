@@ -155,14 +155,14 @@ export default function StudentRegister() {
             >
               <div className="select-box flex flex-col justify-center">
                 <label htmlFor="" className="mb-1">
-                  Class & Section
+                  Select Class & Section
                 </label>
                 <select
                   name="classId"
                   className="border border-gray-200 w-full px-2 py-2 rounded"
                   onChange={handleChange}
                 >
-                  <option>Select Class & Section</option>
+                  <option>Class & Section</option>
                   {classList.map((curEle) => {
                     return (
                       <option key={curEle._id} value={curEle._id}>

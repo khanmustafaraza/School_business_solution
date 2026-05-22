@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/store/auth/Auth";
 import Providers from "./providers";
 import { ModalProvider } from "@/store/togglemodal/ToggleModal";
+import { TransferProvider } from "@/store/admin/tc/Transfer";
 
 const openSans = Open_Sans({
   variable: "--font-open",
@@ -43,7 +44,9 @@ export default function RootLayout({
                   <UserProvider>
                     <SchoolProvider>
                       <ClassProvider>
-                        <StudentProvider>{children}</StudentProvider>
+                        <StudentProvider>
+                          <TransferProvider>{children}</TransferProvider>
+                        </StudentProvider>
                       </ClassProvider>
                     </SchoolProvider>
                   </UserProvider>
