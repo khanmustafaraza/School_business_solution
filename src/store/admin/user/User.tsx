@@ -66,6 +66,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           message: "Please wait...",
         },
       });
+      // console.log(state.userObj.role)
+      if (state.userObj.role == "Select Role") {
+        toast.error("Role is Required");
+        return;
+      }
 
       const res = await fetch("/api/admin/user", {
         method: "POST",
@@ -99,7 +104,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       const res = await fetch(`/api/admin/user?page=${page}&limit=10`);
 
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       dispatch({
         type: "GET_ALL_USER",
@@ -135,6 +140,33 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       console.error(error);
     }
   };
+  // update status
+  const handleUpdate = async (id: any,status:any) => {
+    try {
+      const payload = {
+        updateId: id,
+        status:status ? "true":"false"
+      };
+      console.log("first",payload)
+
+      const res = await fetch("/api/admin/user/update-status", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success(data.message);
+        getAllUser()
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <UserContext.Provider
@@ -143,6 +175,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         handleChange,
         handleSubmit,
         getAllUser,
+        handleUpdate,
       }}
     >
       {children}

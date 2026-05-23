@@ -30,8 +30,6 @@
 
 // export default User;
 
-
-
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
@@ -44,14 +42,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "student",
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema.plugin(mongoosePaginate);
 
-const User =
-  mongoose.models.User || mongoose.model("User", userSchema);
-  // User.paginate().then({});
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+// User.paginate().then({});
 
 export default User;

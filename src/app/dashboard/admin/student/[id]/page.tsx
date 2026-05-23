@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Container from "@/components/container/Container";
-import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
 import ParentContainer from "@/components/parentcontainer/ParentContainer";
 import SectionCard from "@/components/sectioncard/SectionCard";
@@ -26,6 +25,8 @@ import ActionBtn from "@/components/actionbtn/ActionBtn";
 import { useStudent } from "@/store/admin/student/Student";
 import useClass from "@/store/admin/class/Class";
 import { useParams } from "next/navigation";
+import H1 from "@/components/headings/H1";
+import Form from "@/components/formcomponent/Form";
 
 /* ================= HEADING ================= */
 
@@ -39,7 +40,7 @@ const heading = {
 
 /* ================= COMPONENT ================= */
 
-export default function StudentRegister() {
+const StudentRegister = () => {
   const { state, handleChange, handleFileChange, handleSubmit } = useStudent();
   const params = useParams();
   const id = params?.id as string;
@@ -56,11 +57,11 @@ export default function StudentRegister() {
   return (
     <ParentContainer>
       <MainContainer>
-        <AdminHeading heading={heading} />
+        <H1 heading={heading} />
 
         <Container>
           {/* ❗ ONLY CHANGE: attach context submit */}
-          <form onSubmit={(e) => handleSubmit(e, id)} className="space-y-6">
+          <Form onSubmit={(e) => handleSubmit(e, id)}>
             {/* Student Info */}
             <SectionCard
               title="Student Information"
@@ -344,9 +345,10 @@ export default function StudentRegister() {
 
             {/* Buttons */}
             <ActionBtn />
-          </form>
+          </Form>
         </Container>
       </MainContainer>
     </ParentContainer>
   );
 }
+  export default StudentRegister

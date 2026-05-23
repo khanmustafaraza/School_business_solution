@@ -23,6 +23,7 @@ export type ClassContextType = {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => Promise<void>;
   getAllClass: () => Promise<void>;
+  handleUpdate: (e:any,id:any) => Promise<void>;
 };
 
 export type ClassActionType =

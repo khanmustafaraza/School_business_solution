@@ -2,7 +2,6 @@
 
 import ActionBtn from "@/components/actionbtn/ActionBtn";
 import Container from "@/components/container/Container";
-import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
 import { useUser } from "@/store/admin/user/User";
 import { CircleUserRound, UserKey } from "lucide-react";
@@ -12,6 +11,7 @@ import Input from "@/components/inputs/Input";
 import { FaEnvelope, FaUser } from "react-icons/fa";
 import { FcDataEncryption } from "react-icons/fc";
 import Loader from "@/components/loader/Loader";
+import H1 from "@/components/headings/H1";
 
 const heading = {
   name: "Add User",
@@ -26,7 +26,7 @@ const UserRegister = () => {
   return (
     <ParentContainer>
       <MainContainer>
-        <AdminHeading heading={heading} />
+        <H1 heading={heading} />
         <Container>
           <Form onSubmit={(e) => handleSubmit(e)}>
             {state.isLoading.loading && (
@@ -36,7 +36,7 @@ const UserRegister = () => {
               />
             )}
 
-            <div className="flex gap-2 flex-wrap my-2">
+            <div className="flex  flex-wrap  gap-2 justify-center">
               <Input
                 onChange={(e) => handleChange(e)}
                 label=" User Name"
@@ -59,50 +59,51 @@ const UserRegister = () => {
               />
             </div>
 
-            {/* password */}
-            <div className="w-full">
+            {/* password and role */}
+            <div className="flex  flex-wrap  gap-2 justify-center items-center">
               <Input
                 onChange={(e) => handleChange(e)}
                 label="Enter Password"
                 name="password"
                 value={state.userObj.password}
                 icon={<FcDataEncryption />}
-                type="text"
+                type="password"
                 placeholder="Enter Password"
               />
+
+              <div className="flex-1/5">
+                <div className="flex items-center gap-4 my-3.5">
+                  <div>
+                    <UserKey className=" text-gray-400 text-[16px]" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Select Role
+                    </label>
+                  </div>
+                </div>
+                {/* <div className="flex items-start rounded border border-gray-200  bg-white  focus-within:border-gray-300 transition-all py-3 mb-4"> */}
+                  <select
+                    name="role"
+                    className="w-full py-3 rounded mb-4   bg-transparent border border-gray-200  text-gray-800 outline-none placeholder:text-gray-400 px-3"
+                    //  value={state.userObj.address}
+                    onChange={(e) => handleChange(e)} required
+                  >
+                    <option>Select Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="student">Student</option>
+                    <option value="game_teacher">Game Teacher</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="class_teacher">Class Teacher</option>
+                    <option value="library">Library</option>
+                    <option value="driver">Driver</option>
+                    <option value="accountant">Accountant</option>
+                  </select>
+                {/* </div> */}
+              </div>
             </div>
 
             {/* role */}
-
-            <div className="flex my-4 items-center gap-4">
-              <div>
-                {" "}
-                <UserKey className=" text-gray-400 text-[16px]" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Select Role
-                </label>
-              </div>
-            </div>
-            <div className="flex items-start rounded border border-gray-200  bg-white  focus-within:border-gray-300 transition-all py-3 mb-4">
-              <select
-                name="role"
-                className="w-full  bg-transparent  text-gray-800 outline-none placeholder:text-gray-400 px-3"
-                //  value={state.userObj.address}
-                onChange={(e) => handleChange(e)}
-              >
-                <option disabled={true}>Select Role</option>
-                <option value="admin">Admin</option>
-                <option value="student">Student</option>
-                <option value="game_teacher">Game Teacher</option>
-                <option value="teacher">Teacher</option>
-                <option value="class_teacher">Class Teacher</option>
-                <option value="library">Library</option>
-                <option value="driver">Driver</option>
-                <option value="accountant">Accountant</option>
-              </select>
-            </div>
 
             <ActionBtn />
           </Form>

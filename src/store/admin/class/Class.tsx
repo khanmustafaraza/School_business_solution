@@ -1,6 +1,7 @@
 "use client";
 
 import { ClassReducer } from "@/reducers/admin/Class";
+import useModal from "@/store/togglemodal/ToggleModal";
 import { ClassContextType, ClassStateType } from "@/types/admintypes/classtype";
 import { createContext, useContext, useReducer } from "react";
 import { toast } from "react-toastify";
@@ -18,11 +19,12 @@ const initialState: ClassStateType = {
 };
 
 export const ClassProvider = ({ children }: { children: React.ReactNode }) => {
+  const { closeModal } = useModal();
   const [state, dispatch] = useReducer(ClassReducer, initialState);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
 
     dispatch({
       type: "HANDLE_CHANGE",
@@ -73,10 +75,34 @@ export const ClassProvider = ({ children }: { children: React.ReactNode }) => {
       console.error(error);
     }
   };
+  const handleUpdate = async (e: any, id: any) => {
+    e.preventDefault();
+    const payload = {
+      ...state.classObj,
+      updateId:id
+    }
+    const res = await fetch("/api/admin/classes/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    // console.log(data)
+    if (data.success) {
+      toast.success(data.message);
+      closeModal();
+      getAllClass()
+    }
+    if (!data.success) {
+      toast.success(data.message);
+    }
+  };
 
   return (
     <ClassContext.Provider
-      value={{ handleChange, state, handleSubmit, getAllClass }}
+      value={{ handleChange, state, handleSubmit, getAllClass, handleUpdate }}
     >
       {children}
     </ClassContext.Provider>

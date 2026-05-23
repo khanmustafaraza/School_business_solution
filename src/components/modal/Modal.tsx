@@ -29,7 +29,7 @@ const Modal = ({ children, title }: any) => {
 
             {/* BODY */}
 
-            <div className="p-2">{children}</div>
+            <div className="p-2 max-h-[500px] overflow-y-auto">{children}</div>
 
             {/* FOOTER */}
           </div>

@@ -2,77 +2,95 @@ import mongoose, { Schema } from "mongoose";
 
 const StudentSchema = new Schema(
   {
+    srNo: {
+      type: Number,
+    },
+    className: {
+      type: String,
+      required: true,
+    },
+
+    section: {
+      type: String,
+      required: true,
+    },
+    session: {
+      type: String,
+    },
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
+    dob: {
+      type: Date,
+    },
+    dobInWords: {
+      type: String,
+    },
+    age: {
+      type: String,
+    },
+    bloodGroup: {
+      type: String,
+    },
+    religion: {
+      type: String,
+    },
+    casteCategory: {
+      type: String,
+    },
+    motherName: {
+      type: String,
+    },
+    fatherName: {
+      type: String,
+    },
+    motherNationality: {
+      type: String,
+    },
+    fatherNationality: {
+      type: String,
+    },
+    fatherOccupation: {
+      type: String,
+    },
+    motherOccupation: {
+      type: String,
+    },
+    motherMobileNumber: {
+      type: String,
+    },
+    fatherMobileNumber: {
+      type: String,
+    },
+    motherPermanentAddress: String,
+    fatherPermanentAddress: String,
+    officeAddress: String,
+    annualIncome: Number,
+    localGurdianName: String,
+    localGurdianAddress: String,
+    lastSchoolName: String,
+    lastSchoolAddress: String,
+    isCbse: String,
+    otherBoard: String,
+    lastResult: String,
+    percentage: String,
+    subjectOffered: [],
+    motherTongue: String,
+    homeTown: String,
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-
     classId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ClassModel",
-      required: true,
     },
-
-    // 🔥 store display value also (ERP best practice)
-    // className: {
-    //   type: String,
-    //   required: true,
-    // },
-
-    // section: {
-    //   type: String,
-    //   required: true,
-    // },
-
-    admissionNo: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true,
-    },
-
-    rollNo: {
-      type: String,
-      required: true,
-    },
-
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-
-    gender: { type: String, required: true },
-    dob: { type: Date, required: true },
-
-    bloodGroup: String,
-    religion: String,
-    category: String,
-    aadhaar: String,
-
-    academicYear: {
-      type: String,
-      index: true,
-    },
-
-    house: String,
-    admissionDate: Date,
-
-    mobile: String,
-    email: String,
-
-    address: String,
-    city: String,
-    state: String,
-    pincode: String,
-
-    fatherName: String,
-    motherName: String,
-    guardianName: String,
-    parentMobile: String,
-    occupation: String,
-
-    medicalCondition: String,
-    allergies: String,
-    emergencyContact: String,
-    transportRequired: String,
 
     notes: String,
 
@@ -86,7 +104,7 @@ const StudentSchema = new Schema(
     isActive: {
       type: Boolean,
       default: true,
-      index: true,
+      // index: true,
     },
   },
   {

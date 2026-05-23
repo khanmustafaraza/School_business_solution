@@ -85,4 +85,5 @@ export type UserContextType = {
     e: React.SyntheticEvent<HTMLFormElement>
   ) => Promise<void>;
   getAllUser: (page?: number) => Promise<void>;
+  handleUpdate: (id:any,status:any) => Promise<void>;
 };

@@ -263,3 +263,20 @@ export default async function AdminPage() {
 
 
 import { getServerSession } from "next-auth";
+
+import mongoose from "mongoose";
+
+const searchId = new mongoose.Types.ObjectId(
+  "6650f1b2c123456789abcd12"
+);
+
+const collections = mongoose.connection.db.collections();
+
+for (const collection of await collections) {
+  const result = await collection.findOne({ _id: searchId });
+
+  if (result) {
+    console.log("Found in:", collection.collectionName);
+    console.log(result);
+  }
+}
