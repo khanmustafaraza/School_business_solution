@@ -15,13 +15,20 @@ export const POST = async (req: NextRequest) => {
     const contact = formData.get("contact") as string;
     const address = formData.get("address") as string;
     const imageFile = formData.get("image") as File | null;
+    if (!imageFile) {
+      return NextResponse.json(
+        { success: false, message: "Photo is required" },
+        { status: 400 },
+      );
+    }
 
-    // Optional: Convert File to buffer if needed for DB or storage
-    let imageData: Buffer | null = null;
-    if (imageFile) {
-      const arrayBuffer = await imageFile.arrayBuffer();
-      imageData = Buffer.from(arrayBuffer);
-      console.log(formData)
+    const photoBuffer = Buffer.from(await imageFile.arrayBuffer());
+    const exsistSchool = await School.find();
+    if (exsistSchool.length > 0) {
+      return NextResponse.json({
+        success: false,
+        message: "School Alredy Exsist",
+      });
     }
 
     // Create school
@@ -31,13 +38,20 @@ export const POST = async (req: NextRequest) => {
       contact,
       code,
       address,
-      image: imageData,
+      image: photoBuffer,
     });
 
-    return NextResponse.json({ success: true, data: savedSchool });
+    return NextResponse.json({
+      success: true,
+      message: "School Saved Successfully",
+      data: savedSchool,
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ success: false, error: "Failed to create school" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Failed to create school" },
+      { status: 500 },
+    );
   }
 };
 
@@ -47,10 +61,12 @@ export const GET = async () => {
 
     const schools = await School.find().sort({ createdAt: -1 });
     const schoolsWithImages = schools.map((school) => ({
-  ...school.toObject(),
-  image: school.image ? `data:image/jpeg;base64,${school.image.toString('base64')}` : null,
-}));
-// console.log(schools)
+      ...school.toObject(),
+      image: school.image
+        ? `data:image/jpeg;base64,${school.image.toString("base64")}`
+        : null,
+    }));
+    // console.log(schools)
 
     return NextResponse.json({
       success: true,
@@ -60,7 +76,7 @@ export const GET = async () => {
     console.error(error);
     return NextResponse.json(
       { success: false, error: "Failed to fetch schools" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

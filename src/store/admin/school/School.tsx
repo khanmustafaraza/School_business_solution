@@ -2,6 +2,7 @@
 import { schoolReducer } from "@/reducers/admin/School";
 import { SchoolContextType, SchoolState } from "@/types/admintypes/schooltype";
 import { createContext, useContext, useReducer } from "react";
+import { toast } from "react-toastify";
 
 const SchoolContext = createContext<SchoolContextType | null>(null);
 const initialState: SchoolState = {
@@ -39,7 +40,7 @@ const SchoolProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(state.schoolObj);
+    // console.log(state.schoolObj);
 
     const formData = new FormData();
     formData.append("name", state.schoolObj.name);
@@ -58,7 +59,13 @@ const SchoolProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
+    if (data.success) {
+      toast.success(data.message);
+    }
+    if (!data.success) {
+      toast.success(data.message);
+    }
   };
 
   const getSchools = async () => {
@@ -79,10 +86,52 @@ const SchoolProvider = ({ children }: { children: React.ReactNode }) => {
       // dispatch({ type: "LOADING", payload: false });
     }
   };
+  const handleDelete = async (id: any) => {
+    // console.log(id);
+    if (!id) return;
+
+    try {
+      const payload = {
+        deleteId: id,
+      };
+
+      // ✅ API CALL
+
+      const response = await fetch("/api/admin/school/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      toast.success("School  Delete Successfully");
+
+      // ✅ RESET
+
+      // setComment("");
+      // closeModal();
+
+      getSchools();
+    } catch (error: any) {}
+  };
 
   return (
     <SchoolContext.Provider
-      value={{ state, dispatch, handleChange, handleSubmit, getSchools }}
+      value={{
+        state,
+        dispatch,
+        handleChange,
+        handleSubmit,
+        getSchools,
+        handleDelete,
+      }}
     >
       {" "}
       {/* ✅ FIX */}

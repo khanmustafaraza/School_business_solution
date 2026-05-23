@@ -1,14 +1,14 @@
 "use client";
 import ActionBtn from "@/components/actionbtn/ActionBtn";
 import Container from "@/components/container/Container";
-import AdminHeading from "@/components/headings/AdminHeading";
 import MainContainer from "@/components/maincontainer/MainContainer";
 import useSchool from "@/store/admin/school/School";
 import { School } from "lucide-react";
 import icons from "@/constants/icons/icons";
-import {
- 
-} from "react-icons/fa";
+import ParentContainer from "@/components/parentcontainer/ParentContainer";
+import Form from "@/components/formcomponent/Form";
+import Input from "@/components/inputs/Input";
+import H1 from "@/components/headings/H1";
 
 const heading = {
   name: "Add School",
@@ -21,108 +21,77 @@ const heading = {
 const SchoolRegister = () => {
   const { state, handleChange, handleSubmit } = useSchool();
   return (
-    <div className="white bg-white p-1">
-      {/* main container */}
+    <ParentContainer>
       <MainContainer>
-        {/* Heading */}
-        <AdminHeading heading={heading} />
-
-        {/* Form Card */}
         <Container>
-          <form
-            className="grid grid-cols-1 md:grid-cols-2 gap-5"
-            onSubmit={(e) => handleSubmit(e)}
-          >
-            {/* School Name */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                School Name
-              </label>
-              <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <icons.FaSchool className="text-gray-400 text-[16px]" />
-                <input
-                  name="name"
-                  value={state.schoolObj.name}
-                  onChange={(e) => handleChange(e)}
-                  type="text"
-                  placeholder="Enter school name"
-                  className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-                />
-              </div>
+          <H1 heading={heading} />
+          <Form onSubmit={(e) => handleSubmit(e)}>
+            {/* first  */}
+            <div className="flex  flex-wrap  gap-2 justify-center">
+              <Input
+                name="name"
+                value={state.schoolObj.name}
+                type="text"
+                placeholder="Enter the School Name"
+                onChange={(e) => handleChange(e)}
+                icon={<icons.FaSchool />}
+                label="School Name"
+              />
+              <Input
+                name="code"
+                value={state.schoolObj.code}
+                type="number"
+                placeholder="Enter the  Affiliation Code"
+                onChange={(e) => handleChange(e)}
+                icon={<icons.FaIdCard />}
+                label=" Affiliation Code"
+              />
+              {/* <Input /> */}
             </div>
 
-            {/* Affiliation Code */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                Affiliation Code
-              </label>
-              <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <icons.FaIdCard className="text-gray-400 text-[16px]" />
-                <input
-                  name="code"
-                  value={state.schoolObj.code}
-                  onChange={(e) => handleChange(e)}
-                  type="text"
-                  placeholder="Enter affiliation code"
-                  className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-                />
-              </div>
+            {/* second */}
+            <div className="flex  flex-wrap  gap-2 justify-center">
+              <Input
+                name="email"
+                value={state.schoolObj.email}
+                type="email"
+                placeholder="Enter the Email Address"
+                onChange={(e) => handleChange(e)}
+                icon={<icons.FaEnvelope />}
+                label=" Email Address"
+              />
+              <Input
+                name="code"
+                value={state.schoolObj.code}
+                type="number"
+                placeholder="Enter the  Affiliation Code"
+                onChange={(e) => handleChange(e)}
+                icon={<icons.FaIdCard />}
+                label=" Affiliation Code"
+              />
+              {/* <Input /> */}
             </div>
-
-            {/* Email */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                Email Address
-              </label>
-              <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <icons.FaEnvelope className="text-gray-400 text-[16px]" />
-                <input
-                  name="email"
-                  value={state.schoolObj.email}
-                  onChange={(e) => handleChange(e)}
-                  type="email"
-                  placeholder="Enter school email"
-                  className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-                />
-              </div>
+            {/* third */}
+            <div className="flex  flex-wrap  gap-2 justify-center">
+              <Input
+                name="contact"
+                value={state.schoolObj.contact}
+                type="tel"
+                placeholder="Enter the Contact Number"
+                onChange={(e) => handleChange(e)}
+                icon={<icons.FaPhoneAlt />}
+                label="Contact Number"
+              />
+              <Input
+                name="address"
+                value={state.schoolObj.address}
+                type="text"
+                placeholder="Enter the  Address"
+                onChange={(e) => handleChange(e)}
+                icon={<icons.FaMapMarkerAlt />}
+                label="Address"
+              />
             </div>
-
-            {/* Contact Number */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                Contact Number
-              </label>
-              <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <icons.FaPhoneAlt className="text-gray-400 text-[15px]" />
-                <input
-                  name="contact"
-                  value={state.schoolObj.contact}
-                  onChange={(e) => handleChange(e)}
-                  type="tel"
-                  placeholder="Enter contact number"
-                  className="w-full bg-transparent px-3 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-                />
-              </div>
-            </div>
-
-            {/* Address */}
-            <div className="md:col-span-2">
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                Address
-              </label>
-              <div className="flex items-start rounded border border-gray-300 bg-white px-3 py-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <icons.FaMapMarkerAlt className="mt-1 text-gray-400 text-[16px]" />
-                <textarea
-                  name="address"
-                  value={state.schoolObj.address}
-                  onChange={(e) => handleChange(e)}
-                  rows={4}
-                  placeholder="Enter school address"
-                  className="w-full resize-none bg-transparent px-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-                />
-              </div>
-            </div>
-
             {/* school image */}
             <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -146,12 +115,11 @@ const SchoolRegister = () => {
                 </label>
               </div>
             </div>
-
             <ActionBtn />
-          </form>
+          </Form>
         </Container>
       </MainContainer>
-    </div>
+    </ParentContainer>
   );
 };
 

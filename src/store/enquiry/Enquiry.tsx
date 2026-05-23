@@ -1,13 +1,11 @@
 "use client";
 
-import { validateData } from "@/app/lib/validate";
 import EnquiryReducer from "@/reducers/enquiry/Enquiry";
 import {
   EnquiryContextType,
   EnquiryListType,
   EnquiryStateType,
 } from "@/types/enquiry/enquirytype";
-import { EnquirySchema } from "@/validators/enquiryvalidator";
 import React, { createContext, useContext, useReducer, useState } from "react";
 import { toast } from "react-toastify";
 import useModal from "../togglemodal/ToggleModal";
@@ -29,6 +27,7 @@ const initialState: EnquiryStateType = {
     addmissionClass: "",
     message: "",
   },
+
   enquiryList: [],
 };
 
@@ -39,13 +38,15 @@ export const EnquiryProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
- const {closeModal} =  useModal()
+  const { closeModal } = useModal();
   const [state, dispatch] = useReducer(EnquiryReducer, initialState);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState<string>("");
 
   /* ===== HANDLE CHANGE ===== */
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value } = e.target;
 
@@ -59,20 +60,8 @@ export const EnquiryProvider = ({
   };
 
   /* ===== HANDLE SUBMIT (API CONNECTED) ===== */
-  const handleSubmit = async (
-    e: React.SyntheticEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const result= validateData(EnquirySchema,state.enquiryObj)
-    // // console.log("err",err)
-    // if(!result.success){
-    //   toast.error(result?.errors?.name)
-    //   toast.error(result?.errors?.mobile)
-    //   toast.error(result?.errors?.admisssionClass)
-    //   toast.error(result?.errors?.message)
-    //   return
-
-    // }
 
     try {
       dispatch({
@@ -89,29 +78,24 @@ export const EnquiryProvider = ({
       });
 
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       if (data.success) {
-
-        toast.success(data.message)
+        toast.success(data.message);
       }
       if (!data.success) {
         // toast.error(data.message)
-        toast.error(data.errors.name)
-        toast.error(data.errors.mobile)
-        toast.error(data.errors.admissionClass)
-        toast.error(data.errors.message)
-
+        toast.error(data.errors.name);
+        toast.error(data.errors.mobile);
+        toast.error(data.errors.admissionClass);
+        toast.error(data.errors.message);
       }
-
 
       // console.log(data)
       if (!data.success) {
-
       }
       // if(data)
 
       dispatch({ type: "SET_SUCCESS" });
-
 
       // ✅ refresh list after submit
       // await getEnquiryList();
@@ -162,6 +146,8 @@ export const EnquiryProvider = ({
       });
     }
   };
+
+  // update comment message inside the enquiry
   const handleUpdate = async (e: any, id: any) => {
     e.preventDefault();
 
@@ -173,13 +159,10 @@ export const EnquiryProvider = ({
     }
 
     try {
-
       const payload = {
         comment,
         enquiryId: id,
       };
-
-      console.log("payload >>>>>>>>>", payload);
 
       // ✅ API CALL
 
@@ -197,28 +180,66 @@ export const EnquiryProvider = ({
         throw new Error(data.message || "Something went wrong");
       }
 
-      toast.success("enquiry Upodated Successfully")
+      toast.success("enquiry Upodated Successfully");
 
       // ✅ RESET
 
       setComment("");
-      closeModal()
-
-      // ✅ CLOSE MODAL
-
-      // setOpen(false);
-
-      // ✅ OPTIONAL REFRESH
+      closeModal();
 
       getEnquiryList();
+    } catch (error: any) {}
+  };
 
-    } catch (error: any) {
-      console.log("error >>>>", error.message);
-    }
+  // handle delete  of enquiry
+
+  const handleDelete = async (id: any) => {
+    // console.log(id);
+    if (!id) return;
+
+    try {
+      const payload = {
+        deleteId: id,
+      };
+
+      // ✅ API CALL
+
+      const response = await fetch("/api/enquiry/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      toast.success("enquiry Delete Successfully");
+
+      // ✅ RESET
+
+      // setComment("");
+      // closeModal();
+
+      getEnquiryList();
+    } catch (error: any) {}
   };
   return (
     <EnquiryContext.Provider
-      value={{ state, handleChange, handleSubmit, getEnquiryList, handleUpdate, comment, setComment }}
+      value={{
+        state,
+        handleChange,
+        handleSubmit,
+        getEnquiryList,
+        handleUpdate,
+        comment,
+        setComment,
+        handleDelete,
+      }}
     >
       {children}
     </EnquiryContext.Provider>

@@ -21,7 +21,7 @@ export const POST = async (req: Request) => {
     if (existClass) {
       return NextResponse.json({
         success: false,
-        msg: "Class with this section already exists!",
+        message: "Class with this section already exists!",
       });
     }
 
@@ -33,16 +33,15 @@ export const POST = async (req: Request) => {
 
     return NextResponse.json({
       success: true,
-      msg: "Class added successfully!",
+      message: "Class added successfully!",
       data: savedClass,
     });
-
   } catch (error) {
     console.error(error);
 
     return NextResponse.json({
       success: false,
-      msg: "Server error",
+      message: "Server error",
     });
   }
 };
@@ -57,7 +56,6 @@ export const GET = async (req: Request) => {
       success: true,
       data: classes,
     });
-
   } catch (error) {
     console.error(error);
 

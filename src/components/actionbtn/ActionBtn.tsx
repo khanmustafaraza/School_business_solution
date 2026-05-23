@@ -3,7 +3,7 @@ import React from "react";
 
 const ActionBtn = () => {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 mt-4">
       <div className="rounded flex items-center gap-2 px-4 border bg-black  py-3 text-sm font-medium text-white hover:text-black hover:bg-gray-50 transition-all duration-200">
         <SquareX />
         <button type="button">Cancel</button>

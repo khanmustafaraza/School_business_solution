@@ -1,7 +1,7 @@
 type InputProps = {
   label: string;
   name: string;
-  value: string;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   icon?: React.ReactNode;
   type?: string;
@@ -18,12 +18,12 @@ const Input = ({
   placeholder = "",
 }: InputProps) => {
   return (
-    <div className="flex-1/5 ">
+    <div className="sm:flex-1/5 md:flex-1/5 lg:flex-1/5">
       <label className="mb-2 block text-sm font-medium text-gray-700 py-1">
         {label}
       </label>
 
-      <div className="flex items-center rounded border border-gray-300 bg-white px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
+      <div className="flex items-center rounded border border-gray-300 bg-white px-2   lg:px-3 md:px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
         {icon && <span className="text-gray-400 text-[16px]">{icon}</span>}
 
         <input

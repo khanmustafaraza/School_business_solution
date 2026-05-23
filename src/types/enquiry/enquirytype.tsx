@@ -1,9 +1,11 @@
 export type EnquiryListType = {
   _id: string;
   name: string;
-  mobile:number | "";
+  mobile: number | "";
   addmissionClass: string;
   message: string;
+  comment: string;
+  status: string;
 };
 
 export type EnquiryStateType = {
@@ -18,20 +20,24 @@ export type EnquiryStateType = {
     message: string;
   };
   enquiryList: EnquiryListType[];
-  comment :string;
 };
 
 export type EnquiryContextType = {
   state: EnquiryStateType;
+  comment: string;
+  setComment: any;
 
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement| HTMLTextAreaElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => void;
 
   handleSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => Promise<void>;
 
   getEnquiryList: () => Promise<void>;
-  handleUpdate :(e:any,id:any) => Promise<void>
+  handleUpdate: (e: any, id: any) => Promise<void>;
+  handleDelete: (id: any) => Promise<void>;
 };
 
 export type EnquiryAction =

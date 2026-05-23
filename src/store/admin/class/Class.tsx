@@ -1,9 +1,9 @@
 "use client";
 
-
 import { ClassReducer } from "@/reducers/admin/Class";
 import { ClassContextType, ClassStateType } from "@/types/admintypes/classtype";
 import { createContext, useContext, useReducer } from "react";
+import { toast } from "react-toastify";
 
 const ClassContext = createContext<ClassContextType | null>(null);
 
@@ -39,38 +39,45 @@ export const ClassProvider = ({ children }: { children: React.ReactNode }) => {
     e.preventDefault();
 
     // console.log(state.classObj);
-    const res = await fetch("/api/admin/classes",{
-      method:"POST",
-      headers:{
-        "Content-Type" :"application/json"
+    const res = await fetch("/api/admin/classes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify(state.classObj)
-    })
-    const data = await res.json()
-    console.log(data)
+      body: JSON.stringify(state.classObj),
+    });
+    const data = await res.json();
+    // console.log(data)
+    if (data.success) {
+      toast.success(data.message);
+    }
+    if (!data.success) {
+      toast.success(data.message);
+    }
   };
 
   const getAllClass = async () => {
-  try {
-    // dispatch({ type: "SET_LOADING", payload: true });
+    try {
+      // dispatch({ type: "SET_LOADING", payload: true });
 
-    const res = await fetch("/api/admin/classes");
-    const data = await res.json();
+      const res = await fetch("/api/admin/classes");
+      const data = await res.json();
 
-    if (!res.ok) throw new Error(data.msg);
+      if (!res.ok) throw new Error(data.msg);
 
-    dispatch({
-      type: "SET_CLASS_LIST",
-      payload: data.data,
-    });
-
-  } catch (error) {
-    console.error(error);
-  } 
-};
+      dispatch({
+        type: "SET_CLASS_LIST",
+        payload: data.data,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
-    <ClassContext.Provider value={{ handleChange, state, handleSubmit,getAllClass }}>
+    <ClassContext.Provider
+      value={{ handleChange, state, handleSubmit, getAllClass }}
+    >
       {children}
     </ClassContext.Provider>
   );

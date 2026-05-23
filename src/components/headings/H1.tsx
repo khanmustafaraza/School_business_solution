@@ -1,10 +1,8 @@
 "use client";
-import { headingProps } from "@/types/propstype";
 import Link from "next/link";
-import React from "react";
 import { FaArrowUp } from "react-icons/fa";
 
-const AdminHeading = ({ heading }: headingProps) => {
+const H1 = ({ heading }: any) => {
   return (
     <div className="mb-6 px-4 md:px-6">
       {/* Top Row */}
@@ -41,4 +39,4 @@ const AdminHeading = ({ heading }: headingProps) => {
   );
 };
 
-export default AdminHeading;
+export default H1;
