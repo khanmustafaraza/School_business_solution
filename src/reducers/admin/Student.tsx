@@ -68,6 +68,11 @@ const studentReducer = (
       };
     case "SET_STUDENTS":
       return { ...state, studentList: action.payload };
+      case "SET_SINGLE_STUDENT":
+  return {
+    ...state,
+    studentDetail: action.payload,
+  };
 
     default:
       return state;

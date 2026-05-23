@@ -17,7 +17,6 @@ import {
   FiUpload,
   FiHash,
   FiCalendar,
-  FiCreditCard,
   FiShield,
 } from "react-icons/fi";
 
@@ -41,13 +40,18 @@ const heading = {
 /* ================= COMPONENT ================= */
 
 const StudentRegister = () => {
-  const { state, handleChange, handleFileChange, handleSubmit } = useStudent();
+  const { state, handleChange, handleFileChange, handleSubmit } =
+    useStudent();
+
   const params = useParams();
   const id = params?.id as string;
+  console.log(params)
+
   const {
     state: { classList },
     getAllClass,
   } = useClass();
+
   useEffect(() => {
     getAllClass();
   }, []);
@@ -60,27 +64,20 @@ const StudentRegister = () => {
         <H1 heading={heading} />
 
         <Container>
-          {/* ❗ ONLY CHANGE: attach context submit */}
           <Form onSubmit={(e) => handleSubmit(e, id)}>
-            {/* Student Info */}
+            {/* ================= STUDENT INFO ================= */}
+
             <SectionCard
               title="Student Information"
               icon={<FiUser size={18} />}
             >
               <Input
-                name="admissionNo"
-                label="Admission No"
+                name="srNo"
+                label="SR No"
                 icon={<FiHash />}
-                value={formData.admissionNo}
+                value={formData.srNo}
                 onChange={handleChange}
-              />
-
-              <Input
-                name="rollNo"
-                label="Roll No"
-                icon={<FiHash />}
-                value={formData.rollNo}
-                onChange={handleChange}
+                type="number"
               />
 
               <Input
@@ -116,12 +113,35 @@ const StudentRegister = () => {
                 onChange={handleChange}
               />
 
+              <Input
+                name="dobInWords"
+                label="DOB In Words"
+                value={formData.dobInWords}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="age"
+                label="Age"
+                value={formData.age}
+                onChange={handleChange}
+              />
+
               <Select
                 name="bloodGroup"
                 label="Blood Group"
                 value={formData.bloodGroup}
                 onChange={handleChange}
-                options={["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]}
+                options={[
+                  "A+",
+                  "A-",
+                  "B+",
+                  "B-",
+                  "AB+",
+                  "AB-",
+                  "O+",
+                  "O-",
+                ]}
               />
 
               <Input
@@ -133,133 +153,110 @@ const StudentRegister = () => {
               />
 
               <Input
-                name="category"
-                label="Category"
+                name="casteCategory"
+                label="Caste Category"
                 icon={<FiShield />}
-                value={formData.category}
+                value={formData.casteCategory}
                 onChange={handleChange}
               />
 
               <Input
-                name="aadhaar"
-                label="Aadhaar Number"
-                icon={<FiCreditCard />}
-                value={formData.aadhaar}
+                name="motherTongue"
+                label="Mother Tongue"
+                value={formData.motherTongue}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="homeTown"
+                label="Home Town"
+                value={formData.homeTown}
                 onChange={handleChange}
               />
             </SectionCard>
 
-            {/* Academic */}
+            {/* ================= ACADEMIC ================= */}
+
             <SectionCard
               title="Academic Details"
               icon={<FiBookOpen size={18} />}
             >
-              <div className="select-box flex flex-col justify-center">
-                <label htmlFor="" className="mb-1">
-                  Select Class & Section
-                </label>
+              <div className="flex flex-col">
+                <label className="mb-1">Select Class & Section</label>
+
                 <select
                   name="classId"
-                  className="border border-gray-200 w-full px-2 py-2 rounded"
+                  value={formData.classId}
                   onChange={handleChange}
+                  className="border border-gray-200 w-full px-2 py-2 rounded"
                 >
-                  <option>Class & Section</option>
-                  {classList.map((curEle) => {
-                    return (
-                      <option key={curEle._id} value={curEle._id}>
-                        {curEle.name} - {curEle.section}
-                      </option>
-                    );
-                  })}
+                  <option value="">Class & Section</option>
+
+                  {classList.map((curEle) => (
+                    <option key={curEle._id} value={curEle._id}>
+                      {curEle.name} - {curEle.section}
+                    </option>
+                  ))}
                 </select>
               </div>
-              {/* <Select
-                name="className"
-                label="Class"
-                value={formData.className}
-                onChange={handleChange}
-                options={["Class 1", "Class 2", "Class 3", "Class 4"]}
-              /> */}
-
-              {/* <Select
-                name="section"
-                label="Section"
-                value={formData.section}
-                onChange={handleChange}
-                options={["A", "B", "C", "D"]}
-              /> */}
 
               <Input
-                name="academicYear"
-                label="Academic Year"
-                value={formData.academicYear}
+                name="session"
+                label="Session"
+                value={formData.session}
                 onChange={handleChange}
               />
 
               <Input
-                name="house"
-                label="House"
-                value={formData.house}
+                name="lastSchoolName"
+                label="Last School Name"
+                value={formData.lastSchoolName}
                 onChange={handleChange}
               />
 
               <Input
-                name="admissionDate"
-                label="Admission Date"
-                type="date"
-                value={formData.admissionDate}
-                onChange={handleChange}
-              />
-            </SectionCard>
-
-            {/* Contact */}
-            <SectionCard title="Contact Details" icon={<FiPhone size={18} />}>
-              <Input
-                name="mobile"
-                label="Mobile"
-                value={formData.mobile}
+                name="lastSchoolAddress"
+                label="Last School Address"
+                value={formData.lastSchoolAddress}
                 onChange={handleChange}
               />
 
+              <Select
+                name="isCbse"
+                label="CBSE"
+                value={formData.isCbse}
+                onChange={handleChange}
+                options={["Yes", "No"]}
+              />
+
               <Input
-                name="email"
-                label="Email"
-                type="email"
-                value={formData.email}
+                name="otherBoard"
+                label="Other Board"
+                value={formData.otherBoard}
                 onChange={handleChange}
               />
 
               <Input
-                name="address"
-                label="Address"
-                value={formData.address}
+                name="lastResult"
+                label="Last Result"
+                value={formData.lastResult}
                 onChange={handleChange}
               />
 
               <Input
-                name="city"
-                label="City"
-                value={formData.city}
-                onChange={handleChange}
-              />
-
-              <Input
-                name="state"
-                label="State"
-                value={formData.state}
-                onChange={handleChange}
-              />
-
-              <Input
-                name="pincode"
-                label="Pincode"
-                value={formData.pincode}
+                name="percentage"
+                label="Percentage"
+                value={formData.percentage}
                 onChange={handleChange}
               />
             </SectionCard>
 
-            {/* Parent */}
-            <SectionCard title="Parent Details" icon={<FiUsers size={18} />}>
+            {/* ================= PARENT DETAILS ================= */}
+
+            <SectionCard
+              title="Parent Details"
+              icon={<FiUsers size={18} />}
+            >
               <Input
                 name="fatherName"
                 label="Father Name"
@@ -275,42 +272,119 @@ const StudentRegister = () => {
               />
 
               <Input
-                name="guardianName"
-                label="Guardian Name"
-                value={formData.guardianName}
+                name="fatherMobileNumber"
+                label="Father Mobile Number"
+                value={formData.fatherMobileNumber}
                 onChange={handleChange}
               />
 
               <Input
-                name="parentMobile"
-                label="Parent Mobile"
-                value={formData.parentMobile}
+                name="motherMobileNumber"
+                label="Mother Mobile Number"
+                value={formData.motherMobileNumber}
                 onChange={handleChange}
               />
 
               <Input
-                name="occupation"
-                label="Occupation"
-                value={formData.occupation}
+                name="fatherOccupation"
+                label="Father Occupation"
+                value={formData.fatherOccupation}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="motherOccupation"
+                label="Mother Occupation"
+                value={formData.motherOccupation}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="fatherNationality"
+                label="Father Nationality"
+                value={formData.fatherNationality}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="motherNationality"
+                label="Mother Nationality"
+                value={formData.motherNationality}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="annualIncome"
+                label="Annual Income"
+                value={formData.annualIncome}
                 onChange={handleChange}
               />
             </SectionCard>
 
-            {/* Upload + Notes */}
+            {/* ================= ADDRESS ================= */}
+
+            <SectionCard
+              title="Address Details"
+              icon={<FiPhone size={18} />}
+            >
+              <Input
+                name="fatherPermanentAddress"
+                label="Father Permanent Address"
+                value={formData.fatherPermanentAddress}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="motherPermanentAddress"
+                label="Mother Permanent Address"
+                value={formData.motherPermanentAddress}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="officeAddress"
+                label="Office Address"
+                value={formData.officeAddress}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="localGurdianName"
+                label="Local Guardian Name"
+                value={formData.localGurdianName}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="localGurdianAddress"
+                label="Local Guardian Address"
+                value={formData.localGurdianAddress}
+                onChange={handleChange}
+              />
+            </SectionCard>
+
+            {/* ================= PHOTO + NOTES ================= */}
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="rounded bg-white p-5 shadow-sm">
                 <div className="mb-4 flex items-center gap-2">
                   <FiUpload size={18} />
+
                   <h2 className="text-lg font-semibold">
                     Upload Student Photo
                   </h2>
                 </div>
 
                 <label className="flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center transition hover:border-slate-400 hover:bg-slate-100">
-                  <FiUpload className="mb-3 text-slate-500" size={28} />
+                  <FiUpload
+                    className="mb-3 text-slate-500"
+                    size={28}
+                  />
+
                   <p className="text-sm font-medium text-slate-700">
                     Click to upload photo
                   </p>
+
                   <p className="mt-1 text-xs text-slate-500">
                     JPG, PNG up to 2MB
                   </p>
@@ -325,8 +399,10 @@ const StudentRegister = () => {
 
                 {formData.photo && (
                   <p className="mt-3 text-sm text-slate-600">
-                    Selected File:{" "}
-                    <span className="font-medium">{formData.photo.name}</span>
+                    Selected File:
+                    <span className="font-medium ml-1">
+                      {formData.photo.name}
+                    </span>
                   </p>
                 )}
               </div>
@@ -343,12 +419,14 @@ const StudentRegister = () => {
               </div>
             </div>
 
-            {/* Buttons */}
+            {/* ================= BUTTON ================= */}
+
             <ActionBtn />
           </Form>
         </Container>
       </MainContainer>
     </ParentContainer>
   );
-}
-  export default StudentRegister
+};
+
+export default StudentRegister;

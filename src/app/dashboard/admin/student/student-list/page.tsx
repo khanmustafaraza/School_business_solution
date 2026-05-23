@@ -1,237 +1,327 @@
 "use client";
 
+import Container from "@/components/container/Container";
+import H1 from "@/components/headings/H1";
+import MainContainer from "@/components/maincontainer/MainContainer";
+import ParentContainer from "@/components/parentcontainer/ParentContainer";
+import TableContainer from "@/components/tables/tablecontainer/Tablecontainer";
+import { useStudent } from "@/store/admin/student/Student";
+import { School } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useMemo, useState } from "react";
-import {
-  FiSearch,
-  FiEye,
-  FiEdit2,
-  FiTrash2,
-  FiUsers,
-  FiUserCheck,
-  FiBookOpen,
-  FiPhone,
-} from "react-icons/fi";
-
-type Student = {
-  _id: string;
-  admissionNo: string;
-  rollNo: string;
-  firstName: string;
-  lastName: string;
-  className: string;
-  section: string;
-  gender: string;
-  fatherName: string;
-  mobile: string;
-  classId: {
-    name: string;
-    section: string;
-  };
+import { useEffect } from "react";
+import { FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
+const heading = {
+  name: "Studen List",
+  subHeading: "Add and manage your student basic information.",
+  href: "/dashboard/admin/user/user-list",
+  btnHeading: "Student List",
+  icon: <School />,
 };
 
 export default function StudentList() {
-  const [search, setSearch] = useState("");
-  const [selectedClass, setSelectedClass] = useState("All");
-  const [students, setStudents] = useState<Student[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  /* ================= FETCH DATA ================= */
+  const { state, getStudents } = useStudent();
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        setLoading(true);
-
-        const res = await fetch("/api/admin/student");
-        const data = await res.json();
-        // console.log(data);
-
-        if (!res.ok) throw new Error(data.message);
-
-        setStudents(data.data);
-      } catch (error) {
-        console.error("Fetch Error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStudents();
+    getStudents();
   }, []);
 
-  /* ================= FILTER ================= */
-
-  const classOptions = ["All", ...new Set(students.map((s) => s.className))];
-  // console.log(classOptions);
-
-  const filteredStudents = useMemo(() => {
-    return students.filter((student) => {
-      const matchesSearch =
-        `${student.firstName} ${student.lastName} ${student.admissionNo} ${student.rollNo} ${student.fatherName} ${student.mobile}`
-          .toLowerCase()
-          .includes(search.toLowerCase());
-
-      const matchesClass =
-        selectedClass === "All" || student.className === selectedClass;
-
-      return matchesSearch && matchesClass;
-    });
-  }, [students, search, selectedClass]);
-
-  /* ================= STATS ================= */
-
-  const totalStudents = students.length;
-  const totalClasses = new Set(students.map((s) => s.className)).size;
-  const totalParents = new Set(students.map((s) => s.fatherName)).size;
-
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-800">Student List</h1>
-        <p className="text-sm text-slate-500">
-          View and manage all registered students
-        </p>
-      </div>
+    <ParentContainer>
+      <MainContainer>
+        <H1 heading={heading}/>
+        <Container>
+        <TableContainer>
+  {/* ================= TABLE HEAD ================= */}
 
-      {/* Stats */}
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          title="Total Students"
-          value={totalStudents}
-          icon={<FiUsers />}
-        />
-        <StatCard title="Classes" value={totalClasses} icon={<FiBookOpen />} />
-        <StatCard title="Parents" value={totalParents} icon={<FiPhone />} />
-        <StatCard
-          title="Loaded"
-          value={loading ? 0 : totalStudents}
-          icon={<FiUserCheck />}
-        />
-      </div>
+  <thead className="sticky top-0 z-10 bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow">
+    <tr>
+      <th className="px-5 py-4 text-left">SR No</th>
+      <th className="px-5 py-4 text-left">Photo</th>
+      <th className="px-5 py-4 text-left">First Name</th>
+      <th className="px-5 py-4 text-left">Last Name</th>
+      <th className="px-5 py-4 text-left">Gender</th>
+      <th className="px-5 py-4 text-left">DOB</th>
+      <th className="px-5 py-4 text-left">DOB In Words</th>
+      <th className="px-5 py-4 text-left">Age</th>
+      <th className="px-5 py-4 text-left">Blood Group</th>
+      <th className="px-5 py-4 text-left">Religion</th>
+      <th className="px-5 py-4 text-left">Caste Category</th>
+      <th className="px-5 py-4 text-left">Session</th>
+      <th className="px-5 py-4 text-left">Class</th>
+      <th className="px-5 py-4 text-left">Section</th>
+      <th className="px-5 py-4 text-left">Mother Name</th>
+      <th className="px-5 py-4 text-left">Father Name</th>
+      <th className="px-5 py-4 text-left">Mother Nationality</th>
+      <th className="px-5 py-4 text-left">Father Nationality</th>
+      <th className="px-5 py-4 text-left">Father Occupation</th>
+      <th className="px-5 py-4 text-left">Mother Occupation</th>
+      <th className="px-5 py-4 text-left">Mother Mobile</th>
+      <th className="px-5 py-4 text-left">Father Mobile</th>
+      <th className="px-5 py-4 text-left">Mother Address</th>
+      <th className="px-5 py-4 text-left">Father Address</th>
+      <th className="px-5 py-4 text-left">Office Address</th>
+      <th className="px-5 py-4 text-left">Annual Income</th>
+      <th className="px-5 py-4 text-left">Local Guardian</th>
+      <th className="px-5 py-4 text-left">Guardian Address</th>
+      <th className="px-5 py-4 text-left">Last School</th>
+      <th className="px-5 py-4 text-left">Last School Address</th>
+      <th className="px-5 py-4 text-left">CBSE</th>
+      <th className="px-5 py-4 text-left">Other Board</th>
+      <th className="px-5 py-4 text-left">Last Result</th>
+      <th className="px-5 py-4 text-left">Percentage</th>
+      <th className="px-5 py-4 text-left">Subject Offered</th>
+      <th className="px-5 py-4 text-left">Mother Tongue</th>
+      <th className="px-5 py-4 text-left">Home Town</th>
+      <th className="px-5 py-4 text-left">Notes</th>
+      <th className="px-5 py-4 text-left">Status</th>
+      <th className="px-5 py-4 text-left">Created At</th>
+      <th className="px-5 py-4 text-center">Actions</th>
+    </tr>
+  </thead>
 
-      {/* Filters */}
-      <div className="mb-5 rounded-2xl bg-white p-4 shadow-sm">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="relative w-full max-w-md">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none"
+  {/* ================= TABLE BODY ================= */}
+
+  <tbody className="bg-white divide-y divide-slate-100">
+    {state.studentList?.map((student: any, index: number) => {
+      return (
+        <tr
+          key={student._id}
+          className="hover:bg-slate-50 transition duration-200"
+        >
+          <td className="px-5 py-4 font-semibold">
+            {student.srNo || index + 1}
+          </td>
+
+          {/* PHOTO */}
+
+          <td className="px-5 py-4">
+            <img
+              src={`/api/admin/student/photo/${student._id}`}
+              alt={student.firstName}
+              className="h-14 w-14 rounded-2xl object-cover border-2 border-slate-200 shadow-sm"
             />
-          </div>
+          </td>
 
-          <select
-            value={selectedClass}
-            onChange={(e) => setSelectedClass(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm md:w-56"
-          >
-            {/* {classOptions.map((c) => (
-              <option>{c}</option>
-            ))} */}
-          </select>
-        </div>
-      </div>
+          <td className="px-5 py-4 font-medium">
+            {student.firstName}
+          </td>
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
-            <thead className="bg-slate-100 text-slate-600">
-              <tr>
-                <th className="px-5 py-4">Student</th>
-                <th className="px-5 py-4">Admission</th>
-                <th className="px-5 py-4">Roll</th>
-                <th className="px-5 py-4">Class</th>
-                <th className="px-5 py-4">Gender</th>
-                <th className="px-5 py-4">Parent</th>
-                <th className="px-5 py-4">Mobile</th>
-                <th className="px-5 py-4 text-center">Actions</th>
-              </tr>
-            </thead>
+          <td className="px-5 py-4">
+            {student.lastName}
+          </td>
 
-            <tbody>
-              {filteredStudents.length > 0 ? (
-                filteredStudents.map((student) => (
-                  <tr key={student._id} className="border-t hover:bg-slate-50">
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        {/* 🔥 REAL IMAGE */}
-                        <img
-                          src={`/api/admin/student/photo/${student._id}`}
-                          alt={student.firstName}
-                          className="h-10 w-10 rounded-full object-cover"
-                        />
+          <td className="px-5 py-4">
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                student.gender === "Male"
+                  ? "bg-blue-100 text-blue-700"
+                  : "bg-pink-100 text-pink-700"
+              }`}
+            >
+              {student.gender}
+            </span>
+          </td>
 
-                        <div>
-                          <p className="font-medium">
-                            {student.firstName} {student.lastName}
-                          </p>
-                          <p className="text-xs text-slate-500">
-                            {student.className} - {student.section}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
+          <td className="px-5 py-4">
+            {student.dob
+              ? new Date(student.dob).toLocaleDateString()
+              : ""}
+          </td>
 
-                    <td className="px-5 py-4">{student.admissionNo}</td>
-                    <td className="px-5 py-4">{student.rollNo}</td>
-                    <td className="px-5 py-4">
-                      {student.classId?.name} - {student.classId?.section}
-                    </td>
-                    <td className="px-5 py-4">{student.gender}</td>
-                    <td className="px-5 py-4">{student.fatherName}</td>
-                    <td className="px-5 py-4">{student.mobile}</td>
+          <td className="px-5 py-4">
+            {student.dobInWords}
+          </td>
 
-                    <td className="px-5 py-4">
-                      <div className="flex justify-center gap-2">
-                        <Link
-                          href={`/dashboard/admin/student/detail/${student._id}`}
-                        >
-                          <FiEye />
-                        </Link>
-                        <Link
-                          href={`/dashboard/admin/tc/tc-register/${student._id}`}
-                          className="text-blue-500"
-                        >
-                          <FiEdit2 title="create Tc" />
-                        </Link>
-                        <button className="text-red-500">
-                          <FiTrash2 />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={8} className="text-center py-10 text-slate-500">
-                    {loading ? "Loading..." : "No students found"}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-}
+          <td className="px-5 py-4">{student.age}</td>
 
-/* ================= STAT CARD ================= */
+          <td className="px-5 py-4">
+            <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">
+              {student.bloodGroup}
+            </span>
+          </td>
 
-function StatCard({ title, value, icon }: any) {
-  return (
-    <div className="rounded-2xl bg-white p-5 shadow-sm">
-      <div className="flex justify-between mb-2">
-        <p className="text-sm text-slate-500">{title}</p>
-        <div className="bg-slate-100 p-2 rounded">{icon}</div>
-      </div>
-      <h2 className="text-xl font-bold">{value}</h2>
-    </div>
+          <td className="px-5 py-4">
+            {student.religion}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.casteCategory}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.session}
+          </td>
+
+          <td className="px-5 py-4 font-medium">
+            {student.classId?.name}
+          </td>
+
+          <td className="px-5 py-4">
+            <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">
+              {student.classId?.section}
+            </span>
+          </td>
+
+          <td className="px-5 py-4">
+            {student.motherName}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.fatherName}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.motherNationality}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.fatherNationality}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.fatherOccupation}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.motherOccupation}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.motherMobileNumber}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.fatherMobileNumber}
+          </td>
+
+          <td className="px-5 py-4 max-w-[220px] truncate">
+            {student.motherPermanentAddress}
+          </td>
+
+          <td className="px-5 py-4 max-w-[220px] truncate">
+            {student.fatherPermanentAddress}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.officeAddress}
+          </td>
+
+          <td className="px-5 py-4">
+            ₹ {student.annualIncome}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.localGurdianName}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.localGurdianAddress}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.lastSchoolName}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.lastSchoolAddress}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.isCbse}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.otherBoard}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.lastResult}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.percentage}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.subjectOffered?.join(", ")}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.motherTongue}
+          </td>
+
+          <td className="px-5 py-4">
+            {student.homeTown}
+          </td>
+
+          <td className="px-5 py-4 max-w-[250px] truncate">
+            {student.notes}
+          </td>
+
+          {/* STATUS */}
+
+          <td className="px-5 py-4">
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-bold ${
+                student.isActive
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {student.isActive
+                ? "Active"
+                : "Inactive"}
+            </span>
+          </td>
+
+          {/* CREATED */}
+
+          <td className="px-5 py-4 text-slate-500">
+            {new Date(
+              student.createdAt,
+            ).toLocaleDateString()}
+          </td>
+
+          {/* ACTIONS */}
+
+          <td className="px-5 py-4">
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/dashboard/admin/student/detail/${student._id}`}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 text-blue-700 transition hover:bg-blue-700 hover:text-white"
+              >
+                <FiEye size={16} />
+              </Link>
+
+              <Link
+                href={`/dashboard/admin/student/edit/${student._id}`}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-700 transition hover:bg-amber-600 hover:text-white"
+              >
+                <FiEdit2 size={16} />
+              </Link>
+
+              <button
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-100 text-red-700 transition hover:bg-red-600 hover:text-white"
+              >
+                <FiTrash2 size={16} />
+              </button>
+            </div>
+          </td>
+        </tr>
+      );
+    })}
+  </tbody>
+</TableContainer>
+
+          {/* ================= EMPTY ================= */}
+
+          {state.studentList?.length === 0 && (
+            <div className="p-6 text-center text-slate-500">
+              No Students Found
+            </div>
+          )}
+        </Container>
+      </MainContainer>
+    </ParentContainer>
   );
 }

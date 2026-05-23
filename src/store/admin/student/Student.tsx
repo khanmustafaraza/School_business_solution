@@ -3,58 +3,148 @@
 import StudentReducer from "@/reducers/admin/Student";
 import {
   StudentContextType,
-  StudentFormData,
   StudentState,
+  StudentType,
 } from "@/types/admintypes/studenttype";
+
 import { createContext, useContext, useReducer, ReactNode } from "react";
-
-const StudentContext = createContext<StudentContextType | null>(null);
-
-const initialFormData: StudentFormData = {
-  admissionNo: "",
-  rollNo: "",
-  firstName: "",
-  lastName: "",
-  gender: "",
-  dob: "",
-  bloodGroup: "",
-  religion: "",
-  category: "",
-  aadhaar: "",
-
-  classId: "",
-  section: "",
-  academicYear: "",
-  house: "",
-  admissionDate: "",
-
-  mobile: "",
-  email: "",
-  address: "",
-  city: "",
-  state: "",
-  pincode: "",
-
-  fatherName: "",
-  motherName: "",
-  guardianName: "",
-  parentMobile: "",
-  occupation: "",
-
-  medicalCondition: "",
-  allergies: "",
-  emergencyContact: "",
-  transportRequired: "",
-
-  notes: "",
-  photo: null,
-};
+import { toast } from "react-toastify";
 
 const initialState: StudentState = {
   isLoading: false,
-  studentObj: initialFormData,
+  studentObj: {
+    srNo: "",
+
+    className: "",
+    section: "",
+    session: "",
+
+    firstName: "",
+    lastName: "",
+    gender: "",
+
+    dob: "",
+    dobInWords: "",
+    age: "",
+
+    bloodGroup: "",
+    religion: "",
+    casteCategory: "",
+
+    motherName: "",
+    fatherName: "",
+
+    motherNationality: "",
+    fatherNationality: "",
+
+    fatherOccupation: "",
+    motherOccupation: "",
+
+    motherMobileNumber: "",
+    fatherMobileNumber: "",
+
+    motherPermanentAddress: "",
+    fatherPermanentAddress: "",
+
+    officeAddress: "",
+
+    annualIncome: "",
+
+    localGurdianName: "",
+    localGurdianAddress: "",
+
+    lastSchoolName: "",
+    lastSchoolAddress: "",
+
+    isCbse: "",
+    otherBoard: "",
+
+    lastResult: "",
+    percentage: "",
+
+    subjectOffered: [],
+
+    motherTongue: "",
+    homeTown: "",
+
+    userId: "",
+    classId: "",
+
+    notes: "",
+
+    photo: null,
+
+    isActive: true,
+  },
   studentList: [],
+  studentDetail :{
+      srNo: "",
+
+    className: "",
+    section: "",
+    session: "",
+
+    firstName: "",
+    lastName: "",
+    gender: "",
+
+    dob: "",
+    dobInWords: "",
+    age: "",
+
+    bloodGroup: "",
+    religion: "",
+    casteCategory: "",
+
+    motherName: "",
+    fatherName: "",
+
+    motherNationality: "",
+    fatherNationality: "",
+
+    fatherOccupation: "",
+    motherOccupation: "",
+
+    motherMobileNumber: "",
+    fatherMobileNumber: "",
+
+    motherPermanentAddress: "",
+    fatherPermanentAddress: "",
+
+    officeAddress: "",
+
+    annualIncome: "",
+
+    localGurdianName: "",
+    localGurdianAddress: "",
+
+    lastSchoolName: "",
+    lastSchoolAddress: "",
+
+    isCbse: "",
+    otherBoard: "",
+
+    lastResult: "",
+    percentage: "",
+
+    subjectOffered: [],
+
+    motherTongue: "",
+    homeTown: "",
+
+    userId: "",
+    classId: "",
+
+    notes: "",
+
+    photo: null,
+
+    isActive: true,
+
+  }
 };
+
+const StudentContext = createContext<StudentContextType | null>(null);
 
 export const StudentProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(StudentReducer, initialState);
@@ -67,7 +157,7 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
     dispatch({
       type: "HANDLE_CHANGE",
       payload: {
-        name: e.target.name as keyof StudentFormData,
+        name: e.target.name as any,
         value: e.target.value,
       },
     });
@@ -85,12 +175,12 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // const handleReset = () => {
-  //   dispatch({ type: "RESET_FORM" });
-  // };
-
-  const handleSubmit = async (e: React.SyntheticEvent, id: string) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    id: string,
+  ) => {
     e.preventDefault();
+    console.log("id?????", id);
 
     try {
       const form = state.studentObj;
@@ -99,8 +189,9 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
 
       // append all fields
       Object.entries(form).forEach(([key, value]) => {
-        if (key === "photo") return; // handle file separately
-        formData.append(key, value as string);
+        if (key === "photo" || key === "userId") return;
+
+        formData.append(key, String(value));
       });
 
       // append file
@@ -116,14 +207,17 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
       });
 
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       if (!res.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-
-      console.log("SUCCESS:", data);
-      alert("Student Registered Successfully!");
+      if (data.success) {
+        toast.success("Student profile Create Successfully");
+      }
+      if(!data.success){
+        toast.error(data.message)
+      }
 
       // optional reset
       // dispatch({ type: "RESET_FORM" });
@@ -155,30 +249,26 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
       // dispatch({ type: "SET_LOADING", payload: false });
     }
   };
-  const getStudent = async (id: string) => {
-    console.log("ID VALUE:", id);
-    console.log("TYPE:", typeof id);
-    console.log("LENGTH:", id?.length);
-    try {
-      // dispatch({ type: "SET_LOADING", payload: true });
+ const getStudent = async (id: string) => {
+  try {
+    const res = await fetch(`/api/admin/student/detail/${id}`);
 
-      const res = await fetch(`/api/admin/student/detail/${id}`);
-      const data = await res.json();
-      console.log("data", data);
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to fetch students");
-      }
+    const data = await res.json();
+    console.log(data)
 
-      // dispatch({
-      //   type: "SET_STUDENTS",
-      //   payload: data.data,
-      // });
-    } catch (error: any) {
-      console.error("FETCH ERROR:", error);
-    } finally {
-      // dispatch({ type: "SET_LOADING", payload: false });
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch student");
     }
-  };
+
+    dispatch({
+      type: "SET_SINGLE_STUDENT",
+      payload: data.data,
+    });
+
+  } catch (error: any) {
+    console.error("FETCH ERROR:", error);
+  }
+};
 
   return (
     <StudentContext.Provider

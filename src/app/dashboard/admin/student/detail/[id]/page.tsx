@@ -1,230 +1,338 @@
 "use client";
 
-import { useStudent } from "@/store/admin/student/Student";
+import { useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+
+import ParentContainer from "@/components/parentcontainer/ParentContainer";
+import MainContainer from "@/components/maincontainer/MainContainer";
+import Container from "@/components/container/Container";
+import SchoolHeader from "@/components/schoolheader/Schoolheader";
+
+import { useStudent } from "@/store/admin/student/Student";
+
+import { useReactToPrint } from "react-to-print";
+
 import {
   FiUser,
-  FiPhone,
-  FiMail,
+  FiBookOpen,
+  FiUsers,
   FiMapPin,
-  FiHome,
-  FiEdit,
+  FiFileText,
+  FiPrinter,
 } from "react-icons/fi";
 
-/* ================= DUMMY DATA ================= */
+const DetailCard = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: any;
+}) => {
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white p-4">
+      <p className="mb-1 text-xs font-semibold uppercase text-gray-500">
+        {label}
+      </p>
 
-const dummyStudent = {
-  admissionNo: "ADM-1023",
-  rollNo: "12",
-  firstName: "Ayaan",
-  lastName: "Khan",
-  gender: "Male",
-  dob: "12 Aug 2010",
-  className: "Class 8",
-  section: "A",
-  academicYear: "2025-26",
-  mobile: "9876543210",
-  email: "ayaan.khan@example.com",
-  address: "Street 21, Aligarh",
-  city: "Aligarh",
-  state: "Uttar Pradesh",
-  fatherName: "Mr. Rahman Khan",
-  motherName: "Mrs. Saba Khan",
-  bloodGroup: "B+",
+      <p className="break-words text-sm font-medium text-gray-900">
+        {value || "-"}
+      </p>
+    </div>
+  );
 };
 
-/* ================= PAGE ================= */
-
-export default function StudentDashboard() {
+export default function StudentDetailPage() {
   const { state, getStudent } = useStudent();
-  const { id } = useParams<{ id: string }>();
-  console.log("id on ", id);
+
+  const params = useParams();
+  const id = params?.id as string;
+
+  const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!id) return;
-    getStudent(id);
+    if (id) {
+      getStudent(id);
+    }
   }, [id]);
 
-  const [student] = useState(dummyStudent);
-  const [activeTab, setActiveTab] = useState("Overview");
+  const student = state?.studentDetail;
 
-  const tabs = ["Overview", "Attendance", "Results", "Fees"];
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: `${student?.firstName}-details`,
+  });
 
   return (
-    <div className="min-h-screen bg-[#f4f6fb] p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* HERO */}
-        <div className="mb-8 rounded-2xl bg-white shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div className="flex items-center gap-5">
-            <img
-              src="https://i.pravatar.cc/150?img=12"
-              className="h-20 w-20 rounded-xl object-cover"
-            />
+    <ParentContainer>
+      <MainContainer>
+        {/* ================= BUTTON ================= */}
 
-            <div>
-              <h1 className="text-2xl font-semibold text-gray-900">
-                {student.firstName} {student.lastName}
-              </h1>
-
-              <p className="text-sm text-gray-500 mt-1">
-                {student.className} • {student.section}
-              </p>
-
-              {/* META */}
-              <div className="flex gap-4 mt-3 text-xs text-gray-500">
-                <span>ID: {student.admissionNo}</span>
-                <span>Year: {student.academicYear}</span>
-                <span>Status: Active</span>
-              </div>
-            </div>
-          </div>
-
-          {/* ACTION */}
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-800 transition">
-            <FiEdit size={14} />
-            Edit Profile
+        <div className="mb-5 flex justify-end">
+          <button
+            onClick={handlePrint}
+            className="flex items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white"
+          >
+            <FiPrinter />
+            Print PDF
           </button>
         </div>
 
-        {/* TABS */}
-        <div className="flex gap-6 border-b border-gray-200 mb-6">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`pb-3 text-sm transition border-b-2 ${
-                activeTab === tab
-                  ? "text-gray-900 border-gray-900"
-                  : "text-gray-500 border-transparent hover:text-gray-900"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
+        {/* ================= PRINT SECTION ================= */}
+
+        <div
+          ref={printRef}
+          className="bg-white p-2 text-black"
+        >
+          <SchoolHeader />
+
+          <Container>
+            {/* ================= PROFILE ================= */}
+
+            <div className="mb-8 overflow-hidden rounded-3xl bg-black text-white">
+              <div className="flex flex-col items-center gap-6 p-8 lg:flex-row">
+                <img
+                  src={`/api/admin/student/photo/${student?._id}`}
+                  alt={student?.firstName}
+                  className="h-40 w-40 rounded-3xl border-4 border-white/20 object-cover"
+                />
+
+                <div className="flex-1">
+                  <h1 className="text-4xl font-bold">
+                    {student?.firstName} {student?.lastName}
+                  </h1>
+
+                  <p className="mt-2 text-lg text-gray-300">
+                    {student?.classId?.name} -{" "}
+                    {student?.classId?.section}
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    <span className="rounded-full bg-white/10 px-4 py-2 text-sm">
+                      {student?.gender}
+                    </span>
+
+                    <span className="rounded-full bg-white/10 px-4 py-2 text-sm">
+                      {student?.bloodGroup}
+                    </span>
+
+                    <span
+                      className={`rounded-full px-4 py-2 text-sm font-semibold ${
+                        student?.isActive
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {student?.isActive
+                        ? "Active"
+                        : "Inactive"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ================= BASIC ================= */}
+
+            <section className="mb-10">
+              <div className="mb-5 flex items-center gap-2">
+                <FiUser />
+                <h2 className="text-2xl font-bold">
+                  Basic Information
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+                <DetailCard
+                  label="SR No"
+                  value={student?.srNo}
+                />
+
+                <DetailCard
+                  label="Session"
+                  value={student?.session}
+                />
+
+                <DetailCard
+                  label="DOB"
+                  value={
+                    student?.dob
+                      ? new Date(
+                          student.dob,
+                        ).toLocaleDateString()
+                      : "-"
+                  }
+                />
+
+                <DetailCard
+                  label="DOB In Words"
+                  value={student?.dobInWords}
+                />
+
+                <DetailCard
+                  label="Age"
+                  value={student?.age}
+                />
+
+                <DetailCard
+                  label="Religion"
+                  value={student?.religion}
+                />
+
+                <DetailCard
+                  label="Blood Group"
+                  value={student?.bloodGroup}
+                />
+
+                <DetailCard
+                  label="Mother Tongue"
+                  value={student?.motherTongue}
+                />
+
+                <DetailCard
+                  label="Home Town"
+                  value={student?.homeTown}
+                />
+              </div>
+            </section>
+
+            {/* ================= ACADEMIC ================= */}
+
+            <section className="mb-10">
+              <div className="mb-5 flex items-center gap-2">
+                <FiBookOpen />
+                <h2 className="text-2xl font-bold">
+                  Academic Details
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+                <DetailCard
+                  label="Class"
+                  value={student?.classId?.name}
+                />
+
+                <DetailCard
+                  label="Section"
+                  value={student?.classId?.section}
+                />
+
+                <DetailCard
+                  label="Last School"
+                  value={student?.lastSchoolName}
+                />
+
+                <DetailCard
+                  label="Last Result"
+                  value={student?.lastResult}
+                />
+
+                <DetailCard
+                  label="Percentage"
+                  value={student?.percentage}
+                />
+
+                <DetailCard
+                  label="CBSE"
+                  value={student?.isCbse}
+                />
+              </div>
+            </section>
+
+            {/* ================= PARENT ================= */}
+
+            <section className="mb-10">
+              <div className="mb-5 flex items-center gap-2">
+                <FiUsers />
+                <h2 className="text-2xl font-bold">
+                  Parent Details
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+                <DetailCard
+                  label="Father Name"
+                  value={student?.fatherName}
+                />
+
+                <DetailCard
+                  label="Mother Name"
+                  value={student?.motherName}
+                />
+
+                <DetailCard
+                  label="Father Mobile"
+                  value={student?.fatherMobileNumber}
+                />
+
+                <DetailCard
+                  label="Mother Mobile"
+                  value={student?.motherMobileNumber}
+                />
+
+                <DetailCard
+                  label="Father Occupation"
+                  value={student?.fatherOccupation}
+                />
+
+                <DetailCard
+                  label="Mother Occupation"
+                  value={student?.motherOccupation}
+                />
+              </div>
+            </section>
+
+            {/* ================= ADDRESS ================= */}
+
+            <section className="mb-10">
+              <div className="mb-5 flex items-center gap-2">
+                <FiMapPin />
+                <h2 className="text-2xl font-bold">
+                  Address Information
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <DetailCard
+                  label="Mother Address"
+                  value={
+                    student?.motherPermanentAddress
+                  }
+                />
+
+                <DetailCard
+                  label="Father Address"
+                  value={
+                    student?.fatherPermanentAddress
+                  }
+                />
+
+                <DetailCard
+                  label="Office Address"
+                  value={student?.officeAddress}
+                />
+              </div>
+            </section>
+
+            {/* ================= NOTES ================= */}
+
+            <section className="pb-10">
+              <div className="mb-5 flex items-center gap-2">
+                <FiFileText />
+                <h2 className="text-2xl font-bold">
+                  Notes
+                </h2>
+              </div>
+
+              <div className="rounded-3xl border border-gray-200 bg-white p-6">
+                <p className="leading-7 text-gray-700">
+                  {student?.notes ||
+                    "No Notes Available"}
+                </p>
+              </div>
+            </section>
+          </Container>
         </div>
-
-        {/* CONTENT */}
-        {activeTab === "Overview" && (
-          <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-            {/* LEFT MAIN */}
-            <div className="xl:col-span-3 space-y-6">
-              {/* STATS */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Stat label="Admission No" value={student.admissionNo} />
-                <Stat label="Roll No" value={student.rollNo} />
-                <Stat label="Blood Group" value={student.bloodGroup} />
-                <Stat label="DOB" value={student.dob} />
-              </div>
-
-              {/* INFO GRID */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <Card title="Academic">
-                  <Info label="Class" value={student.className} />
-                  <Info label="Section" value={student.section} />
-                  <Info label="Year" value={student.academicYear} />
-                </Card>
-
-                <Card title="Contact">
-                  <Info
-                    label="Mobile"
-                    value={student.mobile}
-                    icon={<FiPhone />}
-                  />
-                  <Info label="Email" value={student.email} icon={<FiMail />} />
-                  <Info
-                    label="Address"
-                    value={`${student.address}, ${student.city}, ${student.state}`}
-                    icon={<FiMapPin />}
-                  />
-                </Card>
-
-                <Card title="Parents">
-                  <Info
-                    label="Father"
-                    value={student.fatherName}
-                    icon={<FiUser />}
-                  />
-                  <Info
-                    label="Mother"
-                    value={student.motherName}
-                    icon={<FiHome />}
-                  />
-                </Card>
-              </div>
-            </div>
-
-            {/* RIGHT SIDE PANEL */}
-            <div className="space-y-3">
-              <ActionBtn label="View Students" />
-              <ActionBtn label="Mark Attendance" />
-              <ActionBtn label="Enter Results" />
-              <ActionBtn label="Download Report" />
-            </div>
-          </div>
-        )}
-
-        {/* OTHER TABS PLACEHOLDER */}
-        {activeTab !== "Overview" && (
-          <div className="bg-white rounded-xl p-10 text-center text-gray-400 text-sm">
-            {activeTab} module coming soon
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ================= COMPONENTS ================= */
-
-function Card({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition">
-      <h2 className="text-sm font-semibold text-gray-700 mb-4">{title}</h2>
-      <div className="space-y-4">{children}</div>
-    </div>
-  );
-}
-
-function Info({
-  label,
-  value,
-  icon,
-}: {
-  label: string;
-  value: string;
-  icon?: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-start gap-3">
-      {icon && <div className="mt-1 text-gray-400">{icon}</div>}
-      <div>
-        <p className="text-xs text-gray-400">{label}</p>
-        <p className="text-sm font-medium text-gray-900">{value || "-"}</p>
-      </div>
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer">
-      <p className="text-xs text-gray-400">{label}</p>
-      <p className="text-sm font-semibold text-gray-900 mt-1">{value}</p>
-    </div>
-  );
-}
-
-function ActionBtn({ label }: { label: string }) {
-  return (
-    <button className="w-full text-left px-4 py-3 bg-white rounded-xl shadow-sm hover:shadow-md text-sm text-gray-700 hover:bg-gray-50 transition">
-      {label}
-    </button>
+      </MainContainer>
+    </ParentContainer>
   );
 }

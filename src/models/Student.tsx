@@ -7,12 +7,12 @@ const StudentSchema = new Schema(
     },
     className: {
       type: String,
-      required: true,
+     
     },
 
     section: {
       type: String,
-      required: true,
+     
     },
     session: {
       type: String,
