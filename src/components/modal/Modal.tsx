@@ -3,25 +3,25 @@
 import useModal from "@/store/togglemodal/ToggleModal";
 
 const Modal = ({ children, title }: any) => {
-  const { setOpen, open, openModal, closeModal } = useModal();
-
-  // ✅ STATE
+  const { open, setOpen } = useModal();
 
   return (
-    <div className="p-10">
+    <>
       {open && (
-        <div className=" flex items-center justify-center ">
+        <div className="absolute inset-0 z-50 flex items-center justify-center">
           {/* MODAL BOX */}
 
-          <div className="absolute top-0 z-50 w-[90%] max-w-2xl rounded bg-white shadow-sm overflow-hidden">
+          <div className="w-[95%] max-w-4xl rounded bg-white shadow overflow-hidden border border-slate-200">
             {/* HEADER */}
 
             <div className="primary-bg px-6 py-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-white">{title}</h2>
+              <h2 className="text-xl font-semibold text-white">
+                {title}
+              </h2>
 
               <button
                 onClick={() => setOpen(false)}
-                className="w-9 h-9 rounded bg-white/10 hover:bg-white/20 text-white transition"
+                className="h-9 w-9 rounded-xl bg-white/10 text-white hover:bg-white/20 transition"
               >
                 ✕
               </button>
@@ -29,13 +29,13 @@ const Modal = ({ children, title }: any) => {
 
             {/* BODY */}
 
-            <div className="p-2 max-h-[500px] overflow-y-auto">{children}</div>
-
-            {/* FOOTER */}
+            <div className="max-h-[60vh] overflow-y-auto p-5">
+              {children}
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

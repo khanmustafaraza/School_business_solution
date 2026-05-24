@@ -1,6 +1,7 @@
 "use client";
 
 import StudentReducer from "@/reducers/admin/Student";
+import useModal from "@/store/togglemodal/ToggleModal";
 import {
   StudentContextType,
   StudentState,
@@ -148,6 +149,7 @@ const StudentContext = createContext<StudentContextType | null>(null);
 
 export const StudentProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(StudentReducer, initialState);
+ const {updateId} =  useModal()
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -269,7 +271,48 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
     console.error("FETCH ERROR:", error);
   }
 };
+const handleUpdate = async (e: any) => {
+  e.preventDefault();
 
+  try {
+    const formData = new FormData();
+    const form = state.studentObj;
+
+    Object.entries(form).forEach(([key, value]) => {
+      if (key === "photo") return;
+      formData.append(key, String(value));
+    });
+
+    // file
+    if (form.photo) {
+      formData.append("photo", form.photo);
+    }
+
+    // IMPORTANT: send updateId if editing
+    if (updateId) {
+      formData.append("updateId", updateId);
+    }
+
+    const res = await fetch("/api/admin/student/update-student", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message);
+
+    if (data.success) {
+      toast.success(data.message || "Success");
+      getStudents()
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error: any) {
+    console.error(error);
+    toast.error(error.message || "Something went wrong");
+  }
+};
   return (
     <StudentContext.Provider
       value={{
@@ -279,6 +322,7 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
         handleFileChange,
         handleSubmit,
         getStudents,
+        handleUpdate
       }}
     >
       {children}

@@ -63,6 +63,7 @@ export type StudentType = {
   isActive: boolean;
 };
 export type StudentState = {
+  studentDetail:StudentType
   studentObj: {
     srNo: "";
 
@@ -141,11 +142,12 @@ export type StudentContextType = {
   state: StudentState;
 
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => void;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleSubmit: (e: React.FormEvent<HTMLFormElement>,id:string) => Promise<void>;
   getStudent: (id:string) => Promise<void>;
   getStudents: () => Promise<void>;
+  handleUpdate: (e:any) => Promise<void>;
   // handleDelete: (id: any) => Promise<void>;
 };
