@@ -12,6 +12,7 @@ import { AuthProvider } from "@/store/auth/Auth";
 import Providers from "./providers";
 import { ModalProvider } from "@/store/togglemodal/ToggleModal";
 import { TransferProvider } from "@/store/admin/tc/Transfer";
+import { TeacherProvider } from "@/store/teacher/Teacher";
 
 const openSans = Open_Sans({
   variable: "--font-open",
@@ -45,7 +46,9 @@ export default function RootLayout({
                     <SchoolProvider>
                       <ClassProvider>
                         <StudentProvider>
-                          <TransferProvider>{children}</TransferProvider>
+                          <TransferProvider>
+                            <TeacherProvider>{children}</TeacherProvider>
+                          </TransferProvider>
                         </StudentProvider>
                       </ClassProvider>
                     </SchoolProvider>

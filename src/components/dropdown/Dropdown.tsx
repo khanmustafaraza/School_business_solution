@@ -34,7 +34,7 @@ export default function Dropdown({
   const user = session?.user as any;
 
   const isAdmin = user?.role === "admin";
-  const isClassTeacher = user?.role === "class-teacher";
+  const isClassTeacher = user?.role === "class_teacher";
   const isTeacher = user?.role === "teacher";
   const isLibrary = user?.role === "library";
   const isStudent = user?.role === "student";

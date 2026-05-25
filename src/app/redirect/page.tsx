@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export default function RedirectPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  console.log("data",session)
+  console.log("data", session);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -18,24 +18,19 @@ export default function RedirectPage() {
 
     if ((session.user as any)?.role === "admin") {
       router.replace("/");
-    } 
-    else if ((session.user as any)?.role === "student") {
+    } else if ((session.user as any)?.role === "student") {
       router.replace("/");
-    } 
-    else if ((session.user as any)?.role === "teacher") {
+    } else if ((session.user as any)?.role === "teacher") {
       router.replace("/");
-    } 
-    else if ((session.user as any)?.role === "class-teacher") {
+    } else if ((session.user as any)?.role === "class_teacher") {
       router.replace("/");
-    } 
-    else if ((session.user as any)?.role === "library") {
+    } else if ((session.user as any)?.role === "library") {
       router.replace("/");
-    } 
-    else {
+    } else {
       router.replace("/");
     }
   }, [session, status]);
-  if(status === "loading") return null
+  if (status === "loading") return null;
 
   return null;
 }

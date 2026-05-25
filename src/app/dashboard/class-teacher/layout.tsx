@@ -2,9 +2,25 @@
 import Sidebar from "@/components/ui/Sidebar";
 import Topbar from "@/components/ui/Topbar";
 import { useToggle } from "@/store/toggledashboard/Toggledashboard";
+import { NavTypeProps } from "@/types/propstype";
 import React from "react";
+import { FaBars, FaList, FaUser } from "react-icons/fa";
 
-import navData from "@/data/adminmenu/AdminMenu";
+// import navData from "@/data/adminmenu/AdminMenu";
+const navData: NavTypeProps[] = [
+  {
+    id: 0,
+    name: "Dashboard",
+    link: "/dashboard/class-teacher/class-teacher-dashboard",
+    icon: <FaBars />,
+  },
+  {
+    id: 1,
+    name: "Student List",
+    link: "/dashboard/class-teacher/view-students",
+    icon: <FaUser />,
+  },
+];
 
 const ClassTeacherLayout = ({ children }: { children: React.ReactNode }) => {
   const { toggle } = useToggle();
