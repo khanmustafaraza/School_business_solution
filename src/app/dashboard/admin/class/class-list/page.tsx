@@ -17,6 +17,7 @@ import Modal from "@/components/modal/Modal";
 import Form from "@/components/formcomponent/Form";
 import Input from "@/components/inputs/Input";
 import ActionBtn from "@/components/actionbtn/ActionBtn";
+import { FaUserCheck } from "react-icons/fa";
 
 export default function ClassList() {
   const { state, getAllClass, handleChange, handleUpdate } = useClass();
@@ -133,6 +134,22 @@ export default function ClassList() {
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-center gap-2">
                         {/* VIEW */}
+                        <Link
+                          href={`/dashboard/admin/student/view-students/${item._id}`}
+                          className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-[#003366] transition hover:bg-[#003366] hover:text-white"
+                          title="View Students"
+                        >
+                          <icons.FiEye size={16} />
+                        </Link>
+                        {/* mark attendance */}
+                        <Link
+                          href={`/dashboard/admin/mark-attendance/${item._id}`}
+                          className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-[#003366] transition hover:bg-[#003366] hover:text-white"
+                          title="Mark Attendance"
+                        >
+                          <FaUserCheck size={16} />
+                        </Link>
+                        {/* mark result */}
                         <Link
                           href={`/dashboard/admin/student/view-students/${item._id}`}
                           className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-[#003366] transition hover:bg-[#003366] hover:text-white"
