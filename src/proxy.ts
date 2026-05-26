@@ -1,150 +1,86 @@
 import { getToken } from "next-auth/jwt";
-
 import { NextResponse } from "next/server";
 
-async function proxy(req: any) {
+const roleRoutes = {
+  admin: {
+    dashboard: "/dashboard/admin/admin-dashboard",
+    base: "/dashboard/admin",
+  },
+
+  class_teacher: {
+    dashboard: "/dashboard/class-teacher/class-teacher-dashboard",
+    base: "/dashboard/class-teacher",
+  },
+
+  teacher: {
+    dashboard: "/dashboard/teacher/teacher-dashboard",
+    base: "/dashboard/teacher",
+  },
+
+  student: {
+    dashboard: "/dashboard/student/student-dashboard",
+    base: "/dashboard/student",
+  },
+
+  library: {
+    dashboard: "/dashboard/library/library-dashboard",
+    base: "/dashboard/library",
+  },
+};
+
+export default async function middleware(req: any) {
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  const { pathname } = req.nextUrl;
+  const pathname = req.nextUrl.pathname;
 
-  /* =========================
-     ROLE ROUTES
-  ========================= */
+  // =========================
+  // NOT LOGGED IN
+  // =========================
 
-  const roleRoutes: any = {
-    admin: {
-      dashboard:
-        "/dashboard/admin/admin-dashboard",
-
-      base: "/dashboard/admin",
-    },
-
-    class_teacher: {
-      dashboard:
-        "/dashboard/class-teacher/class-teacher-dashboard",
-
-      base: "/dashboard/class-teacher",
-    },
-
-    teacher: {
-      dashboard:
-        "/dashboard/teacher/teacher-dashboard",
-
-      base: "/dashboard/teacher",
-    },
-
-    student: {
-      dashboard:
-        "/dashboard/student/student-dashboard",
-
-      base: "/dashboard/student",
-    },
-
-    library: {
-      dashboard:
-        "/dashboard/library/library-dashboard",
-
-      base: "/dashboard/library",
-    },
-  };
-
-  /* =========================
-     NOT LOGGED IN
-  ========================= */
-
-  if (!token && pathname !== "/login") {
-    return NextResponse.redirect(
-      new URL("/login", req.url)
-    );
-  }
-
-  /* =========================
-     PREVENT LOGIN ACCESS
-  ========================= */
-
-  if (token && pathname === "/login") {
-    const role = token?.role as string;
-
-    const dashboard =
-      roleRoutes?.[role]?.dashboard;
-
-    if (dashboard) {
-      return NextResponse.redirect(
-        new URL(dashboard, req.url)
-      );
+  if (!token) {
+    if (pathname !== "/login") {
+      return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    return NextResponse.redirect(
-      new URL("/", req.url)
-    );
+    return NextResponse.next();
   }
 
-  /* =========================
-     BASE DASHBOARD REDIRECT
-  ========================= */
+  const role = token.role as keyof typeof roleRoutes;
+  const userRoute = roleRoutes[role];
+
+  // invalid role
+  if (!userRoute) {
+    return NextResponse.redirect(new URL("/unauthorized", req.url));
+  }
+
+  // =========================
+  // LOGIN PAGE BLOCK
+  // =========================
+
+  if (pathname === "/login") {
+    return NextResponse.redirect(new URL(userRoute.dashboard, req.url));
+  }
+
+  // =========================
+  // /dashboard redirect
+  // =========================
 
   if (pathname === "/dashboard") {
-    const role = token?.role as string;
-
-    if (!role) {
-      return NextResponse.redirect(
-        new URL("/unauthorized", req.url)
-      );
-    }
-
-    const dashboard =
-      roleRoutes?.[role]?.dashboard;
-
-    if (!dashboard) {
-      return NextResponse.redirect(
-        new URL("/unauthorized", req.url)
-      );
-    }
-
-    return NextResponse.redirect(
-      new URL(dashboard, req.url)
-    );
+    return NextResponse.redirect(new URL(userRoute.dashboard, req.url));
   }
 
-  /* =========================
-     ROLE PROTECTION
-  ========================= */
+  // =========================
+  // ROLE PROTECTION
+  // =========================
 
-  if (pathname.startsWith("/dashboard")) {
-    const role = token?.role as string;
-
-    if (!role) {
-      return NextResponse.redirect(
-        new URL("/unauthorized", req.url)
-      );
-    }
-
-    const allowedBaseRoute =
-      roleRoutes?.[role]?.base;
-
-    if (!allowedBaseRoute) {
-      return NextResponse.redirect(
-        new URL("/unauthorized", req.url)
-      );
-    }
-
-    // trying to access another role route
-
-    if (
-      !pathname.startsWith(
-        allowedBaseRoute
-      )
-    ) {
-      return NextResponse.redirect(
-        new URL(
-          roleRoutes[role].dashboard,
-          req.url
-        )
-      );
-    }
+  if (
+    pathname.startsWith("/dashboard") &&
+    !pathname.startsWith(userRoute.base)
+  ) {
+    return NextResponse.redirect(new URL(userRoute.dashboard, req.url));
   }
 
   return NextResponse.next();
@@ -153,5 +89,3 @@ async function proxy(req: any) {
 export const config = {
   matcher: ["/dashboard/:path*", "/login"],
 };
-
-export default proxy;

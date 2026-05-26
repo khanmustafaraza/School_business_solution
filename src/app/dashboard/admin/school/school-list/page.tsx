@@ -1,14 +1,17 @@
 "use client";
 
+import { useEffect } from "react";
+
 import Container from "@/components/container/Container";
 import MainContainer from "@/components/maincontainer/MainContainer";
-import useSchool from "@/store/admin/school/School";
-import { useEffect } from "react";
-import icons from "@/constants/icons/icons";
-
 import ParentContainer from "@/components/parentcontainer/ParentContainer";
+
 import H1 from "@/components/headings/H1";
 import TableContainer from "@/components/tables/tablecontainer/Tablecontainer";
+
+import useSchool from "@/store/admin/school/School";
+
+import icons from "@/constants/icons/icons";
 
 const heading = {
   name: "School Directory",
@@ -31,64 +34,119 @@ const SchoolList = () => {
         <H1 heading={heading} />
 
         <Container>
-          {/* School List */}
-          <TableContainer>
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-3 border text-left">Image</th>
-                <th className="px-4 py-3 border text-left">Name</th>
-                <th className="px-4 py-3 border text-left">Code</th>
-                <th className="px-4 py-3 border text-left">Email</th>
-                <th className="px-4 py-3 border text-left">Contact</th>
-                <th className="px-4 py-3 border text-left">Address</th>
-                <th className="px-4 py-3 border text-center">Actions</th>
-              </tr>
-            </thead>
+          <div className="overflow-hidden rounded-md border border-gray-300 bg-white">
+            {/* HEADER */}
 
-            <tbody>
-              {state?.schools?.length > 0 ? (
-                state.schools.map((school: any, index: number) => (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 border">
-                      <img
-                        src={`${school.image}`}
-                        alt={school.name}
-                        className="w-14 h-14 rounded object-cover"
-                      />
-                    </td>
+            <div className="border-b border-gray-300 bg-gray-100 px-4 py-3">
+              <h2 className="text-lg font-semibold">School Records</h2>
+            </div>
 
-                    <td className="px-4 py-3 border">{school.name}</td>
+            {/* TABLE */}
 
-                    <td className="px-4 py-3 border">{school.code}</td>
+            <TableContainer>
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold">
+                    Logo
+                  </th>
 
-                    <td className="px-4 py-3 border">{school.email}</td>
+                  <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold">
+                    School Name
+                  </th>
 
-                    <td className="px-4 py-3 border">{school.contact}</td>
+                  <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold">
+                    Code
+                  </th>
 
-                    <td className="px-4 py-3 border">{school.address}</td>
+                  <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold">
+                    Email
+                  </th>
 
-                    {/* Action Buttons */}
-                    <td className="px-4 py-3 border">
-                      <div className="flex items-center justify-center gap-2">
-                        <button
-                          className="bg-gray-500 hover:primary-bg text-white px-3 py-2 rounded text-sm"
-                          onClick={() => handleDelete(school._id)}
-                        >
-                          Delete
-                        </button>
-                      </div>
+                  <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold">
+                    Contact
+                  </th>
+
+                  <th className="border border-gray-300 px-4 py-3 text-left text-sm font-semibold">
+                    Address
+                  </th>
+
+                  <th className="border border-gray-300 px-4 py-3 text-center text-sm font-semibold">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {state?.schools?.length > 0 ? (
+                  state.schools.map((school: any, index: number) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      {/* IMAGE */}
+
+                      <td className="border border-gray-300 px-4 py-3">
+                        <img
+                          src={school.image}
+                          alt={school.name}
+                          className="h-14 w-14 rounded border object-cover"
+                        />
+                      </td>
+
+                      {/* NAME */}
+
+                      <td className="border border-gray-300 px-4 py-3 text-sm">
+                        {school.name}
+                      </td>
+
+                      {/* CODE */}
+
+                      <td className="border border-gray-300 px-4 py-3 text-sm">
+                        {school.code}
+                      </td>
+
+                      {/* EMAIL */}
+
+                      <td className="border border-gray-300 px-4 py-3 text-sm">
+                        {school.email}
+                      </td>
+
+                      {/* CONTACT */}
+
+                      <td className="border border-gray-300 px-4 py-3 text-sm">
+                        {school.contact}
+                      </td>
+
+                      {/* ADDRESS */}
+
+                      <td className="border border-gray-300 px-4 py-3 text-sm">
+                        {school.address}
+                      </td>
+
+                      {/* ACTION */}
+
+                      <td className="border border-gray-300 px-4 py-3">
+                        <div className="flex justify-center">
+                          <button
+                            onClick={() => handleDelete(school._id)}
+                            className="rounded bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      className="py-8 text-center text-sm text-gray-500"
+                    >
+                      No School Records Found
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={7} className="text-center py-6 text-gray-500">
-                    No School Records Found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </TableContainer>
+                )}
+              </tbody>
+            </TableContainer>
+          </div>
         </Container>
       </MainContainer>
     </ParentContainer>

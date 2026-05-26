@@ -60,6 +60,18 @@ const navData: NavTypeProps[] = [
   },
   {
     id: 9,
+    name: "Teacher List",
+    link: "/dashboard/admin/student/student-list",
+    icon: <icons.PiStudent size={18} />,
+  },
+  {
+    id: 10,
+    name: "Class Teacher List",
+    link: "/dashboard/admin/student/student-list",
+    icon: <icons.PiStudent size={18} />,
+  },
+  {
+    id: 11,
     name: "Certificates",
     link: "/dashboard/admin/tc/tc-register",
     icon: <luicideIcons.BadgeCheck size={18} />,

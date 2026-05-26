@@ -21,13 +21,7 @@ import {
   FiPrinter,
 } from "react-icons/fi";
 
-const DetailCard = ({
-  label,
-  value,
-}: {
-  label: string;
-  value: any;
-}) => {
+const DetailCard = ({ label, value }: { label: string; value: any }) => {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-4">
       <p className="mb-1 text-xs font-semibold uppercase text-gray-500">
@@ -79,10 +73,7 @@ export default function StudentDetailPage() {
 
         {/* ================= PRINT SECTION ================= */}
 
-        <div
-          ref={printRef}
-          className="bg-white p-2 text-black"
-        >
+        <div ref={printRef} className="bg-white p-2 text-black">
           <SchoolHeader />
 
           <Container>
@@ -102,8 +93,7 @@ export default function StudentDetailPage() {
                   </h1>
 
                   <p className="mt-2 text-lg text-gray-300">
-                    {student?.classId?.name} -{" "}
-                    {student?.classId?.section}
+                    {student?.classId?.name} - {student?.classId?.section}
                   </p>
 
                   <div className="mt-5 flex flex-wrap gap-3">
@@ -122,9 +112,7 @@ export default function StudentDetailPage() {
                           : "bg-red-100 text-red-700"
                       }`}
                     >
-                      {student?.isActive
-                        ? "Active"
-                        : "Inactive"}
+                      {student?.isActive ? "Active" : "Inactive"}
                     </span>
                   </div>
                 </div>
@@ -136,62 +124,37 @@ export default function StudentDetailPage() {
             <section className="mb-10">
               <div className="mb-5 flex items-center gap-2">
                 <FiUser />
-                <h2 className="text-2xl font-bold">
-                  Basic Information
-                </h2>
+                <h2 className="text-2xl font-bold">Basic Information</h2>
               </div>
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                <DetailCard
-                  label="SR No"
-                  value={student?.srNo}
-                />
+                <DetailCard label="SR No" value={student?.srNo} />
 
-                <DetailCard
-                  label="Session"
-                  value={student?.session}
-                />
+                <DetailCard label="Session" value={student?.session} />
 
                 <DetailCard
                   label="DOB"
                   value={
                     student?.dob
-                      ? new Date(
-                          student.dob,
-                        ).toLocaleDateString()
+                      ? new Date(student.dob).toLocaleDateString()
                       : "-"
                   }
                 />
 
-                <DetailCard
-                  label="DOB In Words"
-                  value={student?.dobInWords}
-                />
+                <DetailCard label="DOB In Words" value={student?.dobInWords} />
 
-                <DetailCard
-                  label="Age"
-                  value={student?.age}
-                />
+                <DetailCard label="Age" value={student?.age} />
 
-                <DetailCard
-                  label="Religion"
-                  value={student?.religion}
-                />
+                <DetailCard label="Religion" value={student?.religion} />
 
-                <DetailCard
-                  label="Blood Group"
-                  value={student?.bloodGroup}
-                />
+                <DetailCard label="Blood Group" value={student?.bloodGroup} />
 
                 <DetailCard
                   label="Mother Tongue"
                   value={student?.motherTongue}
                 />
 
-                <DetailCard
-                  label="Home Town"
-                  value={student?.homeTown}
-                />
+                <DetailCard label="Home Town" value={student?.homeTown} />
               </div>
             </section>
 
@@ -200,41 +163,24 @@ export default function StudentDetailPage() {
             <section className="mb-10">
               <div className="mb-5 flex items-center gap-2">
                 <FiBookOpen />
-                <h2 className="text-2xl font-bold">
-                  Academic Details
-                </h2>
+                <h2 className="text-2xl font-bold">Academic Details</h2>
               </div>
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                <DetailCard
-                  label="Class"
-                  value={student?.classId?.name}
-                />
+                <DetailCard label="Class" value={student?.classId?.name} />
 
-                <DetailCard
-                  label="Section"
-                  value={student?.classId?.section}
-                />
+                <DetailCard label="Section" value={student?.classId?.section} />
 
                 <DetailCard
                   label="Last School"
                   value={student?.lastSchoolName}
                 />
 
-                <DetailCard
-                  label="Last Result"
-                  value={student?.lastResult}
-                />
+                <DetailCard label="Last Result" value={student?.lastResult} />
 
-                <DetailCard
-                  label="Percentage"
-                  value={student?.percentage}
-                />
+                <DetailCard label="Percentage" value={student?.percentage} />
 
-                <DetailCard
-                  label="CBSE"
-                  value={student?.isCbse}
-                />
+                <DetailCard label="CBSE" value={student?.isCbse} />
               </div>
             </section>
 
@@ -243,21 +189,13 @@ export default function StudentDetailPage() {
             <section className="mb-10">
               <div className="mb-5 flex items-center gap-2">
                 <FiUsers />
-                <h2 className="text-2xl font-bold">
-                  Parent Details
-                </h2>
+                <h2 className="text-2xl font-bold">Parent Details</h2>
               </div>
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                <DetailCard
-                  label="Father Name"
-                  value={student?.fatherName}
-                />
+                <DetailCard label="Father Name" value={student?.fatherName} />
 
-                <DetailCard
-                  label="Mother Name"
-                  value={student?.motherName}
-                />
+                <DetailCard label="Mother Name" value={student?.motherName} />
 
                 <DetailCard
                   label="Father Mobile"
@@ -286,24 +224,18 @@ export default function StudentDetailPage() {
             <section className="mb-10">
               <div className="mb-5 flex items-center gap-2">
                 <FiMapPin />
-                <h2 className="text-2xl font-bold">
-                  Address Information
-                </h2>
+                <h2 className="text-2xl font-bold">Address Information</h2>
               </div>
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <DetailCard
                   label="Mother Address"
-                  value={
-                    student?.motherPermanentAddress
-                  }
+                  value={student?.motherPermanentAddress}
                 />
 
                 <DetailCard
                   label="Father Address"
-                  value={
-                    student?.fatherPermanentAddress
-                  }
+                  value={student?.fatherPermanentAddress}
                 />
 
                 <DetailCard
@@ -318,15 +250,12 @@ export default function StudentDetailPage() {
             <section className="pb-10">
               <div className="mb-5 flex items-center gap-2">
                 <FiFileText />
-                <h2 className="text-2xl font-bold">
-                  Notes
-                </h2>
+                <h2 className="text-2xl font-bold">Notes</h2>
               </div>
 
               <div className="rounded-3xl border border-gray-200 bg-white p-6">
                 <p className="leading-7 text-gray-700">
-                  {student?.notes ||
-                    "No Notes Available"}
+                  {student?.notes || "No Notes Available"}
                 </p>
               </div>
             </section>

@@ -1,5 +1,26 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { School } from "lucide-react";
+import {
+  FiBookOpen,
+  FiCalendar,
+  FiEdit2,
+  FiEye,
+  FiGrid,
+  FiHash,
+  FiList,
+  FiPhone,
+  FiSearch,
+  FiShield,
+  FiTrash2,
+  FiUpload,
+  FiUser,
+  FiUsers,
+  FiFilter,
+} from "react-icons/fi";
+
 import ActionBtn from "@/components/actionbtn/ActionBtn";
 import Container from "@/components/container/Container";
 import Form from "@/components/formcomponent/Form";
@@ -10,28 +31,14 @@ import MainContainer from "@/components/maincontainer/MainContainer";
 import Modal from "@/components/modal/Modal";
 import ParentContainer from "@/components/parentcontainer/ParentContainer";
 import SectionCard from "@/components/sectioncard/SectionCard";
-import TableContainer from "@/components/tables/tablecontainer/Tablecontainer";
+
 import useClass from "@/store/admin/class/Class";
 import { useStudent } from "@/store/admin/student/Student";
 import useModal from "@/store/togglemodal/ToggleModal";
-import { School } from "lucide-react";
-import Link from "next/link";
-import { useEffect } from "react";
-import {
-  FiBookOpen,
-  FiCalendar,
-  FiEdit2,
-  FiEye,
-  FiHash,
-  FiPhone,
-  FiShield,
-  FiTrash2,
-  FiUpload,
-  FiUser,
-  FiUsers,
-} from "react-icons/fi";
+import TableContainer from "@/components/tables/tablecontainer/Tablecontainer";
+
 const heading = {
-  name: "Studen List",
+  name: "Student List",
   subHeading: "Add and manage your student basic information.",
   href: "/dashboard/admin/user/user-list",
   btnHeading: "Student List",
@@ -39,251 +46,371 @@ const heading = {
 };
 
 export default function StudentList() {
+  const [view, setView] = useState("grid");
+
   useEffect(() => {
     getStudents();
     getAllClass();
   }, []);
-  const { state, getStudents, handleChange, handleUpdate,handleFileChange } = useStudent();
+
+  const { state, getStudents, handleChange, handleUpdate, handleFileChange } =
+    useStudent();
+
   const {
     state: { classList },
     getAllClass,
   } = useClass();
 
   const { openModal } = useModal();
+
   const formData = state.studentObj;
-  
 
   return (
     <ParentContainer>
       <MainContainer>
         <H1 heading={heading} />
+
         <Container>
-          <TableContainer>
-            {/* ================= TABLE HEAD ================= */}
+          {/* ================= FILTER UI ================= */}
 
-            <thead className="sticky top-0 z-10 bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow">
-              <tr>
-                <th className="px-5 py-4 text-left">SR No</th>
-                <th className="px-5 py-4 text-left">Photo</th>
-                <th className="px-5 py-4 text-left">First Name</th>
-                <th className="px-5 py-4 text-left">Last Name</th>
-                <th className="px-5 py-4 text-left">Gender</th>
-                <th className="px-5 py-4 text-left">DOB</th>
-                <th className="px-5 py-4 text-left">DOB In Words</th>
-                <th className="px-5 py-4 text-left">Age</th>
-                <th className="px-5 py-4 text-left">Blood Group</th>
-                <th className="px-5 py-4 text-left">Religion</th>
-                <th className="px-5 py-4 text-left">Caste Category</th>
-                <th className="px-5 py-4 text-left">Session</th>
-                <th className="px-5 py-4 text-left">Class</th>
-                <th className="px-5 py-4 text-left">Section</th>
-                <th className="px-5 py-4 text-left">Mother Name</th>
-                <th className="px-5 py-4 text-left">Father Name</th>
-                <th className="px-5 py-4 text-left">Mother Nationality</th>
-                <th className="px-5 py-4 text-left">Father Nationality</th>
-                <th className="px-5 py-4 text-left">Father Occupation</th>
-                <th className="px-5 py-4 text-left">Mother Occupation</th>
-                <th className="px-5 py-4 text-left">Mother Mobile</th>
-                <th className="px-5 py-4 text-left">Father Mobile</th>
-                <th className="px-5 py-4 text-left">Mother Address</th>
-                <th className="px-5 py-4 text-left">Father Address</th>
-                <th className="px-5 py-4 text-left">Office Address</th>
-                <th className="px-5 py-4 text-left">Annual Income</th>
-                <th className="px-5 py-4 text-left">Local Guardian</th>
-                <th className="px-5 py-4 text-left">Guardian Address</th>
-                <th className="px-5 py-4 text-left">Last School</th>
-                <th className="px-5 py-4 text-left">Last School Address</th>
-                <th className="px-5 py-4 text-left">CBSE</th>
-                <th className="px-5 py-4 text-left">Other Board</th>
-                <th className="px-5 py-4 text-left">Last Result</th>
-                <th className="px-5 py-4 text-left">Percentage</th>
-                <th className="px-5 py-4 text-left">Subject Offered</th>
-                <th className="px-5 py-4 text-left">Mother Tongue</th>
-                <th className="px-5 py-4 text-left">Home Town</th>
-                <th className="px-5 py-4 text-left">Notes</th>
-                <th className="px-5 py-4 text-left">Status</th>
-                <th className="px-5 py-4 text-left">Created At</th>
-                <th className="px-5 py-4 text-center">Actions</th>
-              </tr>
-            </thead>
+          <div className="bg-white border border-slate-200 rounded-lg p-4 mb-5 shadow-sm">
+            <div className="flex flex-col xl:flex-row gap-4 xl:items-center xl:justify-between">
+              {/* LEFT */}
 
-            {/* ================= TABLE BODY ================= */}
+              <div className="flex flex-col md:flex-row gap-3 flex-1">
+                {/* SEARCH */}
 
-            <tbody className="bg-white divide-y divide-slate-100">
+                <div className="relative w-full md:max-w-sm">
+                  <FiSearch
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    size={16}
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Search student..."
+                    className="w-full border border-slate-200 rounded-md pl-10 pr-3 py-2 text-sm outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {/* CLASS */}
+
+                <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[170px]">
+                  <option value="">All Classes</option>
+
+                  {classList?.map((curEle: any) => (
+                    <option key={curEle._id} value={curEle._id}>
+                      {curEle.name} - {curEle.section}
+                    </option>
+                  ))}
+                </select>
+
+                {/* STATUS */}
+
+                <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[150px]">
+                  <option value="">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+
+                {/* GENDER */}
+
+                <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[150px]">
+                  <option value="">All Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              {/* RIGHT */}
+
+              <div className="flex items-center gap-2">
+                {/* FILTER BUTTON */}
+
+                <button className="flex items-center gap-2 border border-slate-200 px-4 py-2 rounded-md text-sm hover:bg-slate-50 transition">
+                  <FiFilter size={15} />
+                  Filters
+                </button>
+
+                {/* GRID VIEW */}
+
+                <button
+                  onClick={() => setView("grid")}
+                  className={`h-10 w-10 rounded-md flex items-center justify-center transition ${
+                    view === "grid"
+                      ? "bg-blue-600 text-white"
+                      : "border border-slate-200 hover:bg-slate-50"
+                  }`}
+                >
+                  <FiGrid size={17} />
+                </button>
+
+                {/* LIST VIEW */}
+
+                <button
+                  onClick={() => setView("list")}
+                  className={`h-10 w-10 rounded-md flex items-center justify-center transition ${
+                    view === "list"
+                      ? "bg-blue-600 text-white"
+                      : "border border-slate-200 hover:bg-slate-50"
+                  }`}
+                >
+                  <FiList size={17} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* ================= GRID VIEW ================= */}
+
+          {view === "grid" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
               {state.studentList?.map((student: any, index: number) => {
                 return (
-                  <tr
+                  <div
                     key={student._id}
-                    className="hover:bg-slate-50 transition duration-200"
+                    className="bg-white border border-slate-200 rounded-md p-2.5 shadow-sm hover:shadow transition"
                   >
-                    <td className="px-5 py-4 font-semibold">
-                      {student.srNo || index + 1}
-                    </td>
+                    {/* TOP */}
 
-                    {/* PHOTO */}
+                    <div className="flex gap-2.5">
+                      {/* PHOTO */}
 
-                    <td className="px-5 py-4">
                       <img
                         src={`/api/admin/student/photo/${student._id}`}
                         alt={student.firstName}
-                        className="h-14 w-14 rounded-2xl object-cover border-2 border-slate-200 shadow-sm"
+                        className="h-12 w-12 rounded object-cover border"
                       />
-                    </td>
 
-                    <td className="px-5 py-4 font-medium">
-                      {student.firstName}
-                    </td>
+                      {/* INFO */}
 
-                    <td className="px-5 py-4">{student.lastName}</td>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-1">
+                          <h2 className="text-sm font-medium truncate">
+                            {student.firstName} {student.lastName}
+                          </h2>
 
-                    <td className="px-5 py-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          student.gender === "Male"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-pink-100 text-pink-700"
-                        }`}
-                      >
-                        {student.gender}
-                      </span>
-                    </td>
+                          <span
+                            className={`text-[10px] px-1.5 py-[1px] rounded-sm font-medium ${
+                              student.isActive
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {student.isActive ? "Active" : "Inactive"}
+                          </span>
+                        </div>
 
-                    <td className="px-5 py-4">
-                      {student.dob
-                        ? new Date(student.dob).toLocaleDateString()
-                        : ""}
-                    </td>
+                        <p className="text-[11px] text-slate-500">
+                          SR: {student.srNo || index + 1}
+                        </p>
 
-                    <td className="px-5 py-4">{student.dobInWords}</td>
+                        <div className="mt-1.5 space-y-[2px] text-[11px] text-slate-600">
+                          <p>
+                            {student.classId?.name} - {student.classId?.section}
+                          </p>
 
-                    <td className="px-5 py-4">{student.age}</td>
+                          <p>
+                            {student.gender} • Age {student.age}
+                          </p>
 
-                    <td className="px-5 py-4">
-                      <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">
-                        {student.bloodGroup}
-                      </span>
-                    </td>
-
-                    <td className="px-5 py-4">{student.religion}</td>
-
-                    <td className="px-5 py-4">{student.casteCategory}</td>
-
-                    <td className="px-5 py-4">{student.session}</td>
-
-                    <td className="px-5 py-4 font-medium">
-                      {student.classId?.name}
-                    </td>
-
-                    <td className="px-5 py-4">
-                      <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">
-                        {student.classId?.section}
-                      </span>
-                    </td>
-
-                    <td className="px-5 py-4">{student.motherName}</td>
-
-                    <td className="px-5 py-4">{student.fatherName}</td>
-
-                    <td className="px-5 py-4">{student.motherNationality}</td>
-
-                    <td className="px-5 py-4">{student.fatherNationality}</td>
-
-                    <td className="px-5 py-4">{student.fatherOccupation}</td>
-
-                    <td className="px-5 py-4">{student.motherOccupation}</td>
-
-                    <td className="px-5 py-4">{student.motherMobileNumber}</td>
-
-                    <td className="px-5 py-4">{student.fatherMobileNumber}</td>
-
-                    <td className="px-5 py-4 max-w-[220px] truncate">
-                      {student.motherPermanentAddress}
-                    </td>
-
-                    <td className="px-5 py-4 max-w-[220px] truncate">
-                      {student.fatherPermanentAddress}
-                    </td>
-
-                    <td className="px-5 py-4">{student.officeAddress}</td>
-
-                    <td className="px-5 py-4">₹ {student.annualIncome}</td>
-
-                    <td className="px-5 py-4">{student.localGurdianName}</td>
-
-                    <td className="px-5 py-4">{student.localGurdianAddress}</td>
-
-                    <td className="px-5 py-4">{student.lastSchoolName}</td>
-
-                    <td className="px-5 py-4">{student.lastSchoolAddress}</td>
-
-                    <td className="px-5 py-4">{student.isCbse}</td>
-
-                    <td className="px-5 py-4">{student.otherBoard}</td>
-
-                    <td className="px-5 py-4">{student.lastResult}</td>
-
-                    <td className="px-5 py-4">{student.percentage}</td>
-
-                    <td className="px-5 py-4">
-                      {student.subjectOffered?.join(", ")}
-                    </td>
-
-                    <td className="px-5 py-4">{student.motherTongue}</td>
-
-                    <td className="px-5 py-4">{student.homeTown}</td>
-
-                    <td className="px-5 py-4 max-w-[250px] truncate">
-                      {student.notes}
-                    </td>
-
-                    {/* STATUS */}
-
-                    <td className="px-5 py-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-bold ${
-                          student.isActive
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {student.isActive ? "Active" : "Inactive"}
-                      </span>
-                    </td>
-
-                    {/* CREATED */}
-
-                    <td className="px-5 py-4 text-slate-500">
-                      {new Date(student.createdAt).toLocaleDateString()}
-                    </td>
+                          <p className="truncate">{student.fatherName}</p>
+                        </div>
+                      </div>
+                    </div>
 
                     {/* ACTIONS */}
 
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-2">
-                        <Link
-                          href={`/dashboard/admin/student/detail/${student._id}`}
-                          className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 text-blue-700 transition hover:bg-blue-700 hover:text-white"
-                        >
-                          <FiEye size={16} />
-                        </Link>
+                    <div className="flex justify-end gap-1.5 mt-2 pt-2 border-t border-slate-100">
+                      <Link
+                        href={`/dashboard/admin/student/detail/${student._id}`}
+                        className="flex h-7 w-7 items-center justify-center rounded bg-blue-100 text-blue-700 hover:bg-blue-600 hover:text-white transition"
+                      >
+                        <FiEye size={13} />
+                      </Link>
 
-                        <button
-                          onClick={() => openModal(student._id)}
-                          className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-700 transition hover:bg-amber-600 hover:text-white"
-                        >
-                          <FiEdit2 size={16} />
-                        </button>
+                      <button
+                        onClick={() => openModal(student._id)}
+                        className="flex h-7 w-7 items-center justify-center rounded bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white transition"
+                      >
+                        <FiEdit2 size={13} />
+                      </button>
 
-                        <button className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-100 text-red-700 transition hover:bg-red-600 hover:text-white">
-                          <FiTrash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                      <button className="flex h-7 w-7 items-center justify-center rounded bg-red-100 text-red-700 hover:bg-red-600 hover:text-white transition">
+                        <FiTrash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
                 );
               })}
-            </tbody>
-          </TableContainer>
+            </div>
+          )}
+
+          {/* ================= LIST VIEW ================= */}
+
+          {/* ================= LIST VIEW ================= */}
+
+          {view === "list" && (
+            <TableContainer>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[1000px] border-collapse">
+                  <thead>
+                    <tr className="bg-slate-100 text-slate-700">
+                      <th className="text-left px-4 py-3 text-sm font-semibold">
+                        Student
+                      </th>
+
+                      <th className="text-left px-4 py-3 text-sm font-semibold">
+                        SR No
+                      </th>
+
+                      <th className="text-left px-4 py-3 text-sm font-semibold">
+                        Class
+                      </th>
+
+                      <th className="text-left px-4 py-3 text-sm font-semibold">
+                        Gender
+                      </th>
+
+                      <th className="text-left px-4 py-3 text-sm font-semibold">
+                        Age
+                      </th>
+
+                      <th className="text-left px-4 py-3 text-sm font-semibold">
+                        Father Name
+                      </th>
+
+                      <th className="text-left px-4 py-3 text-sm font-semibold">
+                        Session
+                      </th>
+
+                      <th className="text-center px-4 py-3 text-sm font-semibold">
+                        Status
+                      </th>
+
+                      <th className="text-center px-4 py-3 text-sm font-semibold">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {state.studentList?.map((student: any, index: number) => {
+                      return (
+                        <tr
+                          key={student._id}
+                          className="border-b border-slate-100 hover:bg-slate-50 transition"
+                        >
+                          {/* STUDENT */}
+
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-3 min-w-[220px]">
+                              <img
+                                src={`/api/admin/student/photo/${student._id}`}
+                                alt={student.firstName}
+                                className="h-11 w-11 rounded-md object-cover border"
+                              />
+
+                              <div>
+                                <h2 className="text-sm font-semibold text-slate-800">
+                                  {student.firstName} {student.lastName}
+                                </h2>
+
+                                <p className="text-xs text-slate-500">
+                                  {student.gender}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* SR NO */}
+
+                          <td className="px-4 py-3 text-sm text-slate-600">
+                            {student.srNo || index + 1}
+                          </td>
+
+                          {/* CLASS */}
+
+                          <td className="px-4 py-3 text-sm text-slate-600">
+                            {student.classId?.name} - {student.classId?.section}
+                          </td>
+
+                          {/* GENDER */}
+
+                          <td className="px-4 py-3 text-sm text-slate-600">
+                            {student.gender}
+                          </td>
+
+                          {/* AGE */}
+
+                          <td className="px-4 py-3 text-sm text-slate-600">
+                            {student.age}
+                          </td>
+
+                          {/* FATHER */}
+
+                          <td className="px-4 py-3 text-sm text-slate-600">
+                            {student.fatherName}
+                          </td>
+
+                          {/* SESSION */}
+
+                          <td className="px-4 py-3 text-sm text-slate-600">
+                            {student.session || "-"}
+                          </td>
+
+                          {/* STATUS */}
+
+                          <td className="px-4 py-3 text-center">
+                            <span
+                              className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
+                                student.isActive
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-700"
+                              }`}
+                            >
+                              {student.isActive ? "Active" : "Inactive"}
+                            </span>
+                          </td>
+
+                          {/* ACTIONS */}
+
+                          <td className="px-4 py-3">
+                            <div className="flex items-center justify-center gap-2">
+                              {/* VIEW */}
+
+                              <Link
+                                href={`/dashboard/admin/student/detail/${student._id}`}
+                                className="flex h-8 w-8 items-center justify-center rounded-md bg-blue-100 text-blue-700 hover:bg-blue-600 hover:text-white transition"
+                              >
+                                <FiEye size={14} />
+                              </Link>
+
+                              {/* EDIT */}
+
+                              <button
+                                onClick={() => openModal(student._id)}
+                                className="flex h-8 w-8 items-center justify-center rounded-md bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white transition"
+                              >
+                                <FiEdit2 size={14} />
+                              </button>
+
+                              {/* DELETE */}
+
+                              <button className="flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-red-700 hover:bg-red-600 hover:text-white transition">
+                                <FiTrash2 size={14} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </TableContainer>
+          )}
 
           {/* ================= EMPTY ================= */}
 
@@ -293,10 +420,10 @@ export default function StudentList() {
             </div>
           )}
 
-          {/* Modal */}
+          {/* ================= MODAL ================= */}
 
           <Modal title="Edit Student Profile">
-            <Form onSubmit={(e)=>handleUpdate(e)}>
+            <Form onSubmit={(e) => handleUpdate(e)}>
               {/* ================= STUDENT INFO ================= */}
 
               <SectionCard
@@ -335,249 +462,6 @@ export default function StudentList() {
                   onChange={handleChange}
                   options={["Male", "Female", "Other"]}
                 />
-
-                <Input
-                  name="dob"
-                  label="Date of Birth"
-                  type="date"
-                  icon={<FiCalendar />}
-                  value={formData.dob}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="dobInWords"
-                  label="DOB In Words"
-                  value={formData.dobInWords}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="age"
-                  label="Age"
-                  value={formData.age}
-                  onChange={handleChange}
-                />
-
-                <Select
-                  name="bloodGroup"
-                  label="Blood Group"
-                  value={formData.bloodGroup}
-                  onChange={handleChange}
-                  options={["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]}
-                />
-
-                <Input
-                  name="religion"
-                  label="Religion"
-                  icon={<FiShield />}
-                  value={formData.religion}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="casteCategory"
-                  label="Caste Category"
-                  icon={<FiShield />}
-                  value={formData.casteCategory}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="motherTongue"
-                  label="Mother Tongue"
-                  value={formData.motherTongue}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="homeTown"
-                  label="Home Town"
-                  value={formData.homeTown}
-                  onChange={handleChange}
-                />
-              </SectionCard>
-
-              {/* ================= ACADEMIC ================= */}
-
-              <SectionCard
-                title="Academic Details"
-                icon={<FiBookOpen size={18} />}
-              >
-                <div className="flex flex-col">
-                  <label className="mb-1">Select Class & Section</label>
-
-                  <select
-                    name="classId"
-                    value={formData.classId}
-                    onChange={handleChange}
-                    className="border border-gray-200 w-full px-2 py-2 rounded"
-                  >
-                    <option value="">Class & Section</option>
-
-                    {classList?.map((curEle) => (
-                      <option key={curEle._id} value={curEle._id}>
-                        {curEle.name} - {curEle.section}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <Input
-                  name="session"
-                  label="Session"
-                  value={formData.session}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="lastSchoolName"
-                  label="Last School Name"
-                  value={formData.lastSchoolName}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="lastSchoolAddress"
-                  label="Last School Address"
-                  value={formData.lastSchoolAddress}
-                  onChange={handleChange}
-                />
-
-                <Select
-                  name="isCbse"
-                  label="CBSE"
-                  value={formData.isCbse}
-                  onChange={handleChange}
-                  options={["Yes", "No"]}
-                />
-
-                <Input
-                  name="otherBoard"
-                  label="Other Board"
-                  value={formData.otherBoard}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="lastResult"
-                  label="Last Result"
-                  value={formData.lastResult}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="percentage"
-                  label="Percentage"
-                  value={formData.percentage}
-                  onChange={handleChange}
-                />
-              </SectionCard>
-
-              {/* ================= PARENT DETAILS ================= */}
-
-              <SectionCard title="Parent Details" icon={<FiUsers size={18} />}>
-                <Input
-                  name="fatherName"
-                  label="Father Name"
-                  value={formData.fatherName}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="motherName"
-                  label="Mother Name"
-                  value={formData.motherName}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="fatherMobileNumber"
-                  label="Father Mobile Number"
-                  value={formData.fatherMobileNumber}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="motherMobileNumber"
-                  label="Mother Mobile Number"
-                  value={formData.motherMobileNumber}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="fatherOccupation"
-                  label="Father Occupation"
-                  value={formData.fatherOccupation}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="motherOccupation"
-                  label="Mother Occupation"
-                  value={formData.motherOccupation}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="fatherNationality"
-                  label="Father Nationality"
-                  value={formData.fatherNationality}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="motherNationality"
-                  label="Mother Nationality"
-                  value={formData.motherNationality}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="annualIncome"
-                  label="Annual Income"
-                  value={formData.annualIncome}
-                  onChange={handleChange}
-                />
-              </SectionCard>
-
-              {/* ================= ADDRESS ================= */}
-
-              <SectionCard title="Address Details" icon={<FiPhone size={18} />}>
-                <Input
-                  name="fatherPermanentAddress"
-                  label="Father Permanent Address"
-                  value={formData.fatherPermanentAddress}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="motherPermanentAddress"
-                  label="Mother Permanent Address"
-                  value={formData.motherPermanentAddress}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="officeAddress"
-                  label="Office Address"
-                  value={formData.officeAddress}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="localGurdianName"
-                  label="Local Guardian Name"
-                  value={formData.localGurdianName}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  name="localGurdianAddress"
-                  label="Local Guardian Address"
-                  value={formData.localGurdianAddress}
-                  onChange={handleChange}
-                />
               </SectionCard>
 
               {/* ================= PHOTO + NOTES ================= */}
@@ -610,15 +494,6 @@ export default function StudentList() {
                       onChange={handleFileChange}
                     />
                   </label>
-
-                  {/* {formData.photo && (
-                    <p className="mt-3 text-sm text-slate-600">
-                      Selected File:
-                      <span className="font-medium ml-1">
-                        {formData?.photo?.name}
-                      </span>
-                    </p>
-                  )} */}
                 </div>
 
                 <div className="bg-white p-5 rounded shadow-sm">

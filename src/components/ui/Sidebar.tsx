@@ -27,9 +27,7 @@ const Sidebar = ({ navData }: SideBarProps) => {
             className="w-10 h-10 rounded object-cover "
           />
           <div className="leading-tight">
-            <h2 className="text-sm font-semibold ">
-              ERP System
-            </h2>
+            <h2 className="text-sm font-semibold ">ERP System</h2>
             <p className="text-xs text-gray-400">Admin Panel</p>
           </div>
         </div>
@@ -47,14 +45,13 @@ const Sidebar = ({ navData }: SideBarProps) => {
                   isActive
                     ? " text-black border border-gray-200"
                     : " hover:bg-slate-200/60 hover:text-slate-900"
-                }`} title={`${item.name}`}
+                }`}
+                title={`${item.name}`}
               >
                 {/* Icon */}
                 <span
                   className={`text-[18px] transition ${
-                    isActive
-                      ? "text-black"
-                      : "primary-text"
+                    isActive ? "text-black" : "primary-text"
                   }`}
                 >
                   {item.icon}
