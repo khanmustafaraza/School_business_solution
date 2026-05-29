@@ -94,26 +94,25 @@ const SchoolRegister = () => {
             </div>
             {/* school image */}
             <div className="md:col-span-2">
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
                 Upload School Image
               </label>
-              <div className=" w-full bg-white flex items-center rounded border border-gray-300  px-3 py-3 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100 transition-all">
-                <label className="flex items-center w-full cursor-pointer">
-                  <icons.FaImage className="text-gray-400 text-[15px] mr-2" />
-                  <span className="text-gray-600 text-sm">
-                    {state.schoolObj.image
-                      ? state.schoolObj.image.name
-                      : "Upload school image"}
-                  </span>
-                  <input
-                    name="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleChange}
-                    className="hidden w-full" // hidden because we’re using the label for styling
-                  />
-                </label>
-              </div>
+
+              <label className="flex items-center gap-2 w-full px-3 py-3 bg-white border rounded cursor-pointer focus-within:ring-1 focus-within:ring-gray-400">
+                <icons.FaImage className="text-gray-400 text-sm" />
+
+                <span className="text-sm text-gray-600 truncate">
+                  {state.schoolObj.image?.name || "Upload school image"}
+                </span>
+
+                <input
+                  name="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleChange}
+                  className="hidden"
+                />
+              </label>
             </div>
             <ActionBtn />
           </Form>

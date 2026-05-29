@@ -4,16 +4,11 @@ import { FaArrowUp } from "react-icons/fa";
 
 const H1 = ({ heading }: any) => {
   return (
-    <div className="mb-6 px-4 md:px-6">
+    <div className="py-2">
       {/* Top Row */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <div className="flex items-center justify-between flex-wrap gap-1">
         {/* LEFT */}
         <div className="flex items-start gap-3">
-          {/* Icon */}
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-slate-100 text-slate-600">
-            {heading.icon || <FaArrowUp size={14} />}
-          </div>
-
           {/* Text */}
           <div className="leading-tight">
             <h2 className="text-xl font-semibold text-slate-900 tracking-tight">
@@ -26,7 +21,7 @@ const H1 = ({ heading }: any) => {
         {/* RIGHT */}
         <Link
           href={heading.href}
-          className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-100 hover:text-slate-900 active:scale-95"
+          className=" bg-black text-white flex gap-2 py-2 px-2.5 rounded items-center"
         >
           {heading.icon || <FaArrowUp size={12} />}
           {heading.btnHeading}

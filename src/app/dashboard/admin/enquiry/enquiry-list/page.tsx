@@ -9,10 +9,21 @@ import icons from "@/constants/icons/icons";
 import { useEnquiry } from "@/store/enquiry/Enquiry";
 import { useEffect } from "react";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, School, Trash2 } from "lucide-react";
 import Loader from "@/components/loader/Loader";
 import useModal from "@/store/togglemodal/ToggleModal";
 import Modal from "@/components/modal/Modal";
+import H2 from "@/components/headings/H2";
+import H1 from "@/components/headings/H1";
+import { FaPlus } from "react-icons/fa";
+import FilterStrip from "@/components/filterstrip/Filterstrip";
+const heading = {
+  name: "Enquiry List",
+  subHeading: "Add and manage your school’s basic Enquiries.",
+  href: "/dashboard/admin/school/school-list",
+  btnHeading: "Add Enquiry",
+  icon: <FaPlus />,
+};
 
 const EnquiryList = () => {
   const {
@@ -33,22 +44,11 @@ const EnquiryList = () => {
     <ParentContainer>
       <MainContainer>
         {/* <AdminHeading /> */}
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <h4 className="text-xl font-semibold text-slate-900">
-              Enquiry List
-            </h4>
-            <p className="text-sm text-slate-500">
-              All enquiries received so far
-            </p>
-          </div>
+        <H1 heading={heading} />
 
-          <input
-            type="text"
-            placeholder="Search by name or mobile..."
-            className="w-64 px-4 py-3 text-sm rounded border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
+        <H2 />
+
+        <FilterStrip />
 
         <Container>
           {state.isLoading.loading && (
@@ -61,23 +61,24 @@ const EnquiryList = () => {
           <TableContainer>
             {/* HEADER */}
 
-            <thead className="border border-gray-200">
+            <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
-                <th className="px-6 py-5 text-xs font-bold ">
-                  Name of Enquirer
-                </th>
-
-                <th className="px-6 py-5 text-xs font-bold ">Contact</th>
-
-                <th className="px-6 py-5 text-xs font-bold ">
-                  Admission Class
-                </th>
-
-                <th className="px-6 py-5 text-xs font-bold ">Message</th>
-                <th className="px-6 py-5 text-xs font-bold ">comment</th>
-                <th className="px-6 py-5 text-xs font-bold">Status</th>
-
-                <th className="px-6 py-5 text-xs font-bold">Actions</th>
+                {[
+                  "Name of Enquirer",
+                  "Contact",
+                  "Admission Class",
+                  "Message",
+                  "Comment",
+                  "Status",
+                  "Actions",
+                ].map((heading) => (
+                  <th
+                    key={heading}
+                    className="px-6 py-4 text-left text-[11px] font-bold uppercase tracking-wider text-slate-500"
+                  >
+                    {heading}
+                  </th>
+                ))}
               </tr>
             </thead>
 
@@ -88,30 +89,30 @@ const EnquiryList = () => {
                 state.enquiryList.map((item, index) => (
                   <tr
                     key={item._id}
-                    className="group hover:bg-slate-50 transition-all duration-300"
+                    className="group transition-all duration-200 hover:bg-slate-50/80"
                   >
                     {/* NAME */}
 
                     <td className="px-6 py-5">
-                      <div className="flex items-center justify-center gap-4">
+                      <div className="flex items-center gap-4">
                         {/* AVATAR */}
 
-                        <div className="relative">
-                          <div className="w-12 h-12 rounded-2xl primary-bg flex items-center justify-center text-sm font-bold text-white shadow-lg">
+                        <div className="relative shrink-0">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-sm font-bold text-white shadow-md">
                             {item.name?.charAt(0)?.toUpperCase() || "?"}
                           </div>
 
-                          <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full secondary-bg border-2 border-white"></div>
+                          <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white bg-emerald-400"></div>
                         </div>
 
                         {/* INFO */}
 
                         <div>
-                          <h4 className="text-sm font-semibold primary-text">
+                          <h4 className="text-sm font-semibold text-slate-800">
                             {item.name || "Unknown"}
                           </h4>
 
-                          <p className="text-xs secondary-text mt-1">
+                          <p className="mt-1 text-xs text-slate-400">
                             Enquiry #{index + 1}
                           </p>
                         </div>
@@ -122,11 +123,11 @@ const EnquiryList = () => {
 
                     <td className="px-6 py-5">
                       <div>
-                        <p className="font-semibold primary-text">
+                        <p className="text-sm font-semibold text-slate-700">
                           {item.mobile || "N/A"}
                         </p>
 
-                        <p className="text-xs secondary-text mt-1">
+                        <p className="mt-1 text-xs text-slate-400">
                           Mobile Number
                         </p>
                       </div>
@@ -135,45 +136,58 @@ const EnquiryList = () => {
                     {/* CLASS */}
 
                     <td className="px-6 py-5">
-                      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-[#fdf2f8] text-[#cc0052] border border-pink-100 shadow-sm">
+                      <span className="inline-flex items-center rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                         {item.addmissionClass || "N/A"}
                       </span>
                     </td>
 
                     {/* MESSAGE */}
 
-                    <td className="px-6 py-5 max-w-[300px]">
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
+                    <td className="max-w-[250px] px-6 py-5">
+                      <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
                         {item.message?.trim() || "No message provided"}
                       </p>
                     </td>
-                    <td className="px-6 py-5 max-w-[300px]">
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
-                        {item?.comment?.trim() || "No message provided"}
+
+                    {/* COMMENT */}
+
+                    <td className="max-w-[250px] px-6 py-5">
+                      <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+                        {item?.comment?.trim() || "No comment"}
                       </p>
                     </td>
-                    <td className="px-6 py-5 max-w-[300px]">
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
-                        {item?.status?.trim() || "No message provided"}
-                      </p>
+
+                    {/* STATUS */}
+
+                    <td className="px-6 py-5">
+                      <span
+                        className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold
+              ${
+                item?.status === "Pending"
+                  ? "bg-amber-50 text-amber-700 border border-amber-100"
+                  : item?.status === "Completed"
+                    ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                    : "bg-slate-100 text-slate-600 border border-slate-200"
+              }`}
+                      >
+                        {item?.status || "Unknown"}
+                      </span>
                     </td>
 
                     {/* ACTIONS */}
 
                     <td className="px-6 py-5">
-                      <div className="flex items-center justify-center gap-3">
+                      <div className="flex items-center gap-2">
                         {/* EDIT */}
 
                         <button
                           title="Edit Enquiry"
-                          className="w-10 h-10 rounded-xl bg-[#e6edf5] text-[#003366] hover:primary-bg hover:text-white transition-all duration-300 hover:scale-105 shadow-sm"
+                          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-600 hover:shadow-md"
                           onClick={() => {
                             openModal(item._id);
                           }}
                         >
-                          <div className="flex items-center justify-center">
-                            <Pencil size={16} />
-                          </div>
+                          <Pencil size={16} />
                         </button>
 
                         {/* DELETE */}
@@ -181,11 +195,9 @@ const EnquiryList = () => {
                         <button
                           onClick={() => handleDelete(item._id)}
                           title="Delete Enquiry"
-                          className="w-10 h-10 rounded-xl bg-[#fff1f5] text-[#cc0052] hover:bg-[#cc0052] hover:text-white transition-all duration-300 hover:scale-105 shadow-sm"
+                          className="flex h-10 w-10 items-center justify-center rounded-xl border border-red-100 bg-red-50 text-red-500 shadow-sm transition-all duration-200 hover:bg-red-500 hover:text-white hover:shadow-md"
                         >
-                          <div className="flex items-center justify-center">
-                            <Trash2 size={16} />
-                          </div>
+                          <Trash2 size={16} />
                         </button>
                       </div>
                     </td>
@@ -193,17 +205,17 @@ const EnquiryList = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="py-24">
+                  <td colSpan={7} className="py-24">
                     <div className="flex flex-col items-center justify-center">
-                      <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-5">
-                        {/* <icons. className="w-10 h-10 text-slate-400" /> */}
+                      <div className="mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-slate-100">
+                        {/* Empty Icon */}
                       </div>
 
-                      <h3 className="text-xl font-semibold primary-text">
+                      <h3 className="text-xl font-semibold text-slate-700">
                         No Enquiries Found
                       </h3>
 
-                      <p className="text-sm secondary-text mt-2">
+                      <p className="mt-2 text-sm text-slate-400">
                         New admission enquiries will appear here.
                       </p>
                     </div>
@@ -212,7 +224,6 @@ const EnquiryList = () => {
               )}
             </tbody>
           </TableContainer>
-
           {/* <Example/> */}
           <Modal title="Comment For Status Of Enquiry">
             <form
