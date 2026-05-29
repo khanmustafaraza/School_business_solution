@@ -1,52 +1,8 @@
-import {
-  StudentActionType,
-  StudentState,
-  StudentFormData,
-} from "@/types/admintypes/studenttype";
-
-const initialFormData: StudentFormData = {
-  admissionNo: "",
-  rollNo: "",
-  firstName: "",
-  lastName: "",
-  gender: "",
-  dob: "",
-  bloodGroup: "",
-  religion: "",
-  category: "",
-  aadhaar: "",
-
-  classId: "",
-  section: "",
-  academicYear: "",
-  house: "",
-  admissionDate: "",
-
-  mobile: "",
-  email: "",
-  address: "",
-  city: "",
-  state: "",
-  pincode: "",
-
-  fatherName: "",
-  motherName: "",
-  guardianName: "",
-  parentMobile: "",
-  occupation: "",
-
-  medicalCondition: "",
-  allergies: "",
-  emergencyContact: "",
-  transportRequired: "",
-
-  notes: "",
-  photo: null,
-};
+import { StudentAction, StudentState } from "@/types/admintypes/studenttype";
 
 const studentReducer = (
   state: StudentState,
-  action: StudentActionType,
+  action: StudentAction,
 ): StudentState => {
   switch (action.type) {
     case "SET_LOADING":
@@ -61,18 +17,38 @@ const studentReducer = (
         },
       };
 
-    case "RESET_FORM":
+    // case "RESET_FORM":
+    //   return {
+    //     ...state,
+    //     studentObj: initialFormData,
+    //   };
+    case "SET_STUDENTS":
       return {
         ...state,
-        studentObj: initialFormData,
+
+        studentList: action.payload,
+        studentFilterBackup: action.payload,
       };
-    case "SET_STUDENTS":
-      return { ...state, studentList: action.payload };
-      case "SET_SINGLE_STUDENT":
-  return {
-    ...state,
-    studentDetail: action.payload,
-  };
+    case "SET_SINGLE_STUDENT":
+      return {
+        ...state,
+        studentDetail: action.payload,
+      };
+    case "FILTER_STUDENT":
+      const search = action.payload?.toLowerCase()?.trim() || "";
+
+      const filterData = state.studentFilterBackup.filter(
+        (item) =>
+          item.firstName?.toLowerCase().includes(search) ||
+          item.lastName?.toLowerCase().includes(search),
+        // item.srNo?.toLowerCase().includes(search)
+      );
+      // console.log(action.payload.data)
+
+      return {
+        ...state,
+        studentList: filterData,
+      };
 
     default:
       return state;

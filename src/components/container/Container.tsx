@@ -1,7 +1,7 @@
 import React from "react";
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <div className=" relative border border-gray-200 p-1">{children}</div>;
+  return <div className=" relative p-1">{children}</div>;
 };
 
 export default Container;

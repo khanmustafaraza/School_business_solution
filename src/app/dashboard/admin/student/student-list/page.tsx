@@ -53,7 +53,7 @@ export default function StudentList() {
     getAllClass();
   }, []);
 
-  const { state, getStudents, handleChange, handleUpdate, handleFileChange } =
+  const { state, getStudents, handleChange, handleUpdate, handleFileChange,filterStudents } =
     useStudent();
 
   const {
@@ -73,7 +73,7 @@ export default function StudentList() {
         <Container>
           {/* ================= FILTER UI ================= */}
 
-          <div className="bg-white border border-slate-200 rounded-lg p-4 mb-5 shadow-sm">
+          <div className="bg-white p-4 mb-5">
             <div className="flex flex-col xl:flex-row gap-4 xl:items-center xl:justify-between">
               {/* LEFT */}
 
@@ -90,6 +90,7 @@ export default function StudentList() {
                     type="text"
                     placeholder="Search student..."
                     className="w-full border border-slate-200 rounded-md pl-10 pr-3 py-2 text-sm outline-none focus:border-blue-500"
+                    onChange={(e)=>filterStudents(e.target.value)}
                   />
                 </div>
 

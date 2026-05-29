@@ -78,6 +78,7 @@ const initialState: StudentState = {
     isActive: true,
   },
   studentList: [],
+  studentFilterBackup:[],
   studentDetail :{
       srNo: "",
 
@@ -182,7 +183,7 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
     id: string,
   ) => {
     e.preventDefault();
-    console.log("id?????", id);
+    // console.log("id?????", id);
 
     try {
       const form = state.studentObj;
@@ -313,6 +314,15 @@ const handleUpdate = async (e: any) => {
     toast.error(error.message || "Something went wrong");
   }
 };
+const filterStudents = (data:any) =>{
+  console.log("data",data)
+  dispatch({
+    type:"FILTER_STUDENT",
+    payload:data
+  })
+
+
+}
   return (
     <StudentContext.Provider
       value={{
@@ -322,7 +332,8 @@ const handleUpdate = async (e: any) => {
         handleFileChange,
         handleSubmit,
         getStudents,
-        handleUpdate
+        handleUpdate,
+        filterStudents
       }}
     >
       {children}

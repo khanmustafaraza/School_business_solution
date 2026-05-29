@@ -9,7 +9,7 @@ import icons from "@/constants/icons/icons";
 import { useEnquiry } from "@/store/enquiry/Enquiry";
 import { useEffect } from "react";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { MessageSquare, Pencil, Trash2 } from "lucide-react";
 import Loader from "@/components/loader/Loader";
 import useModal from "@/store/togglemodal/ToggleModal";
 import Modal from "@/components/modal/Modal";
@@ -58,160 +58,169 @@ const EnquiryList = () => {
             />
           )}
 
-          <TableContainer>
-            {/* HEADER */}
+    
+            <TableContainer>
+              
+              {/* TABLE HEADER */}
+              <thead className="border-b border-white/10 bg-white/[0.03]">
+                <tr className="text-left">
+                  {[
+                    "Enquirer",
+                    "Contact",
+                    "Class",
+                    "Message",
+                    "Comment",
+                    "Status",
+                    "Actions",
+                  ].map((head) => (
+                    <th
+                      key={head}
+                      className="px-6 py-5 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400"
+                    >
+                      {head}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
 
-            <thead className="border border-gray-200">
-              <tr>
-                <th className="px-6 py-5 text-xs font-bold ">
-                  Name of Enquirer
-                </th>
+              {/* BODY */}
+              <tbody className="divide-y divide-white/[0.05]">
+                {state.enquiryList.length > 0 ? (
+                  state.enquiryList.map((item, index) => (
+                    <tr
+                      key={item._id}
+                      className="group transition-all duration-300 hover:bg-white/[0.03]"
+                    >
+                      
+                      {/* USER */}
+                      <td className="px-6 py-5">
+                        <div className="flex items-center gap-4">
+                          
+                          <div className="relative">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-sm font-bold text-white shadow-lg">
+                              {item.name?.charAt(0)?.toUpperCase() || "?"}
+                            </div>
 
-                <th className="px-6 py-5 text-xs font-bold ">Contact</th>
-
-                <th className="px-6 py-5 text-xs font-bold ">
-                  Admission Class
-                </th>
-
-                <th className="px-6 py-5 text-xs font-bold ">Message</th>
-                <th className="px-6 py-5 text-xs font-bold ">comment</th>
-                <th className="px-6 py-5 text-xs font-bold">Status</th>
-
-                <th className="px-6 py-5 text-xs font-bold">Actions</th>
-              </tr>
-            </thead>
-
-            {/* BODY */}
-
-            <tbody className="divide-y divide-slate-100 bg-white">
-              {state.enquiryList.length > 0 ? (
-                state.enquiryList.map((item, index) => (
-                  <tr
-                    key={item._id}
-                    className="group hover:bg-slate-50 transition-all duration-300"
-                  >
-                    {/* NAME */}
-
-                    <td className="px-6 py-5">
-                      <div className="flex items-center justify-center gap-4">
-                        {/* AVATAR */}
-
-                        <div className="relative">
-                          <div className="w-12 h-12 rounded-2xl primary-bg flex items-center justify-center text-sm font-bold text-white shadow-lg">
-                            {item.name?.charAt(0)?.toUpperCase() || "?"}
+                            <div className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-[#0b1020] bg-emerald-400 shadow-[0_0_10px_#4ade80]" />
                           </div>
 
-                          <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full secondary-bg border-2 border-white"></div>
+                          <div>
+                            <h4 className="text-sm font-semibold text-white">
+                              {item.name || "Unknown"}
+                            </h4>
+
+                            <p className="mt-1 text-xs text-slate-500">
+                              Enquiry #{index + 1}
+                            </p>
+                          </div>
                         </div>
+                      </td>
 
-                        {/* INFO */}
-
+                      {/* MOBILE */}
+                      <td className="px-6 py-5">
                         <div>
-                          <h4 className="text-sm font-semibold primary-text">
-                            {item.name || "Unknown"}
-                          </h4>
+                          <p className="font-medium text-slate-200">
+                            {item.mobile || "N/A"}
+                          </p>
 
-                          <p className="text-xs secondary-text mt-1">
-                            Enquiry #{index + 1}
+                          <p className="mt-1 text-xs text-slate-500">
+                            Contact Number
                           </p>
                         </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    {/* MOBILE */}
+                      {/* CLASS */}
+                      <td className="px-6 py-5">
+                        <span className="inline-flex items-center rounded-full border border-pink-500/20 bg-pink-500/10 px-4 py-1.5 text-xs font-semibold text-pink-300">
+                          {item.addmissionClass || "N/A"}
+                        </span>
+                      </td>
 
-                    <td className="px-6 py-5">
-                      <div>
-                        <p className="font-semibold primary-text">
-                          {item.mobile || "N/A"}
+                      {/* MESSAGE */}
+                      <td className="max-w-[260px] px-6 py-5">
+                        <p className="line-clamp-2 text-sm leading-7 text-slate-400">
+                          {item.message?.trim() ||
+                            "No message provided"}
                         </p>
+                      </td>
 
-                        <p className="text-xs secondary-text mt-1">
-                          Mobile Number
+                      {/* COMMENT */}
+                      <td className="max-w-[260px] px-6 py-5">
+                        <p className="line-clamp-2 text-sm leading-7 text-slate-400">
+                          {item?.comment?.trim() ||
+                            "No comment available"}
                         </p>
-                      </div>
-                    </td>
+                      </td>
 
-                    {/* CLASS */}
-
-                    <td className="px-6 py-5">
-                      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-[#fdf2f8] text-[#cc0052] border border-pink-100 shadow-sm">
-                        {item.addmissionClass || "N/A"}
-                      </span>
-                    </td>
-
-                    {/* MESSAGE */}
-
-                    <td className="px-6 py-5 max-w-[300px]">
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
-                        {item.message?.trim() || "No message provided"}
-                      </p>
-                    </td>
-                    <td className="px-6 py-5 max-w-[300px]">
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
-                        {item?.comment?.trim() || "No message provided"}
-                      </p>
-                    </td>
-                    <td className="px-6 py-5 max-w-[300px]">
-                      <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
-                        {item?.status?.trim() || "No message provided"}
-                      </p>
-                    </td>
-
-                    {/* ACTIONS */}
-
-                    <td className="px-6 py-5">
-                      <div className="flex items-center justify-center gap-3">
-                        {/* EDIT */}
-
-                        <button
-                          title="Edit Enquiry"
-                          className="w-10 h-10 rounded-xl bg-[#e6edf5] text-[#003366] hover:primary-bg hover:text-white transition-all duration-300 hover:scale-105 shadow-sm"
-                          onClick={() => {
-                            openModal(item._id);
-                          }}
+                      {/* STATUS */}
+                      <td className="px-6 py-5">
+                        <span
+                          className={`inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold ${
+                            item.status === "Pending"
+                              ? "bg-amber-500/10 text-amber-300 border border-amber-500/20"
+                              : "bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"
+                          }`}
                         >
-                          <div className="flex items-center justify-center">
-                            <Pencil size={16} />
-                          </div>
-                        </button>
+                          {item.status || "Pending"}
+                        </span>
+                      </td>
 
-                        {/* DELETE */}
+                      {/* ACTIONS */}
+                      <td className="px-6 py-5">
+                        <div className="flex items-center gap-3">
+                          
+                          {/* EDIT */}
+                          <button
+                            title="Edit Enquiry"
+                            onClick={() => openModal(item._id)}
+                            className="group flex h-11 w-11 items-center justify-center rounded-2xl border border-indigo-500/20 bg-indigo-500/10 text-indigo-300 transition-all duration-300 hover:scale-105 hover:bg-indigo-500 hover:text-white hover:shadow-[0_0_25px_rgba(99,102,241,0.45)]"
+                          >
+                            <Pencil
+                              size={16}
+                              className="transition-transform duration-300 group-hover:rotate-6"
+                            />
+                          </button>
 
-                        <button
-                          onClick={() => handleDelete(item._id)}
-                          title="Delete Enquiry"
-                          className="w-10 h-10 rounded-xl bg-[#fff1f5] text-[#cc0052] hover:bg-[#cc0052] hover:text-white transition-all duration-300 hover:scale-105 shadow-sm"
-                        >
-                          <div className="flex items-center justify-center">
-                            <Trash2 size={16} />
-                          </div>
-                        </button>
+                          {/* DELETE */}
+                          <button
+                            onClick={() => handleDelete(item._id)}
+                            title="Delete Enquiry"
+                            className="group flex h-11 w-11 items-center justify-center rounded-2xl border border-rose-500/20 bg-rose-500/10 text-rose-300 transition-all duration-300 hover:scale-105 hover:bg-rose-500 hover:text-white hover:shadow-[0_0_25px_rgba(244,63,94,0.4)]"
+                          >
+                            <Trash2
+                              size={16}
+                              className="transition-transform duration-300 group-hover:scale-110"
+                            />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="py-28">
+                      <div className="flex flex-col items-center justify-center">
+                        
+                        <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border border-white/10 bg-white/[0.03]">
+                          <MessageSquare
+                            size={36}
+                            className="text-slate-500"
+                          />
+                        </div>
+
+                        <h3 className="text-2xl font-semibold text-white">
+                          No Enquiries Found
+                        </h3>
+
+                        <p className="mt-3 text-sm text-slate-500">
+                          New admission enquiries will appear here.
+                        </p>
                       </div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="py-24">
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-5">
-                        {/* <icons. className="w-10 h-10 text-slate-400" /> */}
-                      </div>
-
-                      <h3 className="text-xl font-semibold primary-text">
-                        No Enquiries Found
-                      </h3>
-
-                      <p className="text-sm secondary-text mt-2">
-                        New admission enquiries will appear here.
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </TableContainer>
+                )}
+              </tbody>
+            </TableContainer>
 
           {/* <Example/> */}
           <Modal title="Comment For Status Of Enquiry">

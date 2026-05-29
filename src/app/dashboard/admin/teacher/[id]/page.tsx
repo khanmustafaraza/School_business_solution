@@ -2,10 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import {
-  useParams,
-  useSearchParams,
-} from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 import {
   FiUser,
@@ -27,38 +24,26 @@ import useTeacher from "@/store/teacher/Teacher";
 import Select from "@/components/inputs/Select";
 import useClass from "@/store/admin/class/Class";
 
-const Section = ({
-  title,
-  icon,
-  children,
-}: any) => {
+const Section = ({ title, icon, children }: any) => {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="mb-5 flex items-center gap-3">
-        <div className="rounded-lg border border-slate-200 p-2">
-          {icon}
-        </div>
+        <div className="rounded-lg border border-slate-200 p-2">{icon}</div>
 
-        <h2 className="text-lg font-semibold text-slate-900">
-          {title}
-        </h2>
+        <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2">
-        {children}
-      </div>
+      <div className="grid gap-5 md:grid-cols-2">{children}</div>
     </div>
   );
 };
 
 export default function TeacherRegister() {
-const {state:{classList},getAllClass}  =  useClass()
   const {
-    state,
-    handleChange,
-    handleFileChange,
-    handleSubmit,
-  } = useTeacher();
+    state: { classList },
+    getAllClass,
+  } = useClass();
+  const { state, handleChange, handleFileChange, handleSubmit } = useTeacher();
 
   const params = useParams();
 
@@ -83,49 +68,38 @@ const {state:{classList},getAllClass}  =  useClass()
   const handleReset = () => {
     window.location.reload();
   };
-  useEffect(()=>{
-getAllClass()
-  },[])
+  useEffect(() => {
+    getAllClass();
+  }, []);
 
   return (
     <ParentContainer>
       <MainContainer>
         <Container>
-          <Form
-            onSubmit={(e: any) =>
-              handleSubmit(e, role, id)
-            }
-          >
+          <Form onSubmit={(e: any) => handleSubmit(e, role, id)}>
             <div>
-            {
-  role === "class_teacher" && (
-    <div className="mb-6">
-      <label className="mb-2 block text-sm font-medium text-slate-700">
-        Select Class
-      </label>
+              {role === "class_teacher" && (
+                <div className="mb-6">
+                  <label className="mb-2 block text-sm font-medium text-slate-700">
+                    Select Class
+                  </label>
 
-      <select
-        name="classId"
-        value={state.teacherObj.classId}
-        onChange={handleChange}
-        className="w-full rounded-lg border border-slate-300  px-4 py-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-      >
-        <option >
-          Select Class
-        </option>
+                  <select
+                    name="classId"
+                    value={state.teacherObj.classId}
+                    onChange={handleChange}
+                    className="w-full rounded-lg border border-slate-300  px-4 py-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
+                  >
+                    <option>Select Class</option>
 
-        {classList.map((item: any) => (
-          <option
-            key={item._id}
-            value={item._id}
-          >
-            {item.name}-{item.section}
-          </option>
-        ))}
-      </select>
-    </div>
-  )
-}
+                    {classList.map((item: any) => (
+                      <option key={item._id} value={item._id}>
+                        {item.name}-{item.section}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
             <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
               {/* LEFT */}
@@ -156,11 +130,7 @@ getAllClass()
                     name="gender"
                     value={state.teacherObj.gender}
                     onChange={handleChange}
-                    options={[
-                      "Male",
-                      "Female",
-                      "Other",
-                    ]}
+                    options={["Male", "Female", "Other"]}
                   />
 
                   <Input
@@ -198,9 +168,7 @@ getAllClass()
                   <Input
                     label="Qualification"
                     name="qualification"
-                    value={
-                      state.teacherObj.qualification
-                    }
+                    value={state.teacherObj.qualification}
                     onChange={handleChange}
                     placeholder="M.Sc, B.Ed"
                   />
@@ -278,10 +246,7 @@ getAllClass()
 
                   <label className="group flex min-h-[260px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 transition hover:border-slate-900">
                     <div className="mb-4 rounded-lg border border-slate-200 bg-white p-4 transition group-hover:scale-105">
-                      <FiUpload
-                        size={28}
-                        className="text-slate-700"
-                      />
+                      <FiUpload size={28} className="text-slate-700" />
                     </div>
 
                     <h3 className="font-medium text-slate-900">
@@ -310,12 +275,7 @@ getAllClass()
 
                   {state.teacherObj.photo && (
                     <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-                      {
-                        (
-                          state.teacherObj
-                            .photo as File
-                        ).name
-                      }
+                      {(state.teacherObj.photo as File).name}
                     </div>
                   )}
                 </div>

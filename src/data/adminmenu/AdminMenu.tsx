@@ -61,13 +61,13 @@ const navData: NavTypeProps[] = [
   {
     id: 9,
     name: "Teacher List",
-    link: "/dashboard/admin/student/student-list",
+    link: "/dashboard/admin/teacher/teacher-list",
     icon: <icons.PiStudent size={18} />,
   },
   {
     id: 10,
     name: "Class Teacher List",
-    link: "/dashboard/admin/student/student-list",
+    link: "/dashboard/admin/teacher/class-teacher-list",
     icon: <icons.PiStudent size={18} />,
   },
   {

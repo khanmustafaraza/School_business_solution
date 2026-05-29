@@ -129,10 +129,14 @@ export type StudentState = {
     isActive: true;
   };
   isLoading: boolean;
-  studentList:StudentType[]
+  studentList:StudentType[];
+  studentFilterBackup :StudentType[]
 };
 export type StudentAction =
   | { type: "SET_LOADING"; payload: boolean }
+  | { type: "SET_STUDENTS"; payload: any }
+  | { type: "SET_SINGLE_STUDENT"; payload: any }
+  | { type: "FILTER_STUDENT"; payload: any }
   | {
       type: "HANDLE_CHANGE";
       payload: { name: any; value: any };
@@ -149,5 +153,6 @@ export type StudentContextType = {
   getStudent: (id:string) => Promise<void>;
   getStudents: () => Promise<void>;
   handleUpdate: (e:any) => Promise<void>;
+  filterStudents: (e:any) => void;
   // handleDelete: (id: any) => Promise<void>;
 };
