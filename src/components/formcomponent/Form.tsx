@@ -7,9 +7,14 @@ type FormProps = {
 
 const Form = ({ children, onSubmit }: FormProps) => {
   return (
-    <form className="p-3.5 shadow  w-full" onSubmit={(e) => onSubmit(e)}>
-      {children}
-    </form>
+    <>
+      <form
+        className="p-2.5 rounded w-full shadow lg:p-3 md:p-3 xxl:p-3"
+        onSubmit={(e) => onSubmit(e)}
+      >
+        {children}
+      </form>
+    </>
   );
 };
 
