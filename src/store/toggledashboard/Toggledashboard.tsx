@@ -10,14 +10,19 @@ const ToggleContext = createContext<ToggleContextType | null>(null);
 
 const ToggleProvider = ({ children }: { children: React.ReactNode }) => {
   const [toggle, setToggle] = useState(false);
+  const[view,setView] = useState("list")
 
   const handleToggle = () => {
     console.log("clicked");
     setToggle((prev) => !prev);
   };
+  const handleView  =(type)=>{
+    setView(type)
+
+  }
 
   return (
-    <ToggleContext.Provider value={{ toggle, handleToggle }}>
+    <ToggleContext.Provider value={{ toggle, handleToggle,handleView,view }}>
       {children}
     </ToggleContext.Provider>
   );

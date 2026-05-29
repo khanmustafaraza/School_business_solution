@@ -23,7 +23,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         <Topbar />
 
         <main className="flex-1 p-1">
-          <div className="min-h-full  bg-white p-1">{children}</div>
+          <div className="min-h-full  p-1">{children}</div>
         </main>
       </div>
     </div>
