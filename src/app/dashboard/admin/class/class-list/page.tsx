@@ -17,7 +17,19 @@ import Modal from "@/components/modal/Modal";
 import Form from "@/components/formcomponent/Form";
 import Input from "@/components/inputs/Input";
 import ActionBtn from "@/components/actionbtn/ActionBtn";
-import { FaUserCheck } from "react-icons/fa";
+import { FaPlus, FaUserCheck } from "react-icons/fa";
+import H2 from "@/components/headings/H2";
+import SearchContainer from "@/components/searchcontainer/SearchContainer";
+import TableHeader from "@/components/tables/tableheader/TableHeader";
+import { MdClass } from "react-icons/md";
+const classColumns = [
+  { label: "Class", key: "name" },
+  { label: "Section", key: "section" },
+  { label: "Room", key: "no" },
+  { label: "Status", key: "isActive" },
+  { label: "Students", key: "students" },
+  { label: "Actions", key: "actions" },
+];
 
 export default function ClassList() {
   const { state, getAllClass, handleChange, handleUpdate } = useClass();
@@ -32,163 +44,105 @@ export default function ClassList() {
     subHeading: "Manage all academic classes",
     href: "/dashboard/admin/class/class-register",
     btnHeading: "Add Class",
-    icon: <icons.FaRegistered />,
+    icon: <FaPlus />,
   };
 
   return (
     <ParentContainer>
       <MainContainer>
         <H1 heading={heading} />
+        <H2 title="Total Class" total={state.classList.length} />
+        <SearchContainer
+          onChange={() => console.log("firsr")}
+          placeholder="Search For ....."
+          title="Classes Filter"
+        />
 
         <Container>
           <TableContainer>
             {/* TABLE HEAD */}
-            <thead className="border-b bg-slate-50">
-              <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
-                  Class
-                </th>
-
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
-                  Section
-                </th>
-
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
-                  Room
-                </th>
-
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
-                  Status
-                </th>
-
-                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-600">
-                  Students
-                </th>
-
-                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-600">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-
+            <TableHeader columns={classColumns} />
             {/* TABLE BODY */}
-            <tbody>
-              {state?.classList?.length > 0 ? (
-                state.classList.map((item: any) => (
-                  <tr
-                    key={item._id}
-                    className="border-b transition hover:bg-slate-50"
-                  >
-                    {/* CLASS */}
-                    <td className="px-6 py-5">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#003366] text-white">
-                          <icons.FaSchool size={16} />
-                        </div>
-
-                        <div>
-                          <h2 className="font-semibold text-slate-800">
-                            {item.name}
-                          </h2>
-
-                          <p className="text-xs text-slate-400">
-                            Academic Session
-                          </p>
-                        </div>
+            <tbody className="bg-white dark:bg-slate-900">
+              {state?.classList?.map((item: any) => (
+                <tr
+                  key={item._id}
+                  className="hover:bg-slate-50 dark:hover:bg-slate-800/40"
+                >
+                  {/* CLASS */}
+                  <td className="border px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-[#003366]">
+                        <MdClass size={16} />
                       </div>
-                    </td>
 
-                    {/* SECTION */}
-                    <td className="px-6 py-5">
-                      <span className="rounded-md bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
-                        {item.section}
-                      </span>
-                    </td>
+                      <div>
+                        <span className="font-semibold uppercase">
+                          {item.name}
+                        </span>
+                        <p className="text-xs text-gray-500">Academic Class</p>
+                      </div>
+                    </div>
+                  </td>
 
-                    {/* ROOM */}
-                    <td className="px-6 py-5 text-sm text-slate-700">
-                      Room {item.no}
-                    </td>
+                  {/* SECTION */}
+                  <td className="border px-6 py-4">
+                    <span className="rounded bg-indigo-50 px-3 py-1 text-sm text-indigo-700 uppercase">
+                      {item.section}
+                    </span>
+                  </td>
 
-                    {/* STATUS */}
-                    <td className="px-6 py-5">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          item.isActive
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
+                  {/* ROOM */}
+                  <td className="border px-6 py-4">Room {item.no}</td>
+
+                  {/* STATUS */}
+                  <td className="border px-6 py-4">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                        item.isActive
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {item.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </td>
+
+                  {/* STUDENTS */}
+                  <td className="border px-6 py-4 text-center">
+                    <span className="font-semibold">{item.students || 0}</span>
+                  </td>
+
+                  {/* ACTION */}
+                  <td className="border px-6 py-4">
+                    <div className="flex justify-end gap-3">
+                      {/* VIEW */}
+                      <Link
+                        href={`/dashboard/admin/student/view-students/${item._id}`}
+                        className="text-[#003366] hover:text-blue-700"
                       >
-                        {item.isActive ? "Active" : "Inactive"}
-                      </span>
-                    </td>
+                        <icons.FiEye />
+                      </Link>
 
-                    {/* STUDENTS */}
-                    <td className="px-6 py-5 text-center">
-                      <span className="font-semibold text-slate-800">
-                        {item.students || 0}
-                      </span>
-                    </td>
+                      {/* ATTENDANCE */}
+                      <Link
+                        href={`/dashboard/admin/mark-attendance/${item._id}`}
+                        className="text-[#003366] hover:text-blue-700"
+                      >
+                        <FaUserCheck />
+                      </Link>
 
-                    {/* ACTIONS */}
-                    <td className="px-6 py-5">
-                      <div className="flex items-center justify-center gap-2">
-                        {/* VIEW */}
-                        <Link
-                          href={`/dashboard/admin/student/view-students/${item._id}`}
-                          className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-[#003366] transition hover:bg-[#003366] hover:text-white"
-                          title="View Students"
-                        >
-                          <icons.FiEye size={16} />
-                        </Link>
-                        {/* mark attendance */}
-                        <Link
-                          href={`/dashboard/admin/mark-attendance/${item._id}`}
-                          className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-[#003366] transition hover:bg-[#003366] hover:text-white"
-                          title="Mark Attendance"
-                        >
-                          <FaUserCheck size={16} />
-                        </Link>
-                        {/* mark result */}
-                        <Link
-                          href={`/dashboard/admin/student/view-students/${item._id}`}
-                          className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-[#003366] transition hover:bg-[#003366] hover:text-white"
-                          title="View Students"
-                        >
-                          <icons.FiEye size={16} />
-                        </Link>
-
-                        {/* EDIT */}
-                        <button
-                          title="Edit Class"
-                          onClick={() => openModal(item._id)}
-                          className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-800 hover:text-white"
-                        >
-                          <icons.FiEdit2 size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="py-20 text-center">
-                    <div className="flex flex-col items-center">
-                      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-100">
-                        <icons.FaSchool size={30} className="text-slate-400" />
-                      </div>
-
-                      <h2 className="mt-4 text-xl font-semibold text-slate-700">
-                        No Classes Found
-                      </h2>
-
-                      <p className="mt-2 text-sm text-slate-500">
-                        Create a class to manage students and sections.
-                      </p>
+                      {/* EDIT */}
+                      <button
+                        onClick={() => openModal(item._id)}
+                        className="text-slate-600 hover:text-slate-900"
+                      >
+                        <icons.FiEdit2 />
+                      </button>
                     </div>
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </TableContainer>
           <Modal title="Edit Class">

@@ -12,13 +12,36 @@ import Loader from "@/components/loader/Loader";
 import MainContainer from "@/components/maincontainer/MainContainer";
 import Modal from "@/components/modal/Modal";
 import ParentContainer from "@/components/parentcontainer/ParentContainer";
-import SearchInput from "@/components/searchinput/SearchInput";
 import TableContainer from "@/components/tables/tablecontainer/Tablecontainer";
-import FilterGrid from "@/components/filtergrid/FilterGrid";
 
 import { useEnquiry } from "@/store/enquiry/Enquiry";
 import useModal from "@/store/togglemodal/ToggleModal";
 import { useToggle } from "@/store/toggledashboard/Toggledashboard";
+import SearchContainer from "@/components/searchcontainer/SearchContainer";
+import TableHeader from "@/components/tables/tableheader/TableHeader";
+const enquiryColumns = [
+  {
+    label: "Name",
+  },
+  {
+    label: "Mobile",
+  },
+  {
+    label: "Admission Class",
+  },
+  {
+    label: "Message",
+  },
+  {
+    label: "comment",
+  },
+  {
+    label: "Status",
+  },
+  {
+    label: "Actions",
+  },
+];
 
 const heading = {
   name: "Enquiry List",
@@ -44,26 +67,16 @@ const EnquiryList = () => {
   useEffect(() => {
     getEnquiryList();
   }, []);
-  console.log(state.enquiryList)
-
   return (
     <ParentContainer>
       <MainContainer>
         <H1 heading={heading} />
-        <H2 />
-
-        {/* Search & Filters */}
-        4<div className="py-4 shadow border border-gray-50 px-1  mb-2">
-          <h5 className="p-2 text-2xl text-blue-500" style={{fontFamily:"cursive"}}>Filter Enquiry List</h5>
-
-          <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <SearchInput placeholder="Search enquiry, comment, message..." />
-
-            <div className="flex flex-1 justify-end gap-3">
-              <FilterGrid />
-            </div>
-          </div>
-        </div>
+        <H2 title="Total Enquiry" total={state?.enquiryList.length} />
+        <SearchContainer
+          title="Enquiry Filter"
+          onChange={() => console.log("good")}
+          placeholder="Search name"
+        />
 
         <Container>
           {state.isLoading.loading && (
@@ -76,37 +89,7 @@ const EnquiryList = () => {
           {/* ================= LIST VIEW ================= */}
           {view === "list" && (
             <TableContainer>
-              <thead className="bg-slate-100 dark:bg-slate-800">
-                <tr>
-                  <th className="border px-6 py-4 text-left">
-                    Name
-                  </th>
-
-                  <th className="border px-6 py-4 text-left">
-                    Mobile
-                  </th>
-
-                  <th className="border px-6 py-4 text-left">
-                    Admission Class
-                  </th>
-
-                  <th className="border px-6 py-4 text-left">
-                    Message
-                  </th>
-
-                  <th className="border px-6 py-4 text-left">
-                    Comment
-                  </th>
-
-                  <th className="border px-6 py-4 text-left">
-                    Status
-                  </th>
-
-                  <th className="border px-6 py-4 text-right">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
+              <TableHeader columns={enquiryColumns} />
 
               <tbody className="bg-white dark:bg-slate-900">
                 {state?.enquiryList?.map((item) => (
@@ -120,19 +103,13 @@ const EnquiryList = () => {
                           <BiQuestionMark size={18} />
                         </div>
 
-                        <h3 className="font-semibold">
-                          {item.name}
-                        </h3>
+                        <h3 className="font-semibold">{item.name}</h3>
                       </div>
                     </td>
 
-                    <td className="border px-6 py-4">
-                      {item.mobile}
-                    </td>
+                    <td className="border px-6 py-4">{item.mobile}</td>
 
-                    <td className="border px-6 py-4">
-                      {item.addmissionClass}
-                    </td>
+                    <td className="border px-6 py-4">{item.addmissionClass}</td>
 
                     <td className="border px-6 py-4">
                       <div className="flex items-center gap-2">
@@ -151,8 +128,8 @@ const EnquiryList = () => {
                           item.status === "Active"
                             ? "bg-emerald-100 text-emerald-700"
                             : item.status === "On Leave"
-                            ? "bg-amber-100 text-amber-700"
-                            : "bg-red-100 text-red-700"
+                              ? "bg-amber-100 text-amber-700"
+                              : "bg-red-100 text-red-700"
                         }`}
                       >
                         {item.status}
@@ -183,102 +160,102 @@ const EnquiryList = () => {
           )}
 
           {/* ================= GRID VIEW ================= */}
-      {view === "grid" && (
-  <div className="flex flex-wrap gap-1">
-    {state.enquiryList.map((item) => (
-      <div
-        key={item._id}
-        className="w-full rounded border border-slate-200 bg-white p-1 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 sm:w-[48%] lg:w-[31%] xl:w-[24%]"
-      >
-        {/* Top */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-2">
-            {/* Avatar */}
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-500 text-white">
-              <BiQuestionMark size={16} />
+          {view === "grid" && (
+            <div className="flex flex-wrap gap-1">
+              {state.enquiryList.map((item) => (
+                <div
+                  key={item._id}
+                  className="w-full rounded border border-slate-200 bg-white p-1 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 sm:w-[48%] lg:w-[31%] xl:w-[24%]"
+                >
+                  {/* Top */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      {/* Avatar */}
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-500 text-white">
+                        <BiQuestionMark size={16} />
+                      </div>
+
+                      {/* Name */}
+                      <div>
+                        <h3 className="text-sm font-semibold text-slate-800 dark:text-white">
+                          {item.name}
+                        </h3>
+
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                          {item.mobile}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Status */}
+                    <span
+                      className={`rounded-full px-2 py-[3px] text-[9px] font-semibold ${
+                        item.status === "Active"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : item.status === "On Leave"
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-rose-100 text-rose-700"
+                      }`}
+                    >
+                      {item.status}
+                    </span>
+                  </div>
+
+                  {/* Admission */}
+                  <div className="mt-3 rounded-md bg-slate-50 px-2 py-1.5 dark:bg-slate-800/50">
+                    <p className="text-[9px] uppercase tracking-wider text-slate-400">
+                      Admission Class
+                    </p>
+
+                    <h4 className="text-[11px] font-medium text-slate-700 dark:text-slate-200">
+                      {item.addmissionClass}
+                    </h4>
+                  </div>
+
+                  {/* Message */}
+                  <div className="mt-2">
+                    <p className="text-[9px] uppercase tracking-wider text-slate-400">
+                      Message
+                    </p>
+
+                    <p className="line-clamp-2 text-[11px] leading-4 text-slate-600 dark:text-slate-300">
+                      {item.message}
+                    </p>
+                  </div>
+
+                  {/* Comment */}
+                  {item.comment && (
+                    <div className="mt-2 rounded-md border border-indigo-100 bg-indigo-50/70 px-2 py-1.5 dark:border-indigo-900 dark:bg-indigo-950/20">
+                      <p className="text-[9px] uppercase tracking-wider text-indigo-400">
+                        Comment
+                      </p>
+
+                      <p className="line-clamp-1 text-[11px] text-slate-700 dark:text-slate-300">
+                        {item.comment}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="mt-3 flex items-center justify-end gap-1 border-t border-slate-100 pt-2 dark:border-slate-700">
+                    <button
+                      onClick={() => openModal(item._id)}
+                      className="rounded-md p-1.5 text-slate-500 transition hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-slate-800"
+                    >
+                      <Pencil size={14} />
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="rounded-md p-1.5 text-slate-500 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-slate-800"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            {/* Name */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-white">
-                {item.name}
-              </h3>
-
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                {item.mobile}
-              </p>
-            </div>
-          </div>
-
-          {/* Status */}
-          <span
-            className={`rounded-full px-2 py-[3px] text-[9px] font-semibold ${
-              item.status === "Active"
-                ? "bg-emerald-100 text-emerald-700"
-                : item.status === "On Leave"
-                ? "bg-amber-100 text-amber-700"
-                : "bg-rose-100 text-rose-700"
-            }`}
-          >
-            {item.status}
-          </span>
-        </div>
-
-        {/* Admission */}
-        <div className="mt-3 rounded-md bg-slate-50 px-2 py-1.5 dark:bg-slate-800/50">
-          <p className="text-[9px] uppercase tracking-wider text-slate-400">
-            Admission Class
-          </p>
-
-          <h4 className="text-[11px] font-medium text-slate-700 dark:text-slate-200">
-            {item.addmissionClass}
-          </h4>
-        </div>
-
-        {/* Message */}
-        <div className="mt-2">
-          <p className="text-[9px] uppercase tracking-wider text-slate-400">
-            Message
-          </p>
-
-          <p className="line-clamp-2 text-[11px] leading-4 text-slate-600 dark:text-slate-300">
-            {item.message}
-          </p>
-        </div>
-
-        {/* Comment */}
-        {item.comment && (
-          <div className="mt-2 rounded-md border border-indigo-100 bg-indigo-50/70 px-2 py-1.5 dark:border-indigo-900 dark:bg-indigo-950/20">
-            <p className="text-[9px] uppercase tracking-wider text-indigo-400">
-              Comment
-            </p>
-
-            <p className="line-clamp-1 text-[11px] text-slate-700 dark:text-slate-300">
-              {item.comment}
-            </p>
-          </div>
-        )}
-
-        {/* Actions */}
-        <div className="mt-3 flex items-center justify-end gap-1 border-t border-slate-100 pt-2 dark:border-slate-700">
-          <button
-            onClick={() => openModal(item._id)}
-            className="rounded-md p-1.5 text-slate-500 transition hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-slate-800"
-          >
-            <Pencil size={14} />
-          </button>
-
-          <button
-            onClick={() => handleDelete(item._id)}
-            className="rounded-md p-1.5 text-slate-500 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-slate-800"
-          >
-            <Trash2 size={14} />
-          </button>
-        </div>
-      </div>
-    ))}
-  </div>
-)}
+          )}
 
           {/* ================= MODAL ================= */}
           <Modal title="Comment For Status Of Enquiry">

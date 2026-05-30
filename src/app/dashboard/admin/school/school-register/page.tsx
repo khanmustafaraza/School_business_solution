@@ -9,13 +9,14 @@ import ParentContainer from "@/components/parentcontainer/ParentContainer";
 import Form from "@/components/formcomponent/Form";
 import Input from "@/components/inputs/Input";
 import H1 from "@/components/headings/H1";
+import { FaList } from "react-icons/fa";
 
 const heading = {
   name: "Add School",
   subHeading: "Add and manage your school’s basic information.",
   href: "/dashboard/admin/school/school-list",
   btnHeading: "School List",
-  icon: <School />,
+  icon: <FaList />,
 };
 
 const SchoolRegister = () => {

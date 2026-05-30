@@ -24,7 +24,7 @@ const Input = ({
       </label>
 
       <div className="flex items-center rounded border border-gray-300 bg-white px-2   lg:px-3 md:px-3 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-        {icon && <span className="text-red-600 text-[16px]">{icon}</span>}
+        {icon && <span className="text-gray-600 text-[16px]">{icon}</span>}
 
         <input
           type={type}
