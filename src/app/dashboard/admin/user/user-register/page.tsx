@@ -8,7 +8,7 @@ import { CircleUserRound, UserKey } from "lucide-react";
 import ParentContainer from "@/components/parentcontainer/ParentContainer";
 import Form from "@/components/formcomponent/Form";
 import Input from "@/components/inputs/Input";
-import { FaEnvelope, FaUser } from "react-icons/fa";
+import { FaEnvelope, FaList, FaUser } from "react-icons/fa";
 import { FcDataEncryption } from "react-icons/fc";
 import Loader from "@/components/loader/Loader";
 import H1 from "@/components/headings/H1";
@@ -18,7 +18,7 @@ const heading = {
   subHeading: "Add and manage User basic information.",
   href: "/dashboard/admin/user/user-list",
   btnHeading: "User List",
-  icon: <CircleUserRound />,
+  icon: <FaList />,
 };
 
 const UserRegister = () => {

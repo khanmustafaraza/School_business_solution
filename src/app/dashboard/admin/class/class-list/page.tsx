@@ -22,6 +22,7 @@ import H2 from "@/components/headings/H2";
 import SearchContainer from "@/components/searchcontainer/SearchContainer";
 import TableHeader from "@/components/tables/tableheader/TableHeader";
 import { MdClass } from "react-icons/md";
+import { useToggle } from "@/store/toggledashboard/Toggledashboard";
 const classColumns = [
   { label: "Class", key: "name" },
   { label: "Section", key: "section" },
@@ -34,6 +35,7 @@ const classColumns = [
 export default function ClassList() {
   const { state, getAllClass, handleChange, handleUpdate } = useClass();
   const { openModal, closeModal, updateId } = useModal();
+        const {view} =                                   useToggle()
 
   useEffect(() => {
     getAllClass();
@@ -59,7 +61,8 @@ export default function ClassList() {
         />
 
         <Container>
-          <TableContainer>
+          {view == "list" && (
+            <TableContainer>
             {/* TABLE HEAD */}
             <TableHeader columns={classColumns} />
             {/* TABLE BODY */}
@@ -145,6 +148,86 @@ export default function ClassList() {
               ))}
             </tbody>
           </TableContainer>
+          )}
+          {view === "grid" && (
+  <div className="flex flex-wrap gap-2">
+    {state?.classList?.map((item: any) => (
+      <div
+        key={item._id}
+        className="w-[270px] rounded border border-slate-200 bg-white p-2 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900"
+      >
+        {/* Header */}
+        <div className="mb-4 flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-[#003366]">
+            <MdClass size={20} />
+          </div>
+
+          <div>
+            <h3 className="font-bold uppercase text-slate-800 dark:text-white">
+              {item.name}
+            </h3>
+            <p className="text-xs text-slate-500">
+              Section {item.section}
+            </p>
+          </div>
+        </div>
+
+        {/* Details */}
+        <div className="space-y-3 text-sm">
+          <div className="flex justify-between">
+            <span className="text-slate-500">Room</span>
+            <span className="font-semibold">{item.no}</span>
+          </div>
+
+          <div className="flex justify-between">
+            <span className="text-slate-500">Students</span>
+            <span className="font-semibold">
+              {item.students || 0}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-slate-500">Status</span>
+
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                item.isActive
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {item.isActive ? "Active" : "Inactive"}
+            </span>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="mt-5 flex justify-end gap-4 border-t pt-4">
+          <Link
+            href={`/dashboard/admin/student/view-students/${item._id}`}
+            className="text-[#003366] transition hover:scale-110 hover:text-blue-700"
+          >
+            <icons.FiEye />
+          </Link>
+
+          <Link
+            href={`/dashboard/admin/mark-attendance/${item._id}`}
+            className="text-[#003366] transition hover:scale-110 hover:text-blue-700"
+          >
+            <FaUserCheck />
+          </Link>
+
+          <button
+            onClick={() => openModal(item._id)}
+            className="text-slate-600 transition hover:scale-110 hover:text-slate-900"
+          >
+            <icons.FiEdit2 />
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
           <Modal title="Edit Class">
             <Form onSubmit={(e) => handleUpdate(e, updateId)}>
               {/* Class Name */}

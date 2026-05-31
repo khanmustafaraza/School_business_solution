@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-import { FaEnvelope, FaPlus } from "react-icons/fa";
+import { FaEnvelope, FaPhone, FaPlus } from "react-icons/fa";
 import { BiQuestionMark } from "react-icons/bi";
 
 import Container from "@/components/container/Container";
@@ -33,7 +33,7 @@ const enquiryColumns = [
     label: "Message",
   },
   {
-    label: "comment",
+    label: "Comment",
   },
   {
     label: "Status",
@@ -107,7 +107,17 @@ const EnquiryList = () => {
                       </div>
                     </td>
 
-                    <td className="border px-6 py-4">{item.mobile}</td>
+                    <td className="border px-6 py-4">
+                      
+                       <div className="flex items-center gap-3">
+                        <div className="flex p-1 items-center justify-center rounded bg-green-600 text-white">
+                          <FaPhone />
+                        </div>
+
+                        <h3 className="font-semibold">   {item.mobile}</h3>
+                   
+                      </div>
+                      </td>
 
                     <td className="border px-6 py-4">{item.addmissionClass}</td>
 
@@ -160,103 +170,104 @@ const EnquiryList = () => {
           )}
 
           {/* ================= GRID VIEW ================= */}
-          {view === "grid" && (
-            <div className="flex flex-wrap gap-1">
-              {state.enquiryList.map((item) => (
-                <div
-                  key={item._id}
-                  className="w-full rounded border border-slate-200 bg-white p-1 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 sm:w-[48%] lg:w-[31%] xl:w-[24%]"
-                >
-                  {/* Top */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      {/* Avatar */}
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-500 text-white">
-                        <BiQuestionMark size={16} />
-                      </div>
+        {view === "grid" && (
+  <div className="flex flex-wrap gap-4">
+    {state.enquiryList.map((item) => (
+      <div
+        key={item._id}
+        className="w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900 sm:w-[48%] lg:w-[31%] xl:w-[24%]"
+      >
+        {/* Top Accent */}
+        <div className="h-1 bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500" />
 
-                      {/* Name */}
-                      <div>
-                        <h3 className="text-sm font-semibold text-slate-800 dark:text-white">
-                          {item.name}
-                        </h3>
+        <div className="p-4">
+          {/* Header */}
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-[#003366]">
+                <BiQuestionMark size={20} />
+              </div>
 
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                          {item.mobile}
-                        </p>
-                      </div>
-                    </div>
+              <div>
+                <h3 className="font-semibold text-slate-800 dark:text-white">
+                  {item.name}
+                </h3>
 
-                    {/* Status */}
-                    <span
-                      className={`rounded-full px-2 py-[3px] text-[9px] font-semibold ${
-                        item.status === "Active"
-                          ? "bg-emerald-100 text-emerald-700"
-                          : item.status === "On Leave"
-                            ? "bg-amber-100 text-amber-700"
-                            : "bg-rose-100 text-rose-700"
-                      }`}
-                    >
-                      {item.status}
-                    </span>
-                  </div>
-
-                  {/* Admission */}
-                  <div className="mt-3 rounded-md bg-slate-50 px-2 py-1.5 dark:bg-slate-800/50">
-                    <p className="text-[9px] uppercase tracking-wider text-slate-400">
-                      Admission Class
-                    </p>
-
-                    <h4 className="text-[11px] font-medium text-slate-700 dark:text-slate-200">
-                      {item.addmissionClass}
-                    </h4>
-                  </div>
-
-                  {/* Message */}
-                  <div className="mt-2">
-                    <p className="text-[9px] uppercase tracking-wider text-slate-400">
-                      Message
-                    </p>
-
-                    <p className="line-clamp-2 text-[11px] leading-4 text-slate-600 dark:text-slate-300">
-                      {item.message}
-                    </p>
-                  </div>
-
-                  {/* Comment */}
-                  {item.comment && (
-                    <div className="mt-2 rounded-md border border-indigo-100 bg-indigo-50/70 px-2 py-1.5 dark:border-indigo-900 dark:bg-indigo-950/20">
-                      <p className="text-[9px] uppercase tracking-wider text-indigo-400">
-                        Comment
-                      </p>
-
-                      <p className="line-clamp-1 text-[11px] text-slate-700 dark:text-slate-300">
-                        {item.comment}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Actions */}
-                  <div className="mt-3 flex items-center justify-end gap-1 border-t border-slate-100 pt-2 dark:border-slate-700">
-                    <button
-                      onClick={() => openModal(item._id)}
-                      className="rounded-md p-1.5 text-slate-500 transition hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-slate-800"
-                    >
-                      <Pencil size={14} />
-                    </button>
-
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="rounded-md p-1.5 text-slate-500 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-slate-800"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                <p className="text-xs text-slate-500">
+                  {item.mobile}
+                </p>
+              </div>
             </div>
-          )}
 
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                item.status === "Active"
+                  ? "bg-green-100 text-green-700"
+                  : item.status === "On Leave"
+                  ? "bg-amber-100 text-amber-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {item.status}
+            </span>
+          </div>
+
+          {/* Details */}
+          <div className="mt-4 space-y-3">
+            <div className="flex justify-between border-b pb-2">
+              <span className="text-xs text-slate-500">
+                Admission Class
+              </span>
+
+              <span className="text-sm font-medium">
+                {item.addmissionClass}
+              </span>
+            </div>
+
+            <div>
+              <p className="mb-1 text-xs font-medium text-slate-500">
+                Message
+              </p>
+
+              <p className="line-clamp-3 text-sm text-slate-600 dark:text-slate-300">
+                {item.message}
+              </p>
+            </div>
+
+            {item.comment && (
+              <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                <p className="mb-1 text-xs font-medium text-slate-500">
+                  Comment
+                </p>
+
+                <p className="line-clamp-2 text-sm text-slate-700 dark:text-slate-300">
+                  {item.comment}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="mt-4 flex items-center justify-end gap-2 border-t pt-3">
+            <button
+              onClick={() => openModal(item._id)}
+              className="rounded-lg p-2 text-emerald-600 transition hover:bg-emerald-50"
+            >
+              <Pencil size={16} />
+            </button>
+
+            <button
+              onClick={() => handleDelete(item._id)}
+              className="rounded-lg p-2 text-red-600 transition hover:bg-red-50"
+            >
+              <Trash2 size={16} />
+            </button>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
           {/* ================= MODAL ================= */}
           <Modal title="Comment For Status Of Enquiry">
             <form

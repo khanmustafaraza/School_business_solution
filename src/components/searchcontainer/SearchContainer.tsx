@@ -25,7 +25,7 @@ const SearchContainer = ({ title, onChange, placeholder, children }: any) => {
           />
         </div>
 
-        <div className="flex flex-1 justify-end gap-3">
+        <div className="flex lg:flex-row md:flex-nowrap flex-wrap flex-1 justify-end gap-3">
           {children && children}
           <div className="flex items-center gap-2">
             {/* FILTER BUTTON */}

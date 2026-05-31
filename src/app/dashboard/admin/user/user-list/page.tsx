@@ -14,6 +14,17 @@ import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 import icons from "@/constants/icons/icons";
+import H2 from "@/components/headings/H2";
+import TableHeader from "@/components/tables/tableheader/TableHeader";
+import SearchContainer from "@/components/searchcontainer/SearchContainer";
+import { useToggle } from "@/store/toggledashboard/Toggledashboard";
+const userColumns = [
+  { label: "User" },
+  { label: "Email" },
+  { label: "Status" },
+  { label: "Role" },
+  { label: "Action" },
+];
 
 const rolePathMap: any = {
   student: "student",
@@ -42,7 +53,8 @@ const UserList = () => {
 
   const page = Number(searchParams.get("page")) || 1;
 
-  const { state, getAllUser,handleUpdate } = useUser();
+  const { state, getAllUser, handleUpdate } = useUser();
+  const {view} = useToggle()
 
   useEffect(() => {
     getAllUser(page);
@@ -60,81 +72,53 @@ const UserList = () => {
             icon: <icons.FaRegistered />,
           }}
         />
+        <H2 title="Total User" total={state.userList.length} />
+        <SearchContainer
+          onChange={() => console.log("firsr")}
+          placeholder="Search For ....."
+          title="User Filter"
+        />
 
         <Container>
-          {/* TOP */}
-          <div className="mb-4 flex items-center justify-between">
-            <p className="text-sm text-slate-500">
-              Total Users :
-              <span className="ml-1 font-semibold text-slate-800">
-                {state?.totalDocs || 0}
-              </span>
-            </p>
-          </div>
-
           {/* TABLE */}
-          <TableContainer>
-            <thead className="border-b bg-slate-50">
-              <tr>
-                <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
-                  User
-                </th>
-
-                <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600 hidden md:table-cell">
-                  Email
-                </th>
-
-                <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
-                  Status
-                </th>
-
-                <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
-                  Role
-                </th>
-
-                <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
-                  Action
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
+         {
+          view == "list" && (
+             <TableContainer>
+            <TableHeader columns={userColumns} />
+            <tbody className="bg-white dark:bg-slate-900">
               {state?.userList?.map((item: any) => {
                 const path = rolePathMap[item.role];
 
                 return (
                   <tr
                     key={item._id}
-                    className="border-b transition hover:bg-slate-50"
+                    className="hover:bg-slate-50 dark:hover:bg-slate-800/40"
                   >
                     {/* USER */}
-                    <td className="px-5 py-4">
+                    <td className="border px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 font-semibold text-slate-700">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-[#003366] font-semibold">
                           {getInitials(item.name)}
                         </div>
 
                         <div>
-                          <h2 className="text-sm font-medium text-slate-800">
-                            {item.name}
-                          </h2>
-
-                          <p className="text-xs text-slate-400 md:hidden">
-                            {item.email}
-                          </p>
+                          <span className="font-semibold">{item.name}</span>
+                          <p className="text-xs text-gray-500">System User</p>
                         </div>
                       </div>
                     </td>
 
                     {/* EMAIL */}
-                    <td className="hidden px-5 py-4 text-sm text-slate-600 md:table-cell">
-                      {item.email}
+                    <td className="border px-6 py-4">
+                      <span className="text-sm text-slate-600">
+                        {item.email}
+                      </span>
                     </td>
 
                     {/* STATUS */}
-                    <td className="px-5 py-4 text-center">
+                    <td className="border px-6 py-4">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-medium ${
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
                           item.isActive
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
@@ -145,32 +129,37 @@ const UserList = () => {
                     </td>
 
                     {/* ROLE */}
-                    <td className="px-5 py-4 text-center">
+                    <td className="border px-6 py-4 text-center">
                       <span
-                        className={`rounded-md px-3 py-1 text-xs font-medium ${roleColors[item.role]}`}
+                        className={`rounded px-3 py-1 text-sm font-medium uppercase ${roleColors[item.role]}`}
                       >
                         {item.role}
                       </span>
                     </td>
 
                     {/* ACTION */}
-                    <td className="px-5 py-4">
-                      <div className="flex justify-center gap-1">
-                       {
-                        item.isActive && path && (
+                    <td className="border px-6 py-4">
+                      <div className="flex justify-end gap-3">
+                        {item.isActive && path && (
                           <Link
                             title="Create Profile"
                             href={`/dashboard/admin/${path}/${item._id}?role=${item.role}`}
-                            className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-800 hover:text-white"
+                            className="text-[#003366] hover:text-blue-700"
                           >
-                            <icons.FiEdit2 size={16} />
+                            <icons.FiEdit2 />
                           </Link>
                         )}
-                       
-                        <button onClick={()=>handleUpdate(item._id,item.isActive)} title="Toogle Status" className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-800 hover:text-white">
-                          {
-                            item.isActive ?<FaToggleOn className="text-green-500 text-xl" />:<FaToggleOff className="text-red-500 text-xl"/>
-                          }
+
+                        <button
+                          onClick={() => handleUpdate(item._id, item.isActive)}
+                          title="Toggle Status"
+                          className="text-slate-600 hover:text-slate-900"
+                        >
+                          {item.isActive ? (
+                            <FaToggleOn className="text-xl text-green-500" />
+                          ) : (
+                            <FaToggleOff className="text-xl text-red-500" />
+                          )}
                         </button>
                       </div>
                     </td>
@@ -179,6 +168,99 @@ const UserList = () => {
               })}
             </tbody>
           </TableContainer>
+          )
+         }
+        {
+  view === "grid" && (
+    <div className="flex flex-wrap gap-2">
+      {state?.userList?.map((item: any) => {
+        const path = rolePathMap[item.role];
+
+        return (
+          <div
+            key={item._id}
+            className=" flex-1 rounded border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900"
+          >
+            {/* Header */}
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 font-semibold text-[#003366]">
+                {getInitials(item.name)}
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-slate-800 dark:text-white">
+                  {item.name}
+                </h3>
+                <p className="text-xs text-slate-500">
+                  System User
+                </p>
+              </div>
+            </div>
+
+            {/* Details */}
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between gap-2">
+                <span className="text-slate-500">Email</span>
+                <span className="max-w-[150px] truncate font-medium">
+                  {item.email}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Status</span>
+
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                    item.isActive
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {item.isActive ? "Active" : "Inactive"}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Role</span>
+
+                <span
+                  className={`rounded px-3 py-1 text-xs font-medium uppercase ${roleColors[item.role]}`}
+                >
+                  {item.role}
+                </span>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-5 flex justify-end gap-4 border-t pt-4">
+              {item.isActive && path && (
+                <Link
+                  title="Create Profile"
+                  href={`/dashboard/admin/${path}/${item._id}?role=${item.role}`}
+                  className="text-[#003366] transition hover:scale-110 hover:text-blue-700"
+                >
+                  <icons.FiEdit2 />
+                </Link>
+              )}
+
+              <button
+                onClick={() => handleUpdate(item._id, item.isActive)}
+                title="Toggle Status"
+                className="transition hover:scale-110"
+              >
+                {item.isActive ? (
+                  <FaToggleOn className="text-2xl text-green-500" />
+                ) : (
+                  <FaToggleOff className="text-2xl text-red-500" />
+                )}
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  )
+}
 
           {/* PAGINATION */}
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">

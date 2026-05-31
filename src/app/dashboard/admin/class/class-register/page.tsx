@@ -11,13 +11,14 @@ import ParentContainer from "@/components/parentcontainer/ParentContainer";
 import H1 from "@/components/headings/H1";
 import Form from "@/components/formcomponent/Form";
 import Input from "@/components/inputs/Input";
+import { FaList } from "react-icons/fa";
 
 const heading = {
   name: "Add Class",
   subHeading: "Add and manage your class basic information.",
   href: "/dashboard/admin/class/class-list",
   btnHeading: "Class List",
-  icon: <LayoutPanelTop />,
+  icon: <FaList />,
 };
 
 const ClassRegister = () => {

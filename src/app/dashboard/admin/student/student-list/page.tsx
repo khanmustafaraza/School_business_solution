@@ -36,25 +36,47 @@ import useClass from "@/store/admin/class/Class";
 import { useStudent } from "@/store/admin/student/Student";
 import useModal from "@/store/togglemodal/ToggleModal";
 import TableContainer from "@/components/tables/tablecontainer/Tablecontainer";
+import { FaPlus } from "react-icons/fa";
+import H2 from "@/components/headings/H2";
+import SearchContainer from "@/components/searchcontainer/SearchContainer";
+import TableHeader from "@/components/tables/tableheader/TableHeader";
+import { useToggle } from "@/store/toggledashboard/Toggledashboard";
+const studentColumns = [
+  { label: "Student" },
+  { label: "SR No" },
+  { label: "Class" },
+  { label: "Gender" },
+  { label: "Age" },
+  { label: "Father Name" },
+  { label: "Session" },
+  { label: "Status" },
+  { label: "Action" },
+];
 
 const heading = {
   name: "Student List",
   subHeading: "Add and manage your student basic information.",
   href: "/dashboard/admin/user/user-list",
-  btnHeading: "Student List",
-  icon: <School />,
+  btnHeading: "Student Register",
+  icon: <FaPlus />,
 };
 
 export default function StudentList() {
-  const [view, setView] = useState("grid");
+  // const [view, setView] = useState("grid");
 
   useEffect(() => {
     getStudents();
     getAllClass();
   }, []);
 
-  const { state, getStudents, handleChange, handleUpdate, handleFileChange,filterStudents } =
-    useStudent();
+  const {
+    state,
+    getStudents,
+    handleChange,
+    handleUpdate,
+    handleFileChange,
+    filterStudents,
+  } = useStudent();
 
   const {
     state: { classList },
@@ -62,6 +84,7 @@ export default function StudentList() {
   } = useClass();
 
   const { openModal } = useModal();
+ const {view} = useToggle()
 
   const formData = state.studentObj;
 
@@ -69,349 +92,240 @@ export default function StudentList() {
     <ParentContainer>
       <MainContainer>
         <H1 heading={heading} />
+        <H2 title="Total Students" total={state.studentList.length} />
+        <SearchContainer
+          onChange={() => console.log("firsr")}
+          placeholder="Search For ....."
+          title="Students Filter"
+        >
+          <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[170px]">
+            <option value="">All Classes</option>
+
+            {classList?.map((curEle: any) => (
+              <option key={curEle._id} value={curEle._id}>
+                {curEle.name} - {curEle.section}
+              </option>
+            ))}
+          </select>
+
+          {/* STATUS */}
+
+          <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[150px]">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+
+          {/* GENDER */}
+
+          <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[150px]">
+            <option value="">All Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </SearchContainer>
 
         <Container>
-          {/* ================= FILTER UI ================= */}
+          {view == "list" && (
+            <TableContainer>
+              <TableHeader columns={studentColumns} />
+              <tbody className="bg-white dark:bg-slate-900">
+                {state.studentList?.map((student: any, index: number) => (
+                  <tr
+                    key={student._id}
+                    className="hover:bg-slate-50 dark:hover:bg-slate-800/40"
+                  >
+                    {/* PHOTO + NAME */}
+                    <td className="border px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={`/api/admin/student/photo/${student._id}`}
+                          alt={student.firstName}
+                          className="h-10 w-10 rounded-full border object-cover"
+                        />
 
-          <div className="bg-white p-4 mb-5">
-            <div className="flex flex-col xl:flex-row gap-4 xl:items-center xl:justify-between">
-              {/* LEFT */}
+                        <div>
+                          <span className="font-semibold">
+                            {student.firstName} {student.lastName}
+                          </span>
+                          <p className="text-xs text-gray-500">
+                            {student.gender}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
 
-              <div className="flex flex-col md:flex-row gap-3 flex-1">
-                {/* SEARCH */}
+                    {/* SR NO */}
+                    <td className="border px-6 py-4">
+                      {student.srNo || index + 1}
+                    </td>
 
-                <div className="relative w-full md:max-w-sm">
-                  <FiSearch
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                    size={16}
-                  />
+                    {/* CLASS */}
+                    <td className="border px-6 py-4">
+                      <span className="rounded bg-indigo-50 px-3 py-1 text-sm text-indigo-700">
+                        {student.classId?.name} - {student.classId?.section}
+                      </span>
+                    </td>
 
-                  <input
-                    type="text"
-                    placeholder="Search student..."
-                    className="w-full border border-slate-200 rounded-md pl-10 pr-3 py-2 text-sm outline-none focus:border-blue-500"
-                    onChange={(e)=>filterStudents(e.target.value)}
-                  />
-                </div>
+                    {/* GENDER */}
+                    <td className="border px-6 py-4">{student.gender}</td>
 
-                {/* CLASS */}
+                    {/* AGE */}
+                    <td className="border px-6 py-4">{student.age}</td>
 
-                <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[170px]">
-                  <option value="">All Classes</option>
+                    {/* FATHER */}
+                    <td className="border px-6 py-4">{student.fatherName}</td>
 
-                  {classList?.map((curEle: any) => (
-                    <option key={curEle._id} value={curEle._id}>
-                      {curEle.name} - {curEle.section}
-                    </option>
-                  ))}
-                </select>
+                    {/* SESSION */}
+                    <td className="border px-6 py-4">
+                      {student.session || "-"}
+                    </td>
 
-                {/* STATUS */}
+                    {/* STATUS */}
+                    <td className="border px-6 py-4">
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                          student.isActive
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {student.isActive ? "Active" : "Inactive"}
+                      </span>
+                    </td>
 
-                <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[150px]">
-                  <option value="">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
+                    {/* ACTION */}
+                    <td className="border px-6 py-4">
+                      <div className="flex justify-end gap-3">
+                        <Link
+                          href={`/dashboard/admin/student/detail/${student._id}`}
+                          className="text-[#003366] hover:text-blue-700"
+                        >
+                          <FiEye />
+                        </Link>
 
-                {/* GENDER */}
+                        <button
+                          onClick={() => openModal(student._id)}
+                          className="text-amber-600 hover:text-amber-800"
+                        >
+                          <FiEdit2 />
+                        </button>
 
-                <select className="border border-slate-200 rounded-md px-3 py-2 text-sm outline-none focus:border-blue-500 min-w-[150px]">
-                  <option value="">All Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              {/* RIGHT */}
-
-              <div className="flex items-center gap-2">
-                {/* FILTER BUTTON */}
-
-                <button className="flex items-center gap-2 border border-slate-200 px-4 py-2 rounded-md text-sm hover:bg-slate-50 transition">
-                  <FiFilter size={15} />
-                  Filters
-                </button>
-
-                {/* GRID VIEW */}
-
-                <button
-                  onClick={() => setView("grid")}
-                  className={`h-10 w-10 rounded-md flex items-center justify-center transition ${
-                    view === "grid"
-                      ? "bg-blue-600 text-white"
-                      : "border border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  <FiGrid size={17} />
-                </button>
-
-                {/* LIST VIEW */}
-
-                <button
-                  onClick={() => setView("list")}
-                  className={`h-10 w-10 rounded-md flex items-center justify-center transition ${
-                    view === "list"
-                      ? "bg-blue-600 text-white"
-                      : "border border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  <FiList size={17} />
-                </button>
-              </div>
-            </div>
-          </div>
+                        <button className="text-red-600 hover:text-red-800">
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </TableContainer>
+          )}
 
           {/* ================= GRID VIEW ================= */}
 
-          {view === "grid" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
-              {state.studentList?.map((student: any, index: number) => {
-                return (
-                  <div
-                    key={student._id}
-                    className="bg-white border border-slate-200 rounded-md p-2.5 shadow-sm hover:shadow transition"
-                  >
-                    {/* TOP */}
+        {
+  view === "grid" && (
+    <div className="flex flex-wrap gap-5">
+      {state.studentList?.map((student: any, index: number) => (
+        <div
+          key={student._id}
+          className="w-[300px] rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900"
+        >
+          {/* Header */}
+          <div className="mb-4 flex items-center gap-3">
+            <img
+              src={`/api/admin/student/photo/${student._id}`}
+              alt={student.firstName}
+              className="h-14 w-14 rounded-full border object-cover"
+            />
 
-                    <div className="flex gap-2.5">
-                      {/* PHOTO */}
+            <div>
+              <h3 className="font-semibold text-slate-800 dark:text-white">
+                {student.firstName} {student.lastName}
+              </h3>
 
-                      <img
-                        src={`/api/admin/student/photo/${student._id}`}
-                        alt={student.firstName}
-                        className="h-12 w-12 rounded object-cover border"
-                      />
-
-                      {/* INFO */}
-
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-1">
-                          <h2 className="text-sm font-medium truncate">
-                            {student.firstName} {student.lastName}
-                          </h2>
-
-                          <span
-                            className={`text-[10px] px-1.5 py-[1px] rounded-sm font-medium ${
-                              student.isActive
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
-                            }`}
-                          >
-                            {student.isActive ? "Active" : "Inactive"}
-                          </span>
-                        </div>
-
-                        <p className="text-[11px] text-slate-500">
-                          SR: {student.srNo || index + 1}
-                        </p>
-
-                        <div className="mt-1.5 space-y-[2px] text-[11px] text-slate-600">
-                          <p>
-                            {student.classId?.name} - {student.classId?.section}
-                          </p>
-
-                          <p>
-                            {student.gender} • Age {student.age}
-                          </p>
-
-                          <p className="truncate">{student.fatherName}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* ACTIONS */}
-
-                    <div className="flex justify-end gap-1.5 mt-2 pt-2 border-t border-slate-100">
-                      <Link
-                        href={`/dashboard/admin/student/detail/${student._id}`}
-                        className="flex h-7 w-7 items-center justify-center rounded bg-blue-100 text-blue-700 hover:bg-blue-600 hover:text-white transition"
-                      >
-                        <FiEye size={13} />
-                      </Link>
-
-                      <button
-                        onClick={() => openModal(student._id)}
-                        className="flex h-7 w-7 items-center justify-center rounded bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white transition"
-                      >
-                        <FiEdit2 size={13} />
-                      </button>
-
-                      <button className="flex h-7 w-7 items-center justify-center rounded bg-red-100 text-red-700 hover:bg-red-600 hover:text-white transition">
-                        <FiTrash2 size={13} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+              <p className="text-xs text-slate-500">
+                SR No: {student.srNo || index + 1}
+              </p>
             </div>
-          )}
+          </div>
 
-          {/* ================= LIST VIEW ================= */}
+          {/* Details */}
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between">
+              <span className="text-slate-500">Class</span>
+              <span className="font-medium">
+                {student.classId?.name} - {student.classId?.section}
+              </span>
+            </div>
 
-          {/* ================= LIST VIEW ================= */}
+            <div className="flex justify-between">
+              <span className="text-slate-500">Gender</span>
+              <span>{student.gender}</span>
+            </div>
 
-          {view === "list" && (
-            <TableContainer>
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[1000px] border-collapse">
-                  <thead>
-                    <tr className="bg-slate-100 text-slate-700">
-                      <th className="text-left px-4 py-3 text-sm font-semibold">
-                        Student
-                      </th>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Father</span>
+              <span>{student.fatherName}</span>
+            </div>
 
-                      <th className="text-left px-4 py-3 text-sm font-semibold">
-                        SR No
-                      </th>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Mobile</span>
+              <span>{student.fatherMobileNumber || "-"}</span>
+            </div>
 
-                      <th className="text-left px-4 py-3 text-sm font-semibold">
-                        Class
-                      </th>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Blood Group</span>
+              <span>{student.bloodGroup || "-"}</span>
+            </div>
 
-                      <th className="text-left px-4 py-3 text-sm font-semibold">
-                        Gender
-                      </th>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Session</span>
+              <span>{student.session || "-"}</span>
+            </div>
 
-                      <th className="text-left px-4 py-3 text-sm font-semibold">
-                        Age
-                      </th>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500">Status</span>
 
-                      <th className="text-left px-4 py-3 text-sm font-semibold">
-                        Father Name
-                      </th>
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  student.isActive
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {student.isActive ? "Active" : "Inactive"}
+              </span>
+            </div>
+          </div>
 
-                      <th className="text-left px-4 py-3 text-sm font-semibold">
-                        Session
-                      </th>
+          {/* Actions */}
+          <div className="mt-5 flex justify-end gap-4 border-t pt-4">
+            <Link
+              href={`/dashboard/admin/student/detail/${student._id}`}
+              className="text-[#003366] transition hover:scale-110 hover:text-blue-700"
+            >
+              <FiEye />
+            </Link>
 
-                      <th className="text-center px-4 py-3 text-sm font-semibold">
-                        Status
-                      </th>
+            <button
+              onClick={() => openModal(student._id)}
+              className="text-amber-600 transition hover:scale-110 hover:text-amber-800"
+            >
+              <FiEdit2 />
+            </button>
 
-                      <th className="text-center px-4 py-3 text-sm font-semibold">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {state.studentList?.map((student: any, index: number) => {
-                      return (
-                        <tr
-                          key={student._id}
-                          className="border-b border-slate-100 hover:bg-slate-50 transition"
-                        >
-                          {/* STUDENT */}
-
-                          <td className="px-4 py-3">
-                            <div className="flex items-center gap-3 min-w-[220px]">
-                              <img
-                                src={`/api/admin/student/photo/${student._id}`}
-                                alt={student.firstName}
-                                className="h-11 w-11 rounded-md object-cover border"
-                              />
-
-                              <div>
-                                <h2 className="text-sm font-semibold text-slate-800">
-                                  {student.firstName} {student.lastName}
-                                </h2>
-
-                                <p className="text-xs text-slate-500">
-                                  {student.gender}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-
-                          {/* SR NO */}
-
-                          <td className="px-4 py-3 text-sm text-slate-600">
-                            {student.srNo || index + 1}
-                          </td>
-
-                          {/* CLASS */}
-
-                          <td className="px-4 py-3 text-sm text-slate-600">
-                            {student.classId?.name} - {student.classId?.section}
-                          </td>
-
-                          {/* GENDER */}
-
-                          <td className="px-4 py-3 text-sm text-slate-600">
-                            {student.gender}
-                          </td>
-
-                          {/* AGE */}
-
-                          <td className="px-4 py-3 text-sm text-slate-600">
-                            {student.age}
-                          </td>
-
-                          {/* FATHER */}
-
-                          <td className="px-4 py-3 text-sm text-slate-600">
-                            {student.fatherName}
-                          </td>
-
-                          {/* SESSION */}
-
-                          <td className="px-4 py-3 text-sm text-slate-600">
-                            {student.session || "-"}
-                          </td>
-
-                          {/* STATUS */}
-
-                          <td className="px-4 py-3 text-center">
-                            <span
-                              className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
-                                student.isActive
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-700"
-                              }`}
-                            >
-                              {student.isActive ? "Active" : "Inactive"}
-                            </span>
-                          </td>
-
-                          {/* ACTIONS */}
-
-                          <td className="px-4 py-3">
-                            <div className="flex items-center justify-center gap-2">
-                              {/* VIEW */}
-
-                              <Link
-                                href={`/dashboard/admin/student/detail/${student._id}`}
-                                className="flex h-8 w-8 items-center justify-center rounded-md bg-blue-100 text-blue-700 hover:bg-blue-600 hover:text-white transition"
-                              >
-                                <FiEye size={14} />
-                              </Link>
-
-                              {/* EDIT */}
-
-                              <button
-                                onClick={() => openModal(student._id)}
-                                className="flex h-8 w-8 items-center justify-center rounded-md bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white transition"
-                              >
-                                <FiEdit2 size={14} />
-                              </button>
-
-                              {/* DELETE */}
-
-                              <button className="flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-red-700 hover:bg-red-600 hover:text-white transition">
-                                <FiTrash2 size={14} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </TableContainer>
-          )}
+            <button className="text-red-600 transition hover:scale-110 hover:text-red-800">
+              <FiTrash2 />
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
 
           {/* ================= EMPTY ================= */}
 
